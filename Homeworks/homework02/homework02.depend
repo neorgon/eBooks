@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1489141625 source:c:\users\administrator\documents\practices\homework\homework02\main.cpp
+	<iostream>
+	<vector>
+	<vector>
+	<iostream>
+	<stdexcept>
+	<string>
+
