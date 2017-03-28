@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1489855865 source:c:\users\nestor\documents\projects\jala\cplusplus\homeworks\homework04\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<math.h>
+	<algorithm>
+

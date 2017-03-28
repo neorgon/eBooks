@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1489195084 source:c:\users\nestor\documents\projects\jala\cplusplus\homeworks\homework03\main.cpp
+	<iostream>
+	<string>
+	<vector>
+

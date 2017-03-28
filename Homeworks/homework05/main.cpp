@@ -2,86 +2,57 @@
 
 using namespace std;
 
-constexpr size_t MAX_SSO = 16;
-
 class MyString
 {
-    char *ss;
-    char sso[MAX_SSO];
+    char* ss;
     size_t n;
 
-    MyString(const char* s, size_t n)
-    {
-        if (n < MAX_SSO)
-        {
-            ss = nullptr;
-            Copy_string(sso, s, n);
-        }
-        else
-        {
-            Copy_string(ss, s, n);
-        }
-        this->n = n;
-    }
+    MyString(char* s, size_t n) : ss{s}, n{n} { /*cout << "String created\n";*/ }
     size_t Get_string_lenght(const char* s);
-    void Copy_string(char* target, const char* source, size_t len) const;
-    void Copy_string(char* target, size_t n, const char* source, size_t len) const;
+    void Copy_string(char* result, const char* source, size_t len) const;
 
     public:
-        MyString(const char* s);
-        ~MyString();
-        MyString(const MyString &src);
+        MyString(const char* s = "")
+        {
+            n = Get_string_lenght(s);
+            ss = new char[n + 1];
+            Copy_string(ss, s, n);
+            /*cout << "String created\n";*/
+        }
 
-        void Show() const;
+        ~MyString()
+        {
+            /*cout << "Bye string \n";*/
+            delete [] ss;
+        }
+
+        MyString(const MyString &src) // Copy constructor
+        {
+            n = src.n;
+            ss = new char[n + 1];
+            Copy_string(ss, src.ss, n);
+            /*cout << "String copied \n";*/
+        }
+
+        void Show() const
+        {
+            cout << ss << "\n";
+        }
+
         MyString operator+(const MyString &s) const;
         MyString &operator+=(const MyString &x);
         bool operator==(const MyString &c) const;
         bool operator!=(const MyString &c) const;
         bool Start_with(const MyString &e) const;
         MyString &Trim();
+        MyString Substring(size_t from);
+        MyString Substring(size_t from, size_t len);
 
 };
 
-MyString::MyString(const char* s = "")
-{
-    n = Get_string_lenght(s);
-    if (n < MAX_SSO)
-    {
-        ss = nullptr;
-        Copy_string(sso, s, n);
-    }
-    else
-    {
-        ss = new char[n + 1];
-        Copy_string(ss, s, n);
-    }
-}
-
-MyString::~MyString()
-{
-    if (n < MAX_SSO)
-        delete [] ss;
-}
-
-MyString::MyString(const MyString &src)
-{
-    n = src.n;
-    if(n < MAX_SSO)
-    {
-        ss = nullptr;
-        Copy_string(sso, src.sso, n);
-    }
-    else
-    {
-        ss = new char[n + 1];
-        Copy_string(ss, src.ss, n);
-    }
-}
-
-size_t MyString::Get_string_lenght(const char* s)
+size_t MyString::Get_string_lenght(const char *s)
 {
     size_t c = 0;
-
     for (; s[c] != '\0'; ++c)
     {
 
@@ -90,39 +61,29 @@ size_t MyString::Get_string_lenght(const char* s)
     return c;
 }
 
-void MyString::Copy_string(char* target, const char* source, size_t len) const
+void MyString::Copy_string(char *p, const char *q, size_t len) const
 {
     for (size_t i = 0; i < len; ++i)
     {
-        target[i] = source[i];
+        p[i] = q[i];
     }
-    target[len] = '\0';
-}
-
-void MyString::Copy_string(char* target, size_t n, const char* source, size_t len) const
-{
-    for (size_t i = 0; i < len; ++i)
-    {
-        target[n + i] = source[i];
-    }
-    target[len] = '\0';
-}
-
-void MyString::Show() const
-{
-    if (n < MAX_SSO)
-        cout << sso << "\n";
-    else
-        cout << ss << "\n";
+    p[len] = '\0';
 }
 
 MyString MyString::operator+(const MyString &s) const
 {
     auto len = n + s.n;
+    auto ns = new char[len + 1];
 
-    cout << "Pegar: " << sso << " + " << s.sso << " harian un total de: " << len << " caracteres" << endl;
+    Copy_string(ns, ss, n);
+    Copy_string(ns + n, s.ss, s.n);
 
-    return MyString {sso, n};
+    /*MyString x {ns};
+    delete []ns;
+
+    return x;*/
+
+    return MyString {ns, n};
 }
 
 MyString &MyString::operator+=(const MyString &x)
@@ -171,7 +132,7 @@ bool MyString::Start_with(const MyString &e) const
 
 MyString &MyString::Trim()
 {
-    if (n == 0) return *this;
+    if(n == 0) return *this;
     size_t left = 0, right = n - 1;
 
     while(ss[left] == ' ' && left < right) left++;
@@ -189,29 +150,38 @@ MyString &MyString::Trim()
     return *this;
 }
 
+MyString MyString::Substring(size_t from)
+{
+    size_t len = n - from;
+    auto ns = new char[len + 1];
+
+    Copy_string(ns, ss + from, len);
+
+    return  MyString {ns, len};
+}
+
+MyString MyString::Substring(size_t from, size_t len)
+{
+    auto ns = new char[len + 1];
+
+    Copy_string(ns, ss + from, len);
+
+    return MyString {ns, len};
+}
+
 int main()
 {
-
-    MyString s = "hola";
+    MyString s;
     s.Show();
-
-    MyString cp = s;
-    cp.Show();
-
-    s = cp;
-    s.Show();
-
-    MyString em;
-    em.Show();
 
     MyString p = "Happy";
     MyString q = " Thuesday";
 
     cout << "****\n";
 
-    (p + q).Show();
+    (p+q).Show();
 
-    /*cout << "****\n";
+    cout << "****\n";
 
     MyString r = "Depeche";
     r += " Mode dfghjjhdffghjmdefjtnmklcdoiveuivghnoacmovngubvsvmoecvuvecnaocneuivueivbuivceoicnaerovuivefcnwoiceoivuivbeivbucbaiuvcbeivbreivubaevuibaeoviadovne;ovnoivoevn";
@@ -235,15 +205,15 @@ int main()
     cout << x.Start_with("Windows") << endl;
     cout << x.Start_with("") << endl;
 
-    //MyString p = "    hello world!    ";
-    MyString p = "  ";
+    MyString t = "    hello world!    ";
+    //MyString t = "  ";
 
-    p.Trim().Show();
+    t.Trim().Show();
 
     MyString z = "Zanahoria";
-    z.Substring(4).show(); //horia
-    z.Substring(1, 3).show(); //ana
-    z.Substring(0, 9).show(); //Zanahoria
-*/
+    z.Substring(4).Show(); //horia
+    z.Substring(1, 3).Show(); //ana
+    z.Substring(0, 9).Show(); //Zanahoria
+
     return 0;
 }
