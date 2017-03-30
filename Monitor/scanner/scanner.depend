@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1490885272 source:c:\users\administrator\documents\monitor\scanner\main.cpp
+	<iostream>
+	<string>
+	<vector>
+

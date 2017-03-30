@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1489764090 source:c:\users\administrator\documents\monitor\borrador\main.cpp
+	<cassert>
+	<string>
+	<iostream>
+
