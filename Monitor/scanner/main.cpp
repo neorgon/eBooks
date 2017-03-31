@@ -18,8 +18,8 @@ class PRules
     public:
         PRules(const string &n, string a, PType t, bool o, size_t i) :
             name {n}, abrv {a}, type {t}, optional {o}, iquantity {i} {};
-        string Get_name();
-        bool IsARule(const string &token) const;
+        string GetName();
+        PType GetType() const;
         struct Finder {
             string token;
             Finder(const string &t) : token {t} {};
@@ -30,26 +30,49 @@ class PRules
         };
 };
 
-string PRules::Get_name()
+string PRules::GetName()
 {
     return name;
 }
 
-bool PRules::IsARule(const string &token) const
+PType PRules::GetType() const
 {
-    return true;
+    return type;
+}
+
+class POptions
+{
+    string name;
+    PType type;
+    string value;
+
+    public:
+        POptions(const string &n, PType t) : name{n}, type{t} {}
+        void Print();
+};
+
+void POptions::Print()
+{
+    cout << name << " :" << static_cast<int>(type) << ": " << value << endl;
 }
 
 class MyParser
 {
     vector<PRules> rules;
     vector<string> tokens;
+    vector<POptions> options;
 
     size_t GetLenght(const char* source);
     void CopyToken(char *token, const char* source, size_t len);
+    void AddRule(const string &name, string abrv, PType type, bool optional, size_t iquantity = 1);
 
     public:
-        void AddRule(const string &name, string abrv, PType type, bool optional, size_t iquantity = 1);
+        void AddBool(const string &name, string abrv, bool optional, size_t iquantity = 1);
+        void AddInteger(const string &name, string abrv, bool optional, size_t iquantity = 1);
+        void AddLabel(const string &name, string abrv, bool optional, size_t iquantity = 1);
+        void AddList(const string &name, string abrv, bool optional, size_t iquantity = 1);
+        void AddReal(const string &name, string abrv, bool optional, size_t iquantity = 1);
+        void AddString(const string &name, string abrv, bool optional, size_t iquantity = 1);
         void PrintRules(); //
         void Scanner(int argc, char** args);
         void PrintTokens(); //
@@ -58,15 +81,44 @@ class MyParser
 
 void MyParser::AddRule(const string &name, string abrv, PType type, bool optional, size_t iquantity)
 {
-    PRules newRule(name, abrv, type, optional, iquantity);
-
+    PRules newRule("--" + name, "-" + abrv, type, optional, iquantity);
     rules.push_back(newRule);
+}
+
+void MyParser::AddBool(const string &name, string abrv, bool optional, size_t iquantity)
+{
+    AddRule(name, abrv, PType::Bool, optional, iquantity);
+}
+
+void MyParser::AddInteger(const string &name, string abrv, bool optional, size_t iquantity)
+{
+    AddRule(name, abrv, PType::Integer, optional, iquantity);
+}
+
+void MyParser::AddLabel(const string &name, string abrv, bool optional, size_t iquantity)
+{
+    AddRule(name, abrv, PType::Label, optional, iquantity);
+}
+
+void MyParser::AddList(const string &name, string abrv, bool optional, size_t iquantity)
+{
+    AddRule(name, abrv, PType::List, optional, iquantity);
+}
+
+void MyParser::AddReal(const string &name, string abrv, bool optional, size_t iquantity)
+{
+    AddRule(name, abrv, PType::Real, optional, iquantity);
+}
+
+void MyParser::AddString(const string &name, string abrv, bool optional, size_t iquantity)
+{
+    AddRule(name, abrv, PType::String, optional, iquantity);
 }
 
 void MyParser::PrintRules()
 {
     for (auto &r : rules)
-        cout << r.Get_name() << endl;
+        cout << r.GetName() << endl;
 }
 
 size_t MyParser::GetLenght(const char* source)
@@ -112,6 +164,8 @@ void MyParser::PrintTokens()
 void MyParser::LexicalAnalyzer() const
 {
     vector<PRules>::const_iterator it;
+    int opCounter = 0;
+
     for (const string &t : tokens)
     {
         if(t[0] == '-')
@@ -122,6 +176,17 @@ void MyParser::LexicalAnalyzer() const
                 cout << "One or more parameters is not correct." << endl;
                 return;
             }
+            else
+            {
+                POptions option(t, it->GetType());
+                options.push_back(option);
+            }
+        }
+        else
+        {
+            // Añadir el valor a la regla.
+            // devolver una lista de reglas con valor (value)
+            // rules.at(position).value = siguiente token comparado si el token no empieza con '-'
         }
     }
 }
@@ -130,11 +195,11 @@ int main(int argc, char* args[])
 {
     MyParser np;
 
-    np.AddRule("-calorias", "-c", PType::Integer, false);
-    np.AddRule("-proteinas", "-p", PType::Integer, false);
-    np.AddRule("-grasas_saturadas", "-g", PType::Real, false);
-    np.AddRule("-grasas_hidrogenadas", "-h", PType::Real, true, 0);
-    np.AddRule("-nombre", "-n", PType::String, false, 2);
+    np.AddInteger("calorias", "c", false);
+    np.AddInteger("proteinas", "p", false);
+    np.AddReal("grasas_saturadas", "g", false);
+    np.AddReal("grasas_hidrogenadas", "h", true, 0);
+    np.AddString("nombre", "n", false, 2);
 
     np.PrintRules();
 

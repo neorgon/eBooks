@@ -40,6 +40,33 @@ class IShape
             y = ny;
         }
         virtual void Draw(IScreen &scr) const = 0;
+        int GetX() const { return x; }
+        int GetY() const { return y; }
+        int GetW() const { return w; }
+        int GetH() const { return h; }
+};
+
+class Rectangle: public IShape
+{
+    public:
+        Rectangle(int x, int y, int w, int h) : IShape(x, y, w, h) {};
+        void Draw(IScreen &scr) const override
+        {
+            int x = GetX();
+            int y = GetY();
+            int w = GetW();
+            int h = GetH();
+            for (int i = 0; i < w; i++)
+            {
+                scr.Put_pixel(x + i, y, '*');
+                scr.Put_pixel(x + i, y + h - 1, '*');
+            }
+            for (int i = 1; i < h - 1; i++)
+            {
+                scr.Put_pixel(x, y + i, '*');
+                scr.Put_pixel(x + w - 1, y + i, '*');
+            }
+        }
 };
 
 class Canvas
@@ -71,18 +98,24 @@ class Canvas
            }
            scr->Show();
        }
+       ~Canvas()
+       {
+           delete scr;
+           for (auto &s : shapes)
+                delete s;
+       }
 };
 
 class Text_screen : public IScreen
 {
-    char buffer[20][80];
+    char buffer[20][70];
 
     public:
         void Clear() override
         {
             for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < 80; j++)
+                for (int j = 0; j < 70; j++)
                 {
                     buffer[i][j] = ' ';
                 }
@@ -92,7 +125,7 @@ class Text_screen : public IScreen
         {
             for (int i = 0; i < 20; i++)
             {
-                for (int j = 0; j < 80; j++)
+                for (int j = 0; j < 70; j++)
                 {
                     cout << buffer[i][j];
                 }
@@ -101,21 +134,34 @@ class Text_screen : public IScreen
         }
         void Put_pixel(int x, int y, int c)
         {
-            if (x >= 80 || y >= 20)
+            if (x >= 70 || y >= 20)
                 return;
             buffer[y][x] = c;
         }
 };
 
+void process_option(options op, Text_screen cn)
+{
+
+}
+
 int main()
 {
-    Text_screen cn; //{80, 25};
+    /*Text_screen cn; //{80, 25};
     while (true)
     {
         auto op = show_menu();
         if (op == options::Quit)
             return 0;
-        //process_option(op, cn);
+        process_option(op, cn);
         cn.Show();
-    }
+    }*/
+    Canvas cn { new Text_screen() };
+    cn.Add( new Rectangle(6, 6, 10, 4));
+    cn.Add( new Rectangle(1, 1, 20, 15));
+    cn.Draw();
+    int x;
+    cin >> x;
+    cn[1].Move(20, 9);
+    cn.Draw();
 }
