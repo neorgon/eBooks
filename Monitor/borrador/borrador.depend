@@ -4,3 +4,13 @@
 	<string>
 	<iostream>
 
+1490929234 source:c:\users\nestor\documents\github\ebooks\monitor\borrador\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+	<cassert>
+	<string>
+	<iostream>
+	<windows.h>
+
