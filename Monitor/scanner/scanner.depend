@@ -10,3 +10,49 @@
 	<vector>
 	<algorithm>
 
+1491250893 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<Rules.h>
+	<Options.h>
+
+1491250893 c:\users\administrator\desktop\parser\thinkerrepository\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491231405 c:\users\administrator\desktop\parser\thinkerrepository\scanner\ptype.h
+
+1491234435 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\src\rules.cpp
+	"Rules.h"
+
+1491250905 c:\users\administrator\desktop\parser\thinkerrepository\scanner\include\options.h
+	<string>
+	"../PType.h"
+
+1491244318 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\src\options.cpp
+	"Options.h"
+
+1491252797 source:c:\users\administrator\documents\github\thinkerrepository\scanner\src\options.cpp
+	"Options.h"
+
+1491252196 c:\users\administrator\documents\github\thinkerrepository\scanner\include\options.h
+	<string>
+	"../PType.h"
+
+1491252062 c:\users\administrator\documents\github\thinkerrepository\scanner\ptype.h
+
+1491251293 source:c:\users\administrator\documents\github\thinkerrepository\scanner\src\rules.cpp
+	"Rules.h"
+
+1491251293 c:\users\administrator\documents\github\thinkerrepository\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491251957 source:c:\users\administrator\documents\github\thinkerrepository\scanner\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<Rules.h>
+	<Options.h>
+

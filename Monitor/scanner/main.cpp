@@ -1,72 +1,17 @@
 #include <iostream>
-#include <string>
 #include <vector>
 #include <algorithm>
 
+#include <Rules.h>
+#include <Options.h>
+
 using namespace std;
-
-enum class PType {Bool, Integer, Label, List, Real, String};
-
-class PRules
-{
-    string name;
-    string abrv;
-    PType type;
-    bool optional;
-    size_t iquantity;
-
-    public:
-        PRules(const string &n, string a, PType t, bool o, size_t i) :
-            name {n}, abrv {a}, type {t}, optional {o}, iquantity {i} {};
-        string GetName() const;
-        PType GetType() const;
-        struct Finder {
-            string token;
-            Finder(const string &t) : token {t} {};
-            bool operator()(const PRules &rule) const
-            {
-                return rule.name.compare(token) == 0 || rule.abrv.compare(token) == 0;
-            }
-        };
-};
-
-string PRules::GetName() const
-{
-    return name;
-}
-
-PType PRules::GetType() const
-{
-    return type;
-}
-
-class POptions
-{
-    string name;
-    PType type;
-    string value;
-
-    public:
-        POptions(const string &n, PType t) : name{n}, type{t} {};
-        void SetValue(const string &v);
-        void Print() const;
-};
-
-void POptions::SetValue(const string &v)
-{
-    value = v;
-}
-
-void POptions::Print() const
-{
-    cout << name << " :" << static_cast<int>(type) << ": " << value << endl;
-}
 
 class MyParser
 {
-    vector<PRules> rules;
+    vector<Rules> rules;
     vector<string> tokens;
-    vector<POptions> options;
+    vector<Options> options;
 
     size_t GetLenght(const char* source);
     void CopyToken(char *token, const char* source, size_t len);
@@ -88,7 +33,7 @@ class MyParser
 
 void MyParser::AddRule(const string &name, const string &abrv, PType type, bool optional, size_t iquantity)
 {
-    PRules newRule("--" + name, "-" + abrv, type, optional, iquantity);
+    Rules newRule("--" + name, "-" + abrv, type, optional, iquantity);
     rules.push_back(newRule);
 }
 
@@ -170,14 +115,14 @@ void MyParser::PrintTokens() const
 
 void MyParser::LexicalAnalyzer()
 {
-    vector<PRules>::const_iterator it;
+    vector<Rules>::const_iterator it;
     int opCounter = 0;
 
     for (const string &t : tokens)
     {
         if(t[0] == '-')
         {
-            it = find_if(rules.begin(), rules.end(), PRules::Finder(t));
+            it = find_if(rules.begin(), rules.end(), Rules::Finder(t));
             if(it == rules.end())
             {
                 cout << "One or more parameters is not correct." << endl;
@@ -185,7 +130,7 @@ void MyParser::LexicalAnalyzer()
             }
             else
             {
-                POptions newOption(t, it->GetType());
+                Options newOption(t, it->GetType());
                 options.push_back(newOption);
                 ++opCounter;
             }
@@ -200,7 +145,9 @@ void MyParser::LexicalAnalyzer()
 void MyParser::PrintOptions() const
 {
     for (auto &o : options)
-        o.Print();
+    {
+        cout << o.GetName().c_str() << ":" << o.GetTypeName() << ":" << o.GetValue().c_str() << endl;
+    }
 }
 
 int main(int argc, char* args[])
@@ -221,7 +168,7 @@ int main(int argc, char* args[])
         //np.PrintTokens();
     }
     else
-        cout << "Bad parameters usage." << endl;
+        cout << "Missing parameters." << endl;
 
     np.LexicalAnalyzer();
     np.PrintOptions();
