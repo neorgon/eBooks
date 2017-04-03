@@ -18,7 +18,7 @@ class PRules
     public:
         PRules(const string &n, string a, PType t, bool o, size_t i) :
             name {n}, abrv {a}, type {t}, optional {o}, iquantity {i} {};
-        string GetName();
+        string GetName() const;
         PType GetType() const;
         struct Finder {
             string token;
@@ -30,7 +30,7 @@ class PRules
         };
 };
 
-string PRules::GetName()
+string PRules::GetName() const
 {
     return name;
 }
@@ -47,11 +47,17 @@ class POptions
     string value;
 
     public:
-        POptions(const string &n, PType t) : name{n}, type{t} {}
-        void Print();
+        POptions(const string &n, PType t) : name{n}, type{t} {};
+        void SetValue(const string &v);
+        void Print() const;
 };
 
-void POptions::Print()
+void POptions::SetValue(const string &v)
+{
+    value = v;
+}
+
+void POptions::Print() const
 {
     cout << name << " :" << static_cast<int>(type) << ": " << value << endl;
 }
@@ -64,7 +70,7 @@ class MyParser
 
     size_t GetLenght(const char* source);
     void CopyToken(char *token, const char* source, size_t len);
-    void AddRule(const string &name, string abrv, PType type, bool optional, size_t iquantity = 1);
+    void AddRule(const string &name, const string &abrv, PType type, bool optional, size_t iquantity = 1);
 
     public:
         void AddBool(const string &name, string abrv, bool optional, size_t iquantity = 1);
@@ -73,13 +79,14 @@ class MyParser
         void AddList(const string &name, string abrv, bool optional, size_t iquantity = 1);
         void AddReal(const string &name, string abrv, bool optional, size_t iquantity = 1);
         void AddString(const string &name, string abrv, bool optional, size_t iquantity = 1);
-        void PrintRules(); //
+        void PrintRules() const;//
         void Scanner(int argc, char** args);
-        void PrintTokens(); //
-        void LexicalAnalyzer() const;
+        void PrintTokens() const;//
+        void LexicalAnalyzer();
+        void PrintOptions() const;//
 };
 
-void MyParser::AddRule(const string &name, string abrv, PType type, bool optional, size_t iquantity)
+void MyParser::AddRule(const string &name, const string &abrv, PType type, bool optional, size_t iquantity)
 {
     PRules newRule("--" + name, "-" + abrv, type, optional, iquantity);
     rules.push_back(newRule);
@@ -115,7 +122,7 @@ void MyParser::AddString(const string &name, string abrv, bool optional, size_t 
     AddRule(name, abrv, PType::String, optional, iquantity);
 }
 
-void MyParser::PrintRules()
+void MyParser::PrintRules() const
 {
     for (auto &r : rules)
         cout << r.GetName() << endl;
@@ -155,13 +162,13 @@ void MyParser::Scanner(int argc, char** args)
     }
 }
 
-void MyParser::PrintTokens()
+void MyParser::PrintTokens() const
 {
     for (auto &t : tokens)
         cout << t << endl;
 }
 
-void MyParser::LexicalAnalyzer() const
+void MyParser::LexicalAnalyzer()
 {
     vector<PRules>::const_iterator it;
     int opCounter = 0;
@@ -178,17 +185,22 @@ void MyParser::LexicalAnalyzer() const
             }
             else
             {
-                POptions option(t, it->GetType());
-                options.push_back(option);
+                POptions newOption(t, it->GetType());
+                options.push_back(newOption);
+                ++opCounter;
             }
         }
         else
         {
-            // Añadir el valor a la regla.
-            // devolver una lista de reglas con valor (value)
-            // rules.at(position).value = siguiente token comparado si el token no empieza con '-'
+            options.at(opCounter - 1).SetValue(t);
         }
     }
+}
+
+void MyParser::PrintOptions() const
+{
+    for (auto &o : options)
+        o.Print();
 }
 
 int main(int argc, char* args[])
@@ -201,7 +213,7 @@ int main(int argc, char* args[])
     np.AddReal("grasas_hidrogenadas", "h", true, 0);
     np.AddString("nombre", "n", false, 2);
 
-    np.PrintRules();
+    //np.PrintRules();
 
     if(argc > 1)
     {
@@ -212,6 +224,7 @@ int main(int argc, char* args[])
         cout << "Bad parameters usage." << endl;
 
     np.LexicalAnalyzer();
+    np.PrintOptions();
 
     return 0;
 }
