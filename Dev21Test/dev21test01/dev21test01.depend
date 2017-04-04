@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1491267981 source:c:\users\nestor\documents\github\ebooks\dev21test\dev21test01\main.cpp
+	<cstdio>
+	<cstring>
+	<cstdlib>
+	<cstdarg>
+

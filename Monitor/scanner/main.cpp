@@ -117,6 +117,7 @@ void MyParser::LexicalAnalyzer()
 {
     vector<Rules>::const_iterator it;
     int opCounter = 0;
+    int tkCounter = 0;
 
     for (const string &t : tokens)
     {
@@ -137,8 +138,17 @@ void MyParser::LexicalAnalyzer()
         }
         else
         {
-            options.at(opCounter - 1).SetValue(t);
+            if (!(tkCounter % 2 == 0))
+            {
+                options.at(opCounter - 1).SetValue(t);
+            }
+            else
+            {
+                cout << "Lexical error." << endl;
+                return;
+            }
         }
+        ++tkCounter;
     }
 }
 

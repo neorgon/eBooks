@@ -56,3 +56,19 @@
 	<Rules.h>
 	<Options.h>
 
+1491267981 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\options.cpp
+	"Options.h"
+
+1491267981 c:\users\nestor\documents\github\ebooks\monitor\scanner\include\options.h
+	<string>
+	"../PType.h"
+
+1491267981 c:\users\nestor\documents\github\ebooks\monitor\scanner\ptype.h
+
+1491267981 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\rules.cpp
+	"Rules.h"
+
+1491267981 c:\users\nestor\documents\github\ebooks\monitor\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
