@@ -1,0 +1,132 @@
+# depslib dependency file v1.0
+1490885272 source:c:\users\administrator\documents\monitor\scanner\main.cpp
+	<iostream>
+	<string>
+	<vector>
+
+1491207194 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\main.cpp
+	<iostream>
+	<string>
+	<vector>
+	<algorithm>
+
+1491259951 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<stdlib.h>
+	<Rules.h>
+	<Options.h>
+	<string>
+
+1491259594 c:\users\administrator\desktop\parser\thinkerrepository\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491259594 c:\users\administrator\desktop\parser\thinkerrepository\scanner\ptype.h
+
+1491259594 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\src\rules.cpp
+	"Rules.h"
+
+1491259603 c:\users\administrator\desktop\parser\thinkerrepository\scanner\include\options.h
+	<string>
+	<stdlib.h>
+	"../PType.h"
+
+1491259594 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\src\options.cpp
+	"Options.h"
+
+1491252797 source:c:\users\administrator\documents\github\thinkerrepository\scanner\src\options.cpp
+	"Options.h"
+
+1491252196 c:\users\administrator\documents\github\thinkerrepository\scanner\include\options.h
+	<string>
+	"../PType.h"
+
+1491252062 c:\users\administrator\documents\github\thinkerrepository\scanner\ptype.h
+
+1491251293 source:c:\users\administrator\documents\github\thinkerrepository\scanner\src\rules.cpp
+	"Rules.h"
+
+1491251293 c:\users\administrator\documents\github\thinkerrepository\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491251957 source:c:\users\administrator\documents\github\thinkerrepository\scanner\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<Rules.h>
+	<Options.h>
+
+1491268391 source:c:\users\administrator\documents\thinkerrepository\scanner\src\options.cpp
+	"Options.h"
+
+1491270920 c:\users\administrator\documents\thinkerrepository\scanner\include\options.h
+	<string>
+	"../PType.h"
+
+1491268391 c:\users\administrator\documents\thinkerrepository\scanner\ptype.h
+
+1491271243 source:c:\users\administrator\documents\thinkerrepository\scanner\src\rules.cpp
+	"Rules.h"
+
+1491271636 c:\users\administrator\documents\thinkerrepository\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491271258 source:c:\users\administrator\documents\thinkerrepository\scanner\main.cpp
+	<iostream>
+	<vector>
+	<algorithm>
+	<Rules.h>
+	<Options.h>
+
+1491429429 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\main.cpp
+	<Parser.h>
+
+1491315901 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491315901 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\ptype.h
+
+1491331403 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\options.h
+	<string>
+	<stdlib.h>
+	"../PType.h"
+
+1491410497 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\parser.h
+	<vector>
+	<stdio.h>
+	<iostream>
+	<string>
+	<exception>
+	<algorithm>
+	<Options.h>
+	<Rules.h>
+	<Exceptions.h>
+
+1491331403 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\options.cpp
+	"Options.h"
+
+1491429398 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\parser.cpp
+	"Parser.h"
+
+1491315901 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\rules.cpp
+	"Rules.h"
+
+1491345760 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\parserexception.h
+	<exception>
+	<cstdio>
+
+1491345760 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\parserexception.cpp
+	"ParserException.h"
+
+1491409569 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\exceptions.cpp
+	"Exceptions.h"
+
+1491409568 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\exceptions.h
+	<exception>
+	<cstdio>
+
