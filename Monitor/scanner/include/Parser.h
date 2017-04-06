@@ -16,14 +16,17 @@ class Parser
 {
     vector<Rules> rules;
     vector<string> tokens;
+    vector<string> tkOptions;
     vector<string> values;
 
     void AddRule(const char* name, char abbr, PType type, bool optional, size_t quantity);
     void Scanning(const char* input);
+    bool AnalyzingSyntax();
 
 public:
     void AddInteger(const char* name, char abbr, bool optional = false, size_t quantity = 1);
-    bool Validate(int argc, char** args);
+    void AddReal(const char* name, char abbr, bool optional = false, size_t quantity = 1);
+    bool Validate(int argc, const char** args);
     ~Parser();
 
     /*

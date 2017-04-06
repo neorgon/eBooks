@@ -208,13 +208,18 @@ bool Parser::VerifySemantic()const{
 
 void Parser::AddRule(const char* name, char abbr, PType type, bool optional, size_t quantity)
 {
-    Rules newRule("--" + string(name), "-" + abbr, type, optional, quantity);
+    Rules newRule("--" + string(name), "-" + string(1, abbr), type, optional, quantity);
     rules.push_back(newRule);
 }
 
 void Parser::AddInteger(const char* name, char abbr, bool optional, size_t quantity)
 {
     AddRule(name, abbr, PType::Integer, optional, quantity);
+}
+
+void Parser::AddReal(const char* name, char abbr, bool optional, size_t quantity)
+{
+    AddRule(name, abbr, PType::Real, optional, quantity);
 }
 
 void Parser::Scanning(const char* input)
@@ -227,7 +232,7 @@ void Parser::Scanning(const char* input)
         {
             if (lowerStr[i] >= 65 && lowerStr[i] <= 92)
             {
-                lowerStr[i] = lowerStr[i]+32;
+                lowerStr[i] = lowerStr[i] + 32;
             }
         }
     }
@@ -235,9 +240,32 @@ void Parser::Scanning(const char* input)
     tokens.push_back(lowerStr);
 }
 
-bool Parser::Validate(int argc, char* args[]) //only of testing int argc, char* args[]
+bool Parser::AnalyzingSyntax()
 {
-    //Scanning && Verifying && Analyzing
+    vector<Rules>::const_iterator it;
+
+    for (auto &t : tokens)
+    {
+        if (t[0] == '-')
+        {
+            it = find_if(rules.begin(), rules.end(), Rules::Finder(t));
+            if(it == rules.end()) //throw Exceptions("One or more parameters is not correct.");
+                return false;
+            //order to labels add a value in values vector
+            tkOptions.push_back(t);
+        }
+        else
+        {
+            values.push_back(t);
+        }
+    }
+
+    return true;
+}
+
+bool Parser::Validate(int argc, const char** args) //only of testing int argc, char* args[]
+{
+    //Scanning && AnalyzingSyntax && AnalyzingSemantic
     if (argc == 0)
         return false;
     else
@@ -246,7 +274,7 @@ bool Parser::Validate(int argc, char* args[]) //only of testing int argc, char* 
             Scanning(args[i]);
     }
 
-    return true;
+    return AnalyzingSyntax();
 }
 
 Parser::~Parser()

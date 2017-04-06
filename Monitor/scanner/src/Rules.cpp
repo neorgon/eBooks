@@ -1,7 +1,7 @@
 #include "Rules.h"
 
 Rules::Rules(const string &n, string a, PType t, bool o, size_t i)
-: name {n}, abrv {a}, type {t}, optional {o}, iquantity {i}
+: name {n}, abbr {a}, type {t}, optional {o}, quantity {i}
 {
 
 }
@@ -16,14 +16,13 @@ PType Rules::GetType() const
     return type;
 }
 
-string Rules::GetAbrv() const
+string Rules::GetAbbr() const
 {
-
-    return abrv;
+    return abbr;
 }
+
 string Rules::GetTypeName() const
 {
-
     switch (type)
     {
         case PType::Bool:
