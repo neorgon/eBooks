@@ -35,10 +35,14 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="PType.h" />
+		<Unit filename="include/Exceptions.h" />
 		<Unit filename="include/Options.h" />
+		<Unit filename="include/Parser.h" />
 		<Unit filename="include/Rules.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Exceptions.cpp" />
 		<Unit filename="src/Options.cpp" />
+		<Unit filename="src/Parser.cpp" />
 		<Unit filename="src/Rules.cpp" />
 		<Extensions>
 			<code_completion />

@@ -17,164 +17,153 @@ using namespace std;
 class ijson
 {
     public:
-        virtual ~ijson() {}
-        size_t get_string_lenght(const char* s)
-        {
-            size_t c = 0;
-            for (; s[c] != '\0'; ++c)
-            { }
-            return c;
-        }
-        void copy_string(char* target, const char* source, size_t len)
-        {
-            for (size_t i = 0; i < len; ++i)
-                target[i] = source[i];
-            target[len] = '\0';
-        }
+        virtual ~ijson() {};
         virtual string serialize() const = 0;
 };
 
-/*
-class json_number : public ijson
+class json_number: public ijson
 {
-    int number;
+    string serie;
 
     public:
-        json_number(int n) : number {n} {}
-        string serialize() const override
+        json_number(int n)
         {
-            return to_string(number);
-        }
-};
-*/
-
-class json_number : public ijson
-{
-    char* number;
-
-    public:
-        json_number(int num)
-        {
-            auto sn = to_string(num);
-            size_t n = sn.size();
-            number = new char[n + 1];
-            copy_string(number, sn.c_str(), n);
-        }
-        ~json_number()
-        {
-            delete[] number;
+            serie = to_string(n);
         }
         string serialize() const override
         {
-            return number;
+            return serie;
         }
 };
 
-class json_string : public ijson
+class json_string: public ijson
 {
-    char* str;
+    string serie;
 
-    void copy_string(char* target, const char* source, size_t len)
-    {
-        target[0] = '\"';
-        for (size_t i = 0; i < len; ++i)
-            target[i + 1] = source[i];
-        target[len + 1] = '\"';
-        target[len + 2] = '\0';
-    }
     public:
-        json_string(const char *s)
+        json_string(const char* s)
         {
-            size_t n = get_string_lenght(s);
-            str = new char[n + 3];
-            copy_string(str, s, n);
-        }
-        ~json_string()
-        {
-            delete[] str;
+            string ls(s);
+            serie = ls;
         }
         string serialize() const override
         {
-            return str;
+            return "\"" + serie + "\"";
         }
 };
 
-class json_bool : public ijson
+class json_bool: public ijson
 {
-    char* boolean;
-
-    void copy_string(char* target, const char* source, size_t len)
-    {
-        for (size_t i = 0; i < len; ++i)
-            target[i] = source[i];
-        target[len] = '\0';
-    }
+    string serie;
 
     public:
         json_bool(bool b)
         {
             if(b)
+                serie = "true";
+            else
+                serie = "false";
+        }
+        string serialize() const override
+        {
+            return serie;
+        }
+};
+
+class json_object: public ijson
+{
+    vector<string> serie;
+
+    public:
+        json_object() {}
+        string serialize() const override
+        {
+            if(serie.size() > 0)
             {
-                boolean = new char[4];
-                copy_string(boolean, "true", 4);
+                string obj;
+                for (size_t e = 0; e < serie.size() - 1; ++e)
+                    obj += serie.at(e) + ", ";
+                auto last = serie.size();
+                obj += serie.at(last - 1);
+
+                return "{ " + obj + " }";
             }
             else
             {
-                boolean = new char[5];
-                copy_string(boolean, "false", 5);
+                return "{ }";
             }
         }
-        ~json_bool()
+        void add(const char* attr, json_string* value)
         {
-            delete[] boolean;
+            string a(attr);
+            a = "\"" + a + "\" : " + value->serialize();
+            serie.push_back(a);
+            delete value;
         }
-        string serialize() const override
+        void add(const char* attr, json_number* value)
         {
-            return boolean;
+            string a(attr);
+            a = "\"" + a + "\" : " + value->serialize();
+            serie.push_back(a);
+            delete value;
         }
+        /*void add(const char* attr, json_array* value)
+        {
+            string a(attr);
+            a = "\"" + a + "\" : " + value.serialize();
+            serie.push_back(a);
+            delete value;
+        }*/
 };
 
-
-class json_array : public ijson
+class json_array: public ijson
 {
-    //acabo de darme cuenta que en esta funcion debía usar vectore :(
-    //tarde mi reacción 11:44
-    char* arr;
-    vector<string> jarr;
+    vector<string> serie;
 
     public:
-        json_array(const char* a = "")
-        {
-            size_t n = get_string_lenght(a);
-            arr = new char[n + 1];
-            copy_string(arr, a, n);
-        }
-        json_array(const string &a)
-        {
-            size_t n = a.length();
-            arr = new char[n + 1];
-            copy_string(arr, a.c_str(), n);
-        }
-        ~json_array()
-        {
-            delete[] arr;
-        }
-        json_array add(json_number* jn)
-        {
-            json_array a(jn->serialize());
-            jarr.push_back(jn->serialize());
-
-            return a;
-        }
+        json_array() {}
         string serialize() const override
         {
-            string serie;
-            for (auto &j : jarr)
-                serie += j;
-            return string("[") + arr + string("]");
+            string jarray;
+            if(serie.size() > 0)
+            {
+                for (size_t e = 0; e < serie.size() - 1; ++e)
+                    jarray += serie.at(e) + ", ";
+                auto last = serie.size();
+                jarray += serie.at(last - 1);
+            }
+
+            return "[" + jarray + "]";
+        }
+        json_array add(const json_number* n)
+        {
+            serie.push_back(n->serialize());
+            delete n;
+
+            return *this;
+        }
+        json_array add(const json_string* s)
+        {
+            serie.push_back(s->serialize());
+            delete s;
+
+            return *this;
+        }
+        json_array add(const json_bool* b)
+        {
+            serie.push_back(b->serialize());
+            delete b;
+
+            return *this;
+        }
+        json_array add(json_object* o)
+        {
+            serie.push_back(o->serialize());
+            delete o;
+
+            return *this;
         }
 };
-
 
 size_t execute_test_1()
 {
@@ -218,7 +207,7 @@ size_t execute_test_5()
         return r == "[104, 5, 31415]";
 }
 
-/*size_t execute_test_6()
+size_t execute_test_6()
 {
         json_array a;
         auto r = a.add(new json_string("juan lopez")).add(new json_number(1938232)).add(new json_bool(true)).serialize();
@@ -261,7 +250,7 @@ size_t execute_test_9()
         return r == "[{ \"mes\" : \"marzo\", \"dia\" : 16 }, { \"mes\" : \"abril\", \"dia\" : 1 }]";
 }
 
-size_t execute_test_10()
+/*size_t execute_test_10()
 {
         json_object complex;
 
@@ -303,8 +292,8 @@ size_t execute_test_11()
         auto r = a.serialize();
 
         return r == "[\"jorge \\\"chapo\\\" guzman\", null, \"mc donald's\"]";
-}*/
-
+}
+*/
 
 int main()
 {
@@ -315,12 +304,12 @@ int main()
         success_count += execute_test_3();
         success_count += execute_test_4();
         success_count += execute_test_5();
-        /*success_count += execute_test_6();
+        success_count += execute_test_6();
         success_count += execute_test_7();
         success_count += execute_test_8();
         success_count += execute_test_9();
-        success_count += execute_test_10();
-        success_count += execute_test_11();*/
+        //success_count += execute_test_10();
+        //success_count += execute_test_11();
 
         cout << "SUCCESS COUNT: [" << success_count << " / 11]\n";
         return 0;

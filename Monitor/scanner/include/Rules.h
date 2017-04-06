@@ -18,6 +18,8 @@ public:
     Rules(const string&, string, PType, bool, size_t);
     string GetName() const;
     PType GetType() const;
+    string GetAbrv() const;
+    string GetTypeName() const;
     struct Finder {
         string token;
         Finder(const string &t) : token {t} {};
