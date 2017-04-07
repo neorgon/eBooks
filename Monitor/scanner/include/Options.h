@@ -12,10 +12,16 @@ class Options
     string name;
     char abbr;
     PType type;
-    void* value;
+    //void* value;
+    string value;
 
     public:
-        Options(const string &, char, PType, void*);
+        //Options(const string &, char, PType, void*);
+        Options(const string &, char, PType, const string &);
+        string GetName() const;
+        string GetValue() const;
+        //int* GetInteger() const;
+        //double* GetReal() const;
 };
 
 

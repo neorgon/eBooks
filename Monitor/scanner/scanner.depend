@@ -4,7 +4,7 @@
 	<string>
 	<vector>
 
-1491449231 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\main.cpp
+1491542569 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\main.cpp
 	<Parser.h>
 
 1491259951 source:c:\users\administrator\desktop\parser\thinkerrepository\scanner\main.cpp
@@ -138,7 +138,7 @@
 1491407151 source:c:\users\administrator\documents\github\thinkerrepository\scanner\src\parser.cpp
 	"Parser.h"
 
-1491449516 c:\users\nestor\documents\github\ebooks\monitor\scanner\include\parser.h
+1491542097 c:\users\nestor\documents\github\ebooks\monitor\scanner\include\parser.h
 	<vector>
 	<stdio.h>
 	<iostream>
@@ -149,7 +149,7 @@
 	<Rules.h>
 	<Exceptions.h>
 
-1491438319 c:\users\nestor\documents\github\ebooks\monitor\scanner\include\options.h
+1491542321 c:\users\nestor\documents\github\ebooks\monitor\scanner\include\options.h
 	<string>
 	<stdlib.h>
 	"../PType.h"
@@ -167,14 +167,15 @@
 1491438319 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\exceptions.cpp
 	"Exceptions.h"
 
-1491438319 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\options.cpp
+1491542221 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\options.cpp
 	"Options.h"
 
 1491448578 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\rules.cpp
 	"Rules.h"
 
-1491449490 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\parser.cpp
+1491542747 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\parser.cpp
 	"Parser.h"
+	<stdexcept>
 
 1491533206 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\main.cpp
 	<Parser.h>

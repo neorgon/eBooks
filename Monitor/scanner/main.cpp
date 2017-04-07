@@ -4,7 +4,7 @@ int main(/*int argc, char* args[]*/)
 {
     bool assertion = false;
     int argc = 7;
-    const char* args[] = { "Scanner", "--calorias", "250", "-p", "100", "--grasas_saturadas", "50.8" };
+    const char* args[] = { "Scanner", "--calorias", "25i0", "-p", "100", "--grasas_saturadas", "5fg0.8pq" };
 
     Parser np;
     np.AddInteger("calorias", 'c');
@@ -17,12 +17,14 @@ int main(/*int argc, char* args[]*/)
     assertion = np.Validate(argc, args);
 
     /*if(assertion)
-        assertion = np.GetJSon().compare("\"calorias\" : 250")*/
+        assertion = np.GetJSon().compare("{ \"calorias\" : 250, \"proteinas\" : 100, \"grasas_saturadas\" : 50.8 }")*/
 
     if(assertion)
         cout << "Great!!" << endl;
     else
         cout << "Falied." << endl;
+
+    np.Print();
 
     return 0;
 }

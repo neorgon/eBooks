@@ -27,16 +27,18 @@ class Parser
     bool AnalyzingSemantic();
 
     bool SetBool(const string &);
-    int SetInteger(const string &);
+    string SetInteger(const string &);
     string SetLabel(const string &);
     Options* SetList(const string &);
-    double SetReal(const string &);
+    string SetReal(const string &);
     string SetString(const string &);
 
 public:
     void AddInteger(const char* name, char abbr, bool optional = false, size_t quantity = 1);
     void AddReal(const char* name, char abbr, bool optional = false, size_t quantity = 1);
     bool Validate(int argc, const char** args);
+
+    void Print();
     ~Parser();
 
     /*

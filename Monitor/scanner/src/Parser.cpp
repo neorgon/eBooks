@@ -1,4 +1,5 @@
 #include "Parser.h"
+#include <stdexcept>
 
 /*
 void Parser::AddRule(const string &name, const string &abrv, PType type, bool optional, size_t iquantity)
@@ -279,9 +280,18 @@ bool Parser::SetBool(const string &v)
     return true;
 }
 
-int Parser::SetInteger(const string &v)
+string Parser::SetInteger(const string &v)
 {
-    return 0;
+    try
+    {
+        stoi(v);
+    }
+    catch (invalid_argument &e)
+    {
+        cerr << "Invalid argument: " << e.what()  << endl;
+    }
+
+    return v;
 }
 
 string Parser::SetLabel(const string &v)
@@ -294,9 +304,18 @@ Options* Parser::SetList(const string &v)
     return nullptr;
 }
 
-double Parser::SetReal(const string &v)
+string Parser::SetReal(const string &v)
 {
-    return 0;
+    try
+    {
+        stod(v);
+    }
+    catch (invalid_argument &e)
+    {
+        cerr << "Invalid argument: " << e.what()  << endl;
+    }
+
+    return v;
 }
 
 string Parser::SetString(const string &v)
@@ -317,35 +336,42 @@ bool Parser::AnalyzingSemantic()
         switch(it->GetType())
         {
             case PType::Bool:
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetBool(values.at(tkCounter)));
-                options.push_back(newOption);*/
-                cout << "bool" << endl;
+            {
+                //Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetBool(values.at(tkCounter)));
+                //options.push_back(newOption);
                 break;
+
+            }
             case PType::Integer:
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetInteger(values.at(tkCounter)));
-                options.push_back(newOption);*/
-                cout << "Integer" << endl;
+            {
+                Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetInteger(values.at(tkCounter)));
+                options.push_back(newOption);
                 break;
+            }
             case PType::Label:
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetLabel(values.at(tkCounter)));
+            {
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetLabel(values.at(tkCounter)));
                 options.push_back(newOption);*/
-                cout << "Label" << endl;
                 break;
+            }
             case PType::List:
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetList(values.at(tkCounter)));
+            {
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetList(values.at(tkCounter)));
                 options.push_back(newOption);*/
-                cout << "List" << endl;
                 break;
+            }
             case PType::Real:
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetReal(values.at(tkCounter)));
-                options.push_back(newOption);*/
-                cout << "Real" << endl;
+            {
+                Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetReal(values.at(tkCounter)));
+                options.push_back(newOption);
                 break;
+            }
             case PType::String:
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetString(values.at(tkCounter)));
-                options.push_back(newOption);*/
-                cout << "String" << endl;
+            {
+                //Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetString(values.at(tkCounter)));
+                //options.push_back(newOption);
                 break;
+            }
         }
         ++tkCounter;
     }
@@ -365,6 +391,14 @@ bool Parser::Validate(int argc, const char** args) //only of testing int argc, c
     }
 
     return AnalyzingSyntax() && AnalyzingSemantic();
+}
+
+void Parser::Print()
+{
+    for (auto &o : options)
+    {
+        cout << o.GetName() << " : " << o.GetValue() << endl;
+    }
 }
 
 Parser::~Parser()

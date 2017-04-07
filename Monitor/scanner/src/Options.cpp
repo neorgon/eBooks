@@ -84,8 +84,34 @@ string Options::GetTypeName() const
 }
 */
 
-Options::Options(const string &n, char a, PType t, void* v)
+//Options::Options(const string &n, char a, PType t, void* v)
+//: name{n}, abbr{a}, type{t}/*, value{v}*/
+//{
+
+//}
+
+Options::Options(const string &n, char a, PType t, const string &v)
 : name{n}, abbr{a}, type{t}, value{v}
 {
 
 }
+
+string Options::GetName() const
+{
+    return name;
+}
+
+string Options::GetValue() const
+{
+    return value;
+}
+
+//int* Options::GetInteger() const
+//{
+//    return (int*)value;
+//}
+
+//double* Options::GetReal() const
+//{
+//    return (double*)value;
+//}
