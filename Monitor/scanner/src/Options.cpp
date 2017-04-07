@@ -1,5 +1,6 @@
 #include "Options.h"
 
+/*
 Options::Options(const string& n, PType t)
 : name{n}, type{t}
 {
@@ -80,4 +81,11 @@ string Options::GetTypeName() const
             return "Unknow";
             break;
     }
+}
+*/
+
+Options::Options(const string &n, char a, PType t, void* v)
+: name{n}, abbr{a}, type{t}, value{v}
+{
+
 }

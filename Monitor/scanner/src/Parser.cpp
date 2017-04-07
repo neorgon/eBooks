@@ -1,6 +1,7 @@
 #include "Parser.h"
 
-/*void Parser::AddRule(const string &name, const string &abrv, PType type, bool optional, size_t iquantity)
+/*
+void Parser::AddRule(const string &name, const string &abrv, PType type, bool optional, size_t iquantity)
 {
     Rules newRule("--" + name, "-" + abrv, type, optional, iquantity);
     rules.push_back(newRule);
@@ -206,6 +207,21 @@ bool Parser::VerifySemantic()const{
 
 */
 
+string Parser::ToLower(const string &str)
+{
+    string lower = str;
+
+    for (size_t i = 0; i < lower.length(); i++)
+    {
+        if (lower[i] >= 65 && lower[i] <= 92)
+        {
+            lower[i] = lower[i] + 32;
+        }
+    }
+
+    return lower;
+}
+
 void Parser::AddRule(const char* name, char abbr, PType type, bool optional, size_t quantity)
 {
     Rules newRule("--" + string(name), "-" + string(1, abbr), type, optional, quantity);
@@ -224,20 +240,14 @@ void Parser::AddReal(const char* name, char abbr, bool optional, size_t quantity
 
 void Parser::Scanning(const char* input)
 {
-    string lowerStr(input);
-
-    if (lowerStr[0] == '-')
+    if (input[0] == '-' && input[1] == '-')
     {
-        for (size_t i = 0; i < lowerStr.length(); i++)
-        {
-            if (lowerStr[i] >= 65 && lowerStr[i] <= 92)
-            {
-                lowerStr[i] = lowerStr[i] + 32;
-            }
-        }
+        tokens.push_back(ToLower(string(input)));
     }
-
-    tokens.push_back(lowerStr);
+    else
+    {
+        tokens.push_back(string(input));
+    }
 }
 
 bool Parser::AnalyzingSyntax()
@@ -252,12 +262,92 @@ bool Parser::AnalyzingSyntax()
             if(it == rules.end()) //throw Exceptions("One or more parameters is not correct.");
                 return false;
             //order to labels add a value in values vector
+            //cout << (int)it->GetType() << endl;
             tkOptions.push_back(t);
         }
         else
         {
             values.push_back(t);
         }
+    }
+
+    return true;
+}
+
+bool Parser::SetBool(const string &v)
+{
+    return true;
+}
+
+int Parser::SetInteger(const string &v)
+{
+    return 0;
+}
+
+string Parser::SetLabel(const string &v)
+{
+    return v;
+}
+
+Options* Parser::SetList(const string &v)
+{
+    return nullptr;
+}
+
+double Parser::SetReal(const string &v)
+{
+    return 0;
+}
+
+string Parser::SetString(const string &v)
+{
+    return "\"" + v + "\"";
+}
+
+bool Parser::AnalyzingSemantic()
+{
+    size_t tkCounter = 0;
+    vector<Rules>::const_iterator it;
+
+    if (tkOptions.size() != values.size())
+        return false;
+    for (auto &t : tkOptions)
+    {
+        it = find_if(rules.begin(), rules.end(), Rules::Finder(t));
+        switch(it->GetType())
+        {
+            case PType::Bool:
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetBool(values.at(tkCounter)));
+                options.push_back(newOption);*/
+                cout << "bool" << endl;
+                break;
+            case PType::Integer:
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetInteger(values.at(tkCounter)));
+                options.push_back(newOption);*/
+                cout << "Integer" << endl;
+                break;
+            case PType::Label:
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetLabel(values.at(tkCounter)));
+                options.push_back(newOption);*/
+                cout << "Label" << endl;
+                break;
+            case PType::List:
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetList(values.at(tkCounter)));
+                options.push_back(newOption);*/
+                cout << "List" << endl;
+                break;
+            case PType::Real:
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetReal(values.at(tkCounter)));
+                options.push_back(newOption);*/
+                cout << "Real" << endl;
+                break;
+            case PType::String:
+                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), (void *)SetString(values.at(tkCounter)));
+                options.push_back(newOption);*/
+                cout << "String" << endl;
+                break;
+        }
+        ++tkCounter;
     }
 
     return true;
@@ -274,7 +364,7 @@ bool Parser::Validate(int argc, const char** args) //only of testing int argc, c
             Scanning(args[i]);
     }
 
-    return AnalyzingSyntax();
+    return AnalyzingSyntax() && AnalyzingSemantic();
 }
 
 Parser::~Parser()

@@ -176,3 +176,44 @@
 1491449490 source:c:\users\nestor\documents\github\ebooks\monitor\scanner\src\parser.cpp
 	"Parser.h"
 
+1491533206 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\main.cpp
+	<Parser.h>
+
+1491554297 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\parser.h
+	<vector>
+	<stdio.h>
+	<iostream>
+	<string>
+	<exception>
+	<algorithm>
+	<Options.h>
+	<Rules.h>
+	<Exceptions.h>
+
+1491554257 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\options.h
+	<string>
+	<stdlib.h>
+	"../PType.h"
+
+1491315630 c:\users\administrator\documents\github\ebooks\monitor\scanner\ptype.h
+
+1491553620 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\rules.h
+	<string>
+	"../PType.h"
+
+1491396123 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\exceptions.h
+	<exception>
+	<cstdio>
+
+1491396298 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\exceptions.cpp
+	"Exceptions.h"
+
+1491496584 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\rules.cpp
+	"Rules.h"
+
+1491554317 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\options.cpp
+	"Options.h"
+
+1491533157 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\parser.cpp
+	"Parser.h"
+

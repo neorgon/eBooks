@@ -3,8 +3,8 @@
 int main(/*int argc, char* args[]*/)
 {
     bool assertion = false;
-    int argc = 5;
-    const char* args[] = { "Scanner", "--calorias", "250", "-p", "100" };
+    int argc = 7;
+    const char* args[] = { "Scanner", "--calorias", "250", "-p", "100", "--grasas_saturadas", "50.8" };
 
     Parser np;
     np.AddInteger("calorias", 'c');

@@ -18,10 +18,20 @@ class Parser
     vector<string> tokens;
     vector<string> tkOptions;
     vector<string> values;
+    vector<Options> options;
 
+    string ToLower(const string &);
     void AddRule(const char* name, char abbr, PType type, bool optional, size_t quantity);
     void Scanning(const char* input);
     bool AnalyzingSyntax();
+    bool AnalyzingSemantic();
+
+    bool SetBool(const string &);
+    int SetInteger(const string &);
+    string SetLabel(const string &);
+    Options* SetList(const string &);
+    double SetReal(const string &);
+    string SetString(const string &);
 
 public:
     void AddInteger(const char* name, char abbr, bool optional = false, size_t quantity = 1);

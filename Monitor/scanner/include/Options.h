@@ -9,6 +9,19 @@ using namespace std;
 
 class Options
 {
+    string name;
+    char abbr;
+    PType type;
+    void* value;
+
+    public:
+        Options(const string &, char, PType, void*);
+};
+
+
+/*
+class Options
+{
 string name;
 PType type;
 string value;
@@ -27,5 +40,6 @@ public:
     string GetValue() const;
     void SetValueType(PType ,const string& );
 };
+*/
 
 #endif // OPTIONS_H
