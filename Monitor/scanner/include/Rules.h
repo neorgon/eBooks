@@ -14,6 +14,7 @@ class Rules
     PType type;
     bool optional;
     size_t quantity;
+
 public:
     Rules(const string&, string, PType, bool, size_t);
     string GetName() const;

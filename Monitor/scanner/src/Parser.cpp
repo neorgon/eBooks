@@ -208,21 +208,6 @@ bool Parser::VerifySemantic()const{
 
 */
 
-string Parser::ToLower(const string &str)
-{
-    string lower = str;
-
-    for (size_t i = 0; i < lower.length(); i++)
-    {
-        if (lower[i] >= 65 && lower[i] <= 92)
-        {
-            lower[i] = lower[i] + 32;
-        }
-    }
-
-    return lower;
-}
-
 void Parser::AddRule(const char* name, char abbr, PType type, bool optional, size_t quantity)
 {
     Rules newRule("--" + string(name), "-" + string(1, abbr), type, optional, quantity);
@@ -241,14 +226,7 @@ void Parser::AddReal(const char* name, char abbr, bool optional, size_t quantity
 
 void Parser::Scanning(const char* input)
 {
-    if (input[0] == '-' && input[1] == '-')
-    {
-        tokens.push_back(ToLower(string(input)));
-    }
-    else
-    {
-        tokens.push_back(string(input));
-    }
+    tokens.push_back(string(input));
 }
 
 bool Parser::AnalyzingSyntax()
@@ -260,11 +238,11 @@ bool Parser::AnalyzingSyntax()
         if (t[0] == '-')
         {
             it = find_if(rules.begin(), rules.end(), Rules::Finder(t));
-            if(it == rules.end()) //throw Exceptions("One or more parameters is not correct.");
-                return false;
+            if(it == rules.end())
+                throw; //Exceptions("One or more parameters is not correct.");
             //order to labels add a value in values vector
             //cout << (int)it->GetType() << endl;
-            tkOptions.push_back(t);
+            options.push_back(t);
         }
         else
         {
@@ -275,21 +253,20 @@ bool Parser::AnalyzingSyntax()
     return true;
 }
 
+/*
 bool Parser::SetBool(const string &v)
 {
     return true;
 }
-
+*/
+/*
 string Parser::SetInteger(const string &v)
 {
-    try
-    {
-        stoi(v);
-    }
-    catch (invalid_argument &e)
-    {
-        cerr << "Invalid argument: " << e.what()  << endl;
-    }
+    size_t sz;
+
+    stoi(v,&sz);
+    if(sz != v.length())
+        throw Exceptions("Is not a valid integer.");
 
     return v;
 }
@@ -306,14 +283,11 @@ Options* Parser::SetList(const string &v)
 
 string Parser::SetReal(const string &v)
 {
-    try
-    {
-        stod(v);
-    }
-    catch (invalid_argument &e)
-    {
-        cerr << "Invalid argument: " << e.what()  << endl;
-    }
+    size_t sz;
+    stod (v,&sz);
+
+    if(sz != v.length())
+        throw Exceptions("Is not a valid float.");
 
     return v;
 }
@@ -322,58 +296,23 @@ string Parser::SetString(const string &v)
 {
     return "\"" + v + "\"";
 }
-
+*/
 bool Parser::AnalyzingSemantic()
 {
-    size_t tkCounter = 0;
+    size_t counter = 0;
     vector<Rules>::const_iterator it;
 
-    if (tkOptions.size() != values.size())
-        return false;
-    for (auto &t : tkOptions)
+    if (options.size() != values.size())
+        return false; //syntax exception
+    for (auto &o : options)
     {
-        it = find_if(rules.begin(), rules.end(), Rules::Finder(t));
-        switch(it->GetType())
-        {
-            case PType::Bool:
-            {
-                //Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetBool(values.at(tkCounter)));
-                //options.push_back(newOption);
-                break;
-
-            }
-            case PType::Integer:
-            {
-                Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetInteger(values.at(tkCounter)));
-                options.push_back(newOption);
-                break;
-            }
-            case PType::Label:
-            {
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetLabel(values.at(tkCounter)));
-                options.push_back(newOption);*/
-                break;
-            }
-            case PType::List:
-            {
-                /*Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetList(values.at(tkCounter)));
-                options.push_back(newOption);*/
-                break;
-            }
-            case PType::Real:
-            {
-                Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetReal(values.at(tkCounter)));
-                options.push_back(newOption);
-                break;
-            }
-            case PType::String:
-            {
-                //Options newOption(it->GetName(), it->GetAbbr()[1], it->GetType(), SetString(values.at(tkCounter)));
-                //options.push_back(newOption);
-                break;
-            }
-        }
-        ++tkCounter;
+        it = find_if(rules.begin(), rules.end(), Rules::Finder(o));
+        Options newOption(it->GetName().substr(2), it->GetAbbr()[1], it->GetType(), values.at(counter));
+        string key = it->GetName().substr(2);
+        //settings.insert(std::make_pair(it->GetName().substr(2), settings[string].push_back(newOption)));
+        settings.insert(pair<string,vector<Options>>(key, vector<Options>()));
+        settings[key].push_back(newOption);
+        ++counter;
     }
 
     return true;
@@ -395,9 +334,9 @@ bool Parser::Validate(int argc, const char** args) //only of testing int argc, c
 
 void Parser::Print()
 {
-    for (auto &o : options)
+    for (auto &s : settings)
     {
-        cout << o.GetName() << " : " << o.GetValue() << endl;
+        //cout << s.first << " : " << s.second.GetValue() << endl;
     }
 }
 

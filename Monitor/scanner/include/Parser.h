@@ -6,6 +6,7 @@
 #include<string>
 #include<exception>
 #include <algorithm>
+#include <map>
 
 
 #include<Options.h>
@@ -16,9 +17,9 @@ class Parser
 {
     vector<Rules> rules;
     vector<string> tokens;
-    vector<string> tkOptions;
+    vector<string> options;
     vector<string> values;
-    vector<Options> options;
+    map<string, vector<Options>> settings;
 
     string ToLower(const string &);
     void AddRule(const char* name, char abbr, PType type, bool optional, size_t quantity);

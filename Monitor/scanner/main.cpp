@@ -4,7 +4,7 @@ int main(/*int argc, char* args[]*/)
 {
     bool assertion = false;
     int argc = 7;
-    const char* args[] = { "Scanner", "--calorias", "25i0", "-p", "100", "--grasas_saturadas", "5fg0.8pq" };
+    const char* args[] = { "Scanner", "--calorias", "-c", "250", "-p", "100", "--grasas_saturadas", "50.8", "--nombre", "\"cereal kellogs\"" };
 
     Parser np;
     np.AddInteger("calorias", 'c');
@@ -13,8 +13,15 @@ int main(/*int argc, char* args[]*/)
     np.AddReal("grasas_hidrogenadas", 'h', true, 0);
     //np.AddString("nombre", "n", false, 2);
 
+    try
+    {
+        assertion = np.Validate(argc, args);
+    }
+    catch (exception& e)
+    {
+        cout << e.what() << endl;
+    }
 
-    assertion = np.Validate(argc, args);
 
     /*if(assertion)
         assertion = np.GetJSon().compare("{ \"calorias\" : 250, \"proteinas\" : 100, \"grasas_saturadas\" : 50.8 }")*/

@@ -1,4 +1,35 @@
 #include <iostream>
+#include <map>
+#include <vector>
+
+using namespace std;
+int main ()
+{
+  std::map<char, vector<int>> mymap;
+  std::map<char, vector<int>>::iterator it;
+
+  mymap['a'].push_back(50);
+  mymap['b'].push_back(100);
+  mymap['c'].push_back(150);
+  mymap['d'].push_back(200);
+  mymap['a'].push_back(250);
+  mymap['b'].push_back(300);
+
+  it = mymap.find('b');
+  if (it != mymap.end())
+    mymap.erase (it);
+
+  // print content:
+  std::cout << "elements in mymap:" << '\n';
+  std::cout << "a => " << mymap.find('a')->second << '\n';
+  std::cout << "c => " << mymap.find('c')->second << '\n';
+  std::cout << "d => " << mymap.find('d')->second << '\n';
+
+  return 0;
+}
+
+/*
+#include <iostream>
 #include <string>
 #include <vector>
 #include <algorithm>
@@ -39,7 +70,7 @@ int main()
 
     return 0;
 }
-
+*/
 
 /*
 // Warning: I didn't try to compile this...

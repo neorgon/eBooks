@@ -2,7 +2,7 @@
 #define OPTIONS_H
 
 #include <string>
-#include <stdlib.h>
+#include <vector>
 #include "../PType.h"
 
 using namespace std;
@@ -12,14 +12,23 @@ class Options
     string name;
     char abbr;
     PType type;
-    //void* value;
     string value;
+    bool Boolean;
+    int Integer;
+    vector<Options> List;
+    double Real;
+    string String;
 
     public:
         //Options(const string &, char, PType, void*);
         Options(const string &, char, PType, const string &);
         string GetName() const;
         string GetValue() const;
+        PType GetType() const;
+        bool GetBool() const;
+        int GetInteger() const;
+        double GetReal() const;
+        string GetString() const;
         //int* GetInteger() const;
         //double* GetReal() const;
 };

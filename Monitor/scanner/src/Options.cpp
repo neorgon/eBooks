@@ -93,6 +93,47 @@ string Options::GetTypeName() const
 Options::Options(const string &n, char a, PType t, const string &v)
 : name{n}, abbr{a}, type{t}, value{v}
 {
+    switch (t)
+    {
+        case PType::Bool:
+        {
+
+        }
+        break;
+        case PType::Integer:
+        {
+            size_t sz;
+
+            Integer = stoi(v, &sz);
+            if(sz != v.length())
+                throw; //Exceptions("Is not a valid integer.");
+        }
+        break;
+        case PType::Label:
+        {
+
+        }
+        break;
+        case PType::List:
+        {
+
+        }
+        break;
+        case PType::Real:
+        {
+            size_t sz;
+
+            Real = stod (v, &sz);
+            if(sz != v.length())
+                throw; //Exceptions("Is not a valid float.");
+        }
+        break;
+        case PType::String:
+        {
+            String = "\"" + value + "\"";
+        }
+        break;
+    }
 
 }
 
