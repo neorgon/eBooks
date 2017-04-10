@@ -4,7 +4,15 @@
 	<string>
 	<iostream>
 
-1490929234 source:c:\users\nestor\documents\github\ebooks\monitor\borrador\main.cpp
+1491792672 source:c:\users\nestor\documents\github\ebooks\monitor\borrador\main.cpp
+	<iostream>
+	<string>
+	<string>
+	<map>
+	<iostream>
+	<iostream>
+	<map>
+	<vector>
 	<iostream>
 	<string>
 	<vector>

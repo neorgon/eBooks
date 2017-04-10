@@ -1,4 +1,68 @@
 #include <iostream>
+#include <string>
+
+using namespace std;
+
+enum class PType { Integer, Real };
+
+template <class T, PType type>
+T foo(string value)
+{
+    if (type == PType::Integer)
+        return stoi(value);
+    if (type == PType::Real)
+        return stod(value);
+}
+
+int main()
+{
+    cout << foo<int, PType::Integer>("5") << endl;
+    cout << foo<double, PType::Real>("7.8") << endl;
+
+    return 0;
+}
+
+/*
+#include <string>
+#include <map>
+#include <iostream>
+
+struct T
+{
+   T(int x, int y) : x_(x), y_(y)
+   {}
+
+   int x_, y_;
+};
+
+int main()
+{
+   typedef std::map<std::string, T> map_type;
+   map_type m;
+
+   m.insert(std::make_pair("0:0", T(0,0)));
+   m.insert(std::make_pair("0:1", T(0,1)));
+   m.insert(std::make_pair("1:1", T(2,2)));
+
+   // find the desired item (returns an iterator to the item
+   // or end() if the item doesn't exist.
+   map_type::const_iterator t_0_1 = m.find("1:1");
+
+   if(m.end() != t_0_1)
+   {
+      // access via the iterator (a std::pair) with
+      // key stored in first, and your contained type
+      // stored in second.
+      std::cout << t_0_1->second.x_ << ':' << t_0_1->second.y_ << '\n';
+   }
+
+   std::cout << m.find("1:1")->second.x_ << ':' << m.find("1:1")->second.y_ << '\n';
+
+   return 0;
+}
+*/
+/*
+#include <iostream>
 #include <map>
 #include <vector>
 
@@ -27,6 +91,7 @@ int main ()
 
   return 0;
 }
+*/
 
 /*
 #include <iostream>

@@ -1,0 +1,44 @@
+# depslib dependency file v1.0
+1491624753 source:c:\users\nestor\documents\github\ebooks\monitor\parser\main.cpp
+	<Parser.h>
+
+1491814571 c:\users\nestor\documents\github\ebooks\monitor\parser\include\parser.h
+	<vector>
+	<stdio.h>
+	<iostream>
+	<string>
+	<exception>
+	<algorithm>
+	<map>
+	<Options.h>
+	<Rules.h>
+	<Exceptions.h>
+
+1491815625 c:\users\nestor\documents\github\ebooks\monitor\parser\include\options.h
+	<string>
+	<vector>
+	"../PType.h"
+
+1491267981 c:\users\nestor\documents\github\ebooks\monitor\parser\ptype.h
+
+1491610225 c:\users\nestor\documents\github\ebooks\monitor\parser\include\rules.h
+	<string>
+	"../PType.h"
+
+1491438319 c:\users\nestor\documents\github\ebooks\monitor\parser\include\exceptions.h
+	<exception>
+	<cstdio>
+
+1491438319 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\exceptions.cpp
+	"Exceptions.h"
+
+1491816593 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\options.cpp
+	"Options.h"
+
+1491815591 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\parser.cpp
+	"Parser.h"
+	<stdexcept>
+
+1491448578 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\rules.cpp
+	"Rules.h"
+
