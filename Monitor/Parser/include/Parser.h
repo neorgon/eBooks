@@ -28,10 +28,11 @@ class Parser
     bool AnalyzingSemantic();
 
 public:
+
     void AddInteger(const char* name, char abbr, bool optional = false, size_t quantity = 1);
     void AddReal(const char* name, char abbr, bool optional = false, size_t quantity = 1);
     bool Validate(int argc, const char** args);
-    map<string, vector<Options>> GetOptions();
+    const map<string, vector<Options>> &GetOptions();
 
     void Print();
     ~Parser();

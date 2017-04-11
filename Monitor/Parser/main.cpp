@@ -22,6 +22,22 @@ int main(/*int argc, char* args[]*/)
         cout << e.what() << endl;
     }
 
+    map<string, vector<Options>> parametros = np.GetOptions();
+    for (auto& i : parametros)
+    {
+        cout << "K: " << i.first << "\n";
+
+        for (auto& j : i.second)
+        {
+            //j.SetValue();
+            cout << "    " << *((int*)(j.Value)) << "\n";
+        }
+
+    }
+
+
+	cout << *((int*)(parametros.find("calorias")->second.at(0).Value)) /*
+            *((int*)(parametros.find("proteinas")->second.at(0).Value))*/ << endl;
 
     /*if(assertion)
         assertion = np.GetJSon().compare("{ \"calorias\" : 250, \"proteinas\" : 100, \"grasas_saturadas\" : 50.8 }")*/

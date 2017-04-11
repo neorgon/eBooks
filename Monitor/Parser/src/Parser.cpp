@@ -81,14 +81,16 @@ bool Parser::Validate(int argc, const char** args) //only of testing int argc, c
     return AnalyzingSyntax() && AnalyzingSemantic();
 }
 
-map<string, vector<Options>> Parser::GetOptions()
+const map<string, vector<Options>> &Parser::GetOptions()
 {
-    for (auto s : settings)
+    for (auto s  : settings)
     {
         string v = s.first;
-        for (auto o : s.second)
+        for (auto& o : s.second)
         {
+            cout << "S: " << o.GetValue() << endl;
             o.SetValue();
+            cout << "V: " << *((int*)(o.Value)) << endl;
         }
     }
 

@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1491880505 source:c:\users\administrator\documents\github\ebooks\practices\practica15\main.cpp
+	<iostream>
+	<typeinfo>
+	<string>
+

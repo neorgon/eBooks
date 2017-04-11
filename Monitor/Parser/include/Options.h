@@ -13,7 +13,6 @@ class Options
     char abbr;
     PType type;
     string value;
-    void* Value;
     bool Boolean;
     int Integer;
     vector<Options> List;
@@ -21,6 +20,7 @@ class Options
     string String;
 
     public:
+        void* Value;
         Options(const string &, char, PType, const string &);
         string GetName() const;
         string GetValue();
