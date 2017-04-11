@@ -4,7 +4,7 @@ int main(/*int argc, char* args[]*/)
 {
     bool assertion = false;
     int argc = 7;
-    const char* args[] = { "Scanner", "--calorias", "-c", "250", "-p", "100", "--grasas_saturadas", "50.8", "--nombre", "\"cereal kellogs\"" };
+    const char* args[] = { "Scanner", "--calorias", "20", "-p", "100", "--grasas_saturadas", "50.8", "--nombre", "\"cereal kellogs\"" };
 
     Parser np;
     np.AddInteger("calorias", 'c');

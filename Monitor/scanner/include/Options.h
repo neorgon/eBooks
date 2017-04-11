@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 #include "../PType.h"
+#include<../exceptions/SemanticException.h>
+#include<../exceptions/SyntaxException.h>
 
 using namespace std;
 
@@ -13,6 +15,7 @@ class Options
     char abbr;
     PType type;
     string value;
+    void* Value;
     bool Boolean;
     int Integer;
     vector<Options> List;
@@ -20,41 +23,19 @@ class Options
     string String;
 
     public:
-        //Options(const string &, char, PType, void*);
         Options(const string &, char, PType, const string &);
         string GetName() const;
-        string GetValue() const;
+        string GetValue();
         PType GetType() const;
-        bool GetBool() const;
-        int GetInteger() const;
-        double GetReal() const;
-        string GetString() const;
-        //int* GetInteger() const;
-        //double* GetReal() const;
+        template <class T, PType type>
+        T GetDataValue(const string v) const
+        {
+            if (type == PType::Integer)
+                return Integer;
+            if (type == PType::Real)
+                return Real;
+        }
+        void SetValue();
 };
-
-
-/*
-class Options
-{
-string name;
-PType type;
-string value;
-int resInt;
-double resDouble;
-string resString;
-string resLabel;
-bool resBool;
-public:
-    Options(const string&, PType);
-    virtual ~Options();
-    void SetValue(const string&);
-    string GetName() const;
-    PType GetType() const;
-    string GetTypeName() const;
-    string GetValue() const;
-    void SetValueType(PType ,const string& );
-};
-*/
 
 #endif // OPTIONS_H

@@ -76,38 +76,43 @@
 	<Rules.h>
 	<Options.h>
 
-1491330007 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\main.cpp
+1491834422 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\main.cpp
 	<Parser.h>
 
-1491315901 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\rules.h
+1491827685 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\rules.h
 	<string>
 	"../PType.h"
 
-1491315901 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\ptype.h
+1491592793 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\ptype.h
 
-1491331403 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\options.h
+1491834394 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\options.h
 	<string>
-	<stdlib.h>
+	<vector>
 	"../PType.h"
+	<../exceptions/SemanticException.h>
+	<../exceptions/SyntaxException.h>
 
-1491345004 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\parser.h
+1491834395 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\parser.h
 	<vector>
 	<stdio.h>
 	<iostream>
 	<string>
 	<exception>
 	<algorithm>
+	<map>
 	<Options.h>
 	<Rules.h>
-	<ParserException.h>
+	<../exceptions/SemanticException.h>
+	<../exceptions/SyntaxException.h>
 
-1491331403 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\options.cpp
+1491827685 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\options.cpp
 	"Options.h"
 
-1491345784 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\parser.cpp
+1491827685 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\parser.cpp
 	"Parser.h"
+	<stdexcept>
 
-1491315901 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\rules.cpp
+1491827685 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\rules.cpp
 	"Rules.h"
 
 1491345760 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\parserexception.h
@@ -177,10 +182,10 @@
 	"Parser.h"
 	<stdexcept>
 
-1491640817 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\main.cpp
+1491623543 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\main.cpp
 	<Parser.h>
 
-1491640487 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\parser.h
+1491623529 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\parser.h
 	<vector>
 	<stdio.h>
 	<iostream>
@@ -192,14 +197,14 @@
 	<Rules.h>
 	<Exceptions.h>
 
-1491623953 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\options.h
+1491622470 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\options.h
 	<string>
 	<vector>
 	"../PType.h"
 
 1491315630 c:\users\administrator\documents\github\ebooks\monitor\scanner\ptype.h
 
-1491636326 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\rules.h
+1491553620 c:\users\administrator\documents\github\ebooks\monitor\scanner\include\rules.h
 	<string>
 	"../PType.h"
 
@@ -213,10 +218,41 @@
 1491496584 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\rules.cpp
 	"Rules.h"
 
-1491636080 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\options.cpp
+1491622470 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\options.cpp
 	"Options.h"
 
-1491640786 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\parser.cpp
+1491623650 source:c:\users\administrator\documents\github\ebooks\monitor\scanner\src\parser.cpp
 	"Parser.h"
 	<stdexcept>
+
+1491592835 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\exceptions.h
+	<exception>
+	<cstdio>
+
+1491592835 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\exceptions.cpp
+	"Exceptions.h"
+
+1491598491 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\semanticexception.cpp
+	"SemanticException.h"
+
+1491599421 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\semanticexception.h
+	<exception>
+
+1491598324 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\src\syntaxexception.cpp
+	"SyntaxException.h"
+
+1491599425 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\include\syntaxexception.h
+	<exception>
+
+1491598491 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\exceptions\semanticexception.cpp
+	"SemanticException.h"
+
+1491598491 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\exceptions\semanticexception.h
+	<exception>
+
+1491598324 source:c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\exceptions\syntaxexception.cpp
+	"SyntaxException.h"
+
+1491598358 c:\users\administrator\desktop\parserfactory\thinkerrepository\scanner\exceptions\syntaxexception.h
+	<exception>
 
