@@ -34,7 +34,6 @@ public:
     bool Validate(int argc, const char** args);
     const map<string, vector<Options>> &GetOptions();
 
-    void Print();
     ~Parser();
 
 };

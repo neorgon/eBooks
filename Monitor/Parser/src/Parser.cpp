@@ -83,25 +83,18 @@ bool Parser::Validate(int argc, const char** args) //only of testing int argc, c
 
 const map<string, vector<Options>> &Parser::GetOptions()
 {
-    for (auto s  : settings)
+    /*for (auto &s : settings)
     {
         string v = s.first;
         for (auto& o : s.second)
         {
-            cout << "S: " << o.GetValue() << endl;
+            //cout << "String: " << o.GetValue() << endl;
             o.SetValue();
-            cout << "V: " << *((int*)(o.Value)) << endl;
+            //cout << "Integer: " << *((int*)(o.Value)) << endl;
         }
-    }
+    }*/
 
     return settings;
-}
-
-void Parser::Print()
-{
-    string v = settings.find("calorias")->second.at(0).GetValue();
-    //PType t = settings.find("calorias")->second.at(0).GetType();
-    cout << settings.find("calorias")->second.at(0).GetDataValue<int, PType::Integer>(v) << endl;
 }
 
 Parser::~Parser()

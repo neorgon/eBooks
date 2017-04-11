@@ -1,4 +1,5 @@
 #include "Options.h"
+#include <iostream>
 
 Options::Options(const string &n, char a, PType t, const string &v)
 : name{n}, abbr{a}, type{t}, value{v}
@@ -17,6 +18,9 @@ Options::Options(const string &n, char a, PType t, const string &v)
             Integer = stoi(v, &sz);
             if(sz != v.length())
                 throw; //Exceptions("Is not a valid integer.");
+            //int i = GetDataValue<int, PType::Integer>(v);
+            int* p = &Integer;
+            Value = (void*)(p);
         }
         break;
         case PType::Label:
@@ -36,6 +40,8 @@ Options::Options(const string &n, char a, PType t, const string &v)
             Real = stod (v, &sz);
             if(sz != v.length())
                 throw; //Exceptions("Is not a valid float.");
+            double* p = &Real;
+            Value = (void*)(p);
         }
         break;
         case PType::String:

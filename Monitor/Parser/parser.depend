@@ -1,8 +1,8 @@
 # depslib dependency file v1.0
-1491624753 source:c:\users\nestor\documents\github\ebooks\monitor\parser\main.cpp
+1491902575 source:c:\users\nestor\documents\github\ebooks\monitor\parser\main.cpp
 	<Parser.h>
 
-1491814571 c:\users\nestor\documents\github\ebooks\monitor\parser\include\parser.h
+1491901158 c:\users\nestor\documents\github\ebooks\monitor\parser\include\parser.h
 	<vector>
 	<stdio.h>
 	<iostream>
@@ -14,7 +14,7 @@
 	<Rules.h>
 	<Exceptions.h>
 
-1491815625 c:\users\nestor\documents\github\ebooks\monitor\parser\include\options.h
+1491899441 c:\users\nestor\documents\github\ebooks\monitor\parser\include\options.h
 	<string>
 	<vector>
 	"../PType.h"
@@ -32,10 +32,11 @@
 1491438319 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\exceptions.cpp
 	"Exceptions.h"
 
-1491816593 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\options.cpp
+1491902603 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\options.cpp
 	"Options.h"
+	<iostream>
 
-1491815591 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\parser.cpp
+1491901158 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\parser.cpp
 	"Parser.h"
 	<stdexcept>
 

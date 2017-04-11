@@ -23,31 +23,30 @@ int main(/*int argc, char* args[]*/)
     }
 
     map<string, vector<Options>> parametros = np.GetOptions();
-    for (auto& i : parametros)
+    /*for (auto& i : parametros)
     {
         cout << "K: " << i.first << "\n";
 
         for (auto& j : i.second)
         {
             //j.SetValue();
-            cout << "    " << *((int*)(j.Value)) << "\n";
+            cout << "    " << j.GetDataValue<int, PType::Integer>(j.GetValue()) << "\n";
         }
 
-    }
+    }*/
 
 
-	cout << *((int*)(parametros.find("calorias")->second.at(0).Value)) /*
-            *((int*)(parametros.find("proteinas")->second.at(0).Value))*/ << endl;
+	//cout << *((int*)(parametros.find("calorias")->second.at(0).Value)) *
+    //        *((int*)(parametros.find("proteinas")->second.at(0).Value)) << endl;
 
-    /*if(assertion)
-        assertion = np.GetJSon().compare("{ \"calorias\" : 250, \"proteinas\" : 100, \"grasas_saturadas\" : 50.8 }")*/
+    if(assertion)
+        assertion = parametros.find("calorias")->second.at(0).GetDataValue<int, PType::Integer>(parametros.find("calorias")->second.at(0).GetValue()) *
+                    parametros.find("proteinas")->second.at(0).GetDataValue<int, PType::Integer>(parametros.find("proteinas")->second.at(0).GetValue()) == 25000;
 
     if(assertion)
         cout << "Great!!" << endl;
     else
         cout << "Falied." << endl;
-
-    np.Print();
 
     return 0;
 }
