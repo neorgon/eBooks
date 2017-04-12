@@ -3,6 +3,25 @@
 
 using namespace std;
 
+struct foo
+{
+    virtual int get() const { return 0; }
+};
+
+struct bar : foo
+{
+    string get() const { return "this certainly isn't an int"; }
+};
+
+int main()
+{
+    bar b;
+    foo* f = &b;
+
+    int result = f->get(); // int, right? ...right?
+}
+
+/*
 enum class PType { Integer, Real };
 
 template <class T, PType type>
@@ -21,7 +40,7 @@ int main()
 
     return 0;
 }
-
+*/
 /*
 #include <string>
 #include <map>

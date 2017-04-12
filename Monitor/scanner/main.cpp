@@ -23,8 +23,8 @@ int main(/*int argc, char* args[]*/)
     }
 
 
-    /*if(assertion)
-        assertion = np.GetJSon().compare("{ \"calorias\" : 250, \"proteinas\" : 100, \"grasas_saturadas\" : 50.8 }")*/
+    /*map<string, vector<Option>> parametros = op.GetOptions();
+	bool assertion = (parametros.find("calorias")[0].Value * parametros.find("proteinas")[0].Value) == 2500;*/
 
     if(assertion)
         cout << "Great!!" << endl;
