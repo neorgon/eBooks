@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1492051405 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
+	"OptionParser.h"
+
+1492051464 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optionparser.h
+	<iostream>
+	<string>
+	<vector>
+
+1492051431 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\main.cpp
+	<OptionParser.h>
+
