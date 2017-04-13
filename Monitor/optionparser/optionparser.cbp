@@ -34,8 +34,11 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/OptionDefinition.h" />
 		<Unit filename="include/OptionParser.h" />
+		<Unit filename="include/OptionType.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/OptionDefinition.cpp" />
 		<Unit filename="src/OptionParser.cpp" />
 		<Extensions>
 			<code_completion />
