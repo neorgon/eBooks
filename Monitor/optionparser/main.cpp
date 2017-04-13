@@ -18,5 +18,11 @@ int main(/*int argc, char* args[]*/)
     else
         cout << "Fail :(" << endl;
 
+    op.AddInteger("calorias", 'c');
+    op.AddInteger("proteinas", 'p');
+    op.AddReal("grasas_saturadas", 'g');
+    op.AddReal("grasas_hidrogenadas", 'h', true, 0);
+    //op.AddString("nombre", "n", false, 2);
+
     return 0;
 }
