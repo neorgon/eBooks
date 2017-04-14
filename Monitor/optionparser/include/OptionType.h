@@ -1,6 +1,13 @@
-#ifndef OPTIONTYPE_H
-#define OPTIONTYPE_H
+#ifndef OPTIONTYPE_H_INCLUDED
+#define OPTIONTYPE_H_INCLUDED
 
-enum class OptionType { Bool, Integer, Label, List, Real, String };
+enum class OptionType
+{
+    Integer,
+    Real,
+    Boolean,
+    Text,
+    List
+};
 
-#endif // OPTIONTYPE_H
+#endif // OPTIONTYPE_H_INCLUDED

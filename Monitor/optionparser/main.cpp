@@ -10,8 +10,8 @@ int main(/*int argc, char* args[]*/)
     OptionParser op(argc, args);
 
     bool assertion = op.GetToken(0).compare("calorias") == 0 &&
-                     op.GetToken(2).compare("p") == 0 &&
-                     op.GetToken(3).compare("100") == 0;
+                     op.GetToken(1).compare("p") == 0 &&
+                     op.GetToken(2).compare("grasas_saturadas") == 0;
 
     if(assertion)
         cout << "Great!!" << endl;

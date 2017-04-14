@@ -1,0 +1,20 @@
+--lista [--entero 25 --double 35.6 -t "hola mundo"]
+  (1)	(2)  (3)  (4)  (5)    (6)  (7)   (8)      (9)
+  c1    c2        c3   c4     c5   c6    c7
+
+--lista [ --entero 25 --double 35.6 -t "hola mundo" ]
+  (1)	(2)  (3)  (4)  (5)     (6)  (7)   (8)      (9)
+  c1    c2   c3   c4   c5      c6   c7    c8       c9
+
+En ambos casos procesar [
+luego seguir con el cuidado de que al final de cada token debemos buscar ]
+hasta que encontremos ] o hasta que el siguiente token sea ] especificamente
+
+
+tokenO		tokenV
+=============================
+lista		[
+entero		25
+double		35.6
+t		hola mundo
+listEnd		]

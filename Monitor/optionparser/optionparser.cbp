@@ -34,12 +34,23 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Boolean.h" />
+		<Unit filename="include/IOptionType.h" />
+		<Unit filename="include/Integer.h" />
+		<Unit filename="include/List.h" />
 		<Unit filename="include/OptionDefinition.h" />
 		<Unit filename="include/OptionParser.h" />
 		<Unit filename="include/OptionType.h" />
+		<Unit filename="include/Real.h" />
+		<Unit filename="include/Text.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Boolean.cpp" />
+		<Unit filename="src/Integer.cpp" />
+		<Unit filename="src/List.cpp" />
 		<Unit filename="src/OptionDefinition.cpp" />
 		<Unit filename="src/OptionParser.cpp" />
+		<Unit filename="src/Real.cpp" />
+		<Unit filename="src/Text.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

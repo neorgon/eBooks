@@ -2,14 +2,42 @@
 
 OptionParser::OptionParser(int argc, const char** args)
 {
-    for (int i = 1; i < argc; i++)
+    int token = 1;
+    string tokenOption = "";
+    string tokenValue = "";
+
+    while (token < argc)
     {
-        if(args[i][0] == '-' && args[i][1] == '-')
-            tokens.push_back(string(args[i]).substr(2));
-        else if(args[i][0] == '-')
-                tokens.push_back(string(args[i]).substr(1));
+        if (args[token][0] == '-' && args[token][1] == '-' && tokenOption.empty())
+        {
+            tokenOption = string(args[token]).substr(2);
+            token++;
+        }
+        else
+            if (args[token][0] == '-' && tokenOption.empty())
+            {
+                tokenOption = string(args[token]).substr(1);
+                token++;
+            }
             else
-                tokens.push_back(string(args[i]));
+            {
+                if (tokenValue.empty())
+                {
+                    tokenValue = string(args[token]);
+                    token++;
+                }
+                else
+                {
+                    //throw
+                }
+            }
+
+        if (!tokenOption.empty() && !tokenValue.empty())
+        {
+            tokens.push_back(make_pair(tokenOption, tokenValue));
+            tokenOption = "";
+            tokenValue = "";
+        }
     }
 }
 
@@ -34,27 +62,30 @@ void OptionParser::AddReal(const char* name, char abbr, bool optional, size_t qu
     AddDefinition(name, abbr, OptionType::Real, optional, quantity);
 }
 
+void OptionParser::AddBoolean(const char* name, char abbr, bool optional, size_t quantity)
+{
+    AddDefinition(name, abbr, OptionType::Boolean, optional, quantity);
+}
+
+void OptionParser::AddText(const char* name, char abbr, bool optional, size_t quantity)
+{
+    AddDefinition(name, abbr, OptionType::Text, optional, quantity);
+}
+
+void OptionParser::AddList(const char* name, char abbr, bool optional, size_t quantity)
+{
+    AddDefinition(name, abbr, OptionType::List, optional, quantity);
+}
+
 bool OptionParser::AnalyzeSintax()
 {
     vector<OptionDefinition>::const_iterator it;
-    int tokenCounter = 0;
 
     for (auto &t : tokens)
     {
-        if (tokenCounter % 2)
-        {
-            it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t));
-            if(it == definitions.end())
-                throw; //Exceptions("One or more parameters is not correct.");
-            //order to labels add a value in values vector
-            //cout << (int)it->GetType() << endl;
-            tokenOptions.push_back(t);
-        }
-        else
-        {
-            tokenValues.push_back(t);
-        }
-        tokenCounter++;
+        it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first))
+        if (it == definitions.end())
+            throw; // No existe el comando en la definición de opciones.
     }
 
     return true;
@@ -70,5 +101,6 @@ bool OptionParser::Validate()
 
 const string OptionParser::GetToken(int i) const
 {
-    return tokens.at(i);
+    //return tokens.at(i);
+    return "hola";
 }

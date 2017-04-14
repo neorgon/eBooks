@@ -1,13 +1,16 @@
 # depslib dependency file v1.0
-1492051405 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
+1492142324 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
 	"OptionParser.h"
 
-1492051464 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optionparser.h
+1492136103 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optionparser.h
 	<iostream>
 	<string>
 	<vector>
+	<utility>
+	<algorithm>
+	<OptionDefinition.h>
 
-1492051431 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\main.cpp
+1492129802 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\main.cpp
 	<OptionParser.h>
 
 1492073302 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\main.cpp
@@ -31,4 +34,13 @@
 	"OptionType.h"
 
 1492048320 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optiontype.h
+
+1492129802 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optiondefinition.h
+	<string>
+	"OptionType.h"
+
+1492141642 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optiontype.h
+
+1492129802 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optiondefinition.cpp
+	"OptionDefinition.h"
 

@@ -4,18 +4,20 @@
 #include<iostream>
 #include<string>
 #include<vector>
+#include<utility>
 #include<algorithm>
+#include<map>
 
 #include<OptionDefinition.h>
+#include<IOptionType.h>
 
 using namespace std;
 
 class OptionParser
 {
-    vector<string> tokens;
     vector<OptionDefinition> definitions;
-    vector<string> tokenOptions;
-    vector<string> tokenValues;
+    vector<pair<string, string>> tokens;
+    map<string, <vector<IOptionType>> options;
 
     void AddDefinition(const char* name, char abbr, OptionType type, bool optional, size_t quantity);
     bool AnalyzeSintax();
@@ -25,6 +27,9 @@ class OptionParser
         virtual ~OptionParser();
         void AddInteger(const char* name, char abbr, bool optional = false, size_t quantity = 1);
         void AddReal(const char* name, char abbr, bool optional = false, size_t quantity = 1);
+        void AddBoolean(const char* name, char abbr, bool optional = true, size_t quantity = 1);
+        void AddText(const char* name, char abbr, bool optional = false, size_t quantity = 1);
+        void AddList(const char* name, char abbr, bool optional = false, size_t quantity = 1);
         bool Validate();
 
         const string GetToken(int i) const;
