@@ -11,7 +11,7 @@ string Integer::GetName()const
     return name;
 }
 
-char Integer::GetAbbbr()const
+char Integer::GetAbbr()const
 {
     return abbr;
 }

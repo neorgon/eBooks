@@ -15,12 +15,19 @@ using namespace std;
 
 class OptionParser
 {
+    string tokenOption;
+    string tokenValue;
+    bool addEndList = false;
+
     vector<OptionDefinition> definitions;
     vector<pair<string, string>> tokens;
-    map<string, <vector<IOptionType>> options;
+    map<string, vector<IOptionType>> options;
 
     void AddDefinition(const char* name, char abbr, OptionType type, bool optional, size_t quantity);
+    string isOption(string token);
+    string isValue(const string &token);
     bool AnalyzeSintax();
+    bool AnalyzeSemantic();
 
     public:
         OptionParser(int argc, const char** args);
@@ -32,7 +39,7 @@ class OptionParser
         void AddList(const char* name, char abbr, bool optional = false, size_t quantity = 1);
         bool Validate();
 
-        const string GetToken(int i) const;
+        const string GetToken(size_t i);
 };
 
 #endif // OPTIONPARSER_H

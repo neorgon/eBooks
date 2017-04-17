@@ -11,7 +11,7 @@ string Text::GetName()const
     return name;
 }
 
-char Text::GetAbbbr()const
+char Text::GetAbbr()const
 {
     return abbr;
 }

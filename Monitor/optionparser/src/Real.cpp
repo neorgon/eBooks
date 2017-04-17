@@ -11,7 +11,7 @@ string Real::GetName()const
     return name;
 }
 
-char Real::GetAbbbr()const
+char Real::GetAbbr()const
 {
     return abbr;
 }

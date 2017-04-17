@@ -4,19 +4,19 @@ using namespace std;
 
 int main(/*int argc, char* args[]*/)
 {
-    int argc = 7;
-    const char* args[] = { "Scanner", "--calorias", "250", "-p", "100", "--grasas_saturadas", "0.8", "--nombre", "\"cereal kellogs\"" };
+    int argc = 16;
+    const char* args[] = { "Scanner", "--calorias", "250", "-p", "100", "--grasas_saturadas", "0.8", "--nombre", "cereal kellogs", "--no-incluye", "[--grasas_hidrogenadas", "2.5", "-z", "50]", "-b", "-i" };
+    //const char* args[] = { "Scanner", "--no-incluye", "[--grasas_hidrogenadas", "2.5", "-z", "50]" };
+    //const char* args[] = { "Scanner", "--no-incluye", "--no-config" };
 
     OptionParser op(argc, args);
 
-    bool assertion = op.GetToken(0).compare("calorias") == 0 &&
-                     op.GetToken(1).compare("p") == 0 &&
-                     op.GetToken(2).compare("grasas_saturadas") == 0;
-
-    if(assertion)
-        cout << "Great!!" << endl;
-    else
-        cout << "Fail :(" << endl;
+    size_t i = 0;
+    while(op.GetToken(i).compare("") != 0)
+    {
+        cout << op.GetToken(i) << endl;
+        i++;
+    }
 
     op.AddInteger("calorias", 'c');
     op.AddInteger("proteinas", 'p');

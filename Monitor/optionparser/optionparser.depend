@@ -13,27 +13,30 @@
 1492129802 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\main.cpp
 	<OptionParser.h>
 
-1492073302 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\main.cpp
+1492205725 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\main.cpp
 	<OptionParser.h>
 
-1492076105 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optionparser.h
+1492290644 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optionparser.h
 	<iostream>
 	<string>
 	<vector>
+	<utility>
 	<algorithm>
+	<map>
 	<OptionDefinition.h>
+	<IOptionType.h>
 
-1492073534 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
+1492205645 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
 	"OptionParser.h"
 
-1492073489 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\optiondefinition.cpp
+1492292323 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\optiondefinition.cpp
 	"OptionDefinition.h"
 
-1492073476 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optiondefinition.h
+1492292271 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optiondefinition.h
 	<string>
 	"OptionType.h"
 
-1492048320 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optiontype.h
+1492174436 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\optiontype.h
 
 1492129802 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optiondefinition.h
 	<string>
@@ -43,4 +46,39 @@
 
 1492129802 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optiondefinition.cpp
 	"OptionDefinition.h"
+
+1492295108 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\ioptiontype.h
+	<string>
+	"OptionType.h"
+
+1492295086 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\boolean.cpp
+	"Boolean.h"
+
+1492295099 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\boolean.h
+	"IOptionType.h"
+
+1492295086 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\integer.cpp
+	"Integer.h"
+
+1492295113 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\integer.h
+	"IOptionType.h"
+
+1492295120 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\list.cpp
+	"List.h"
+
+1492295117 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\list.h
+	<vector>
+	"IOptionType.h"
+
+1492174436 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\real.cpp
+	"Real.h"
+
+1492174436 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\real.h
+	"IOptionType.h"
+
+1492174436 source:c:\users\nestor\documents\github\ebooks\monitor\optionparser\src\text.cpp
+	"Text.h"
+
+1492174436 c:\users\nestor\documents\github\ebooks\monitor\optionparser\include\text.h
+	"IOptionType.h"
 

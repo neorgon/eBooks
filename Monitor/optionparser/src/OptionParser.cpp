@@ -1,36 +1,35 @@
-#include "OptionParser.h"
+#include <OptionParser.h>
+#include <Boolean.h>
+/*#include <Integer.h>
+#include <List.h>
+#include <Real.h>
+#include <Text.h>*/
 
 OptionParser::OptionParser(int argc, const char** args)
 {
     int token = 1;
-    string tokenOption = "";
-    string tokenValue = "";
+    tokenOption = "";
+    tokenValue = "";
 
     while (token < argc)
     {
-        if (args[token][0] == '-' && args[token][1] == '-' && tokenOption.empty())
+        if(tokenOption.empty())
         {
-            tokenOption = string(args[token]).substr(2);
+            tokenOption = isOption(string(args[token]));
             token++;
         }
-        else
-            if (args[token][0] == '-' && tokenOption.empty())
-            {
-                tokenOption = string(args[token]).substr(1);
-                token++;
-            }
+        else if(tokenValue.empty())
+        {
+            if (args[token][0] == '[')
+                tokenValue = "[";
+            else if (args[token][0] == '-')
+                tokenValue = "true";
             else
             {
-                if (tokenValue.empty())
-                {
-                    tokenValue = string(args[token]);
-                    token++;
-                }
-                else
-                {
-                    //throw
-                }
+                tokenValue = isValue(string(args[token]));
+                token++;
             }
+        }
 
         if (!tokenOption.empty() && !tokenValue.empty())
         {
@@ -38,12 +37,61 @@ OptionParser::OptionParser(int argc, const char** args)
             tokenOption = "";
             tokenValue = "";
         }
+
+        if (addEndList)
+        {
+            tokens.push_back(make_pair("EndList",  "]"));
+            addEndList = false;
+        }
     }
+
+    if (!tokenOption.empty())
+        tokens.push_back(make_pair(tokenOption, "true"));
 }
 
 OptionParser::~OptionParser()
 {
     //dtor
+}
+
+string OptionParser::isOption(string token)
+{
+    if(token[0] == '[')
+        token = token.substr(1);
+
+    if(token[0] == '-' && token[1] == '-')
+    {
+        if (token[token.length() - 1] == ']')
+        {
+            addEndList = true;
+            return token.substr(2, token.length() - 1);
+        }
+        return token.substr(2);
+    }
+    else if (token[0] == '-')
+    {
+        if (token[token.length() - 1] == ']')
+        {
+            addEndList = true;
+            return token.substr(1, token.length() - 1);
+        }
+        return token.substr(1);
+    }
+    else
+    {
+        cerr << "Syntax error: se esparaba un operador." << endl; //throw; //Syntax error: se esparaba un operador.
+        return "";
+    }
+}
+
+string OptionParser::isValue(const string &token)
+{
+    if (token[token.length() - 1] == ']')
+    {
+        addEndList = true;
+        return token.substr(0, token.length() - 1);
+    }
+    return token;
 }
 
 void OptionParser::AddDefinition(const char* name, char abbr, OptionType type, bool optional, size_t quantity)
@@ -79,13 +127,61 @@ void OptionParser::AddList(const char* name, char abbr, bool optional, size_t qu
 
 bool OptionParser::AnalyzeSintax()
 {
-    vector<OptionDefinition>::const_iterator it;
+    vector <OptionDefinition>::const_iterator it;
 
     for (auto &t : tokens)
     {
-        it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first))
-        if (it == definitions.end())
+        it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first));
+        if (it == definitions.end() && t.first.compare("EndList") != 0)
             throw; // No existe el comando en la definición de opciones.
+    }
+
+    return true;
+}
+
+bool OptionParser::AnalyzeSemantic()
+{
+    vector <OptionDefinition>::const_iterator it;
+
+    for (auto &t : tokens)
+    {
+        it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first));
+        string name = it->GetName();
+        string abbr = it->GetAbbr();
+        OptionType type = it->GetType();
+        options.insert(pair<string, vector<IOptionType>> (name, vector<IOptionType>()));
+        switch(type)
+        {
+            case OptionType::Boolean:
+            {
+                Boolean newOption(name, abbr[0], type, t.second);
+                options[name].push_back(newOption);
+                break;
+            }
+            /*case OptionType::Integer:
+            {
+                Integer newOption(name, abbr[0], type, t.second);
+                options[name].push_back(newOption);
+                break;
+            }
+            case OptionType::List:
+            {
+                //List newOption(name, abbr, type, t.second);
+                break;
+            }
+            case OptionType::Real:
+            {
+                Real newOption(name, abbr[0], type, t.second);
+                options[name].push_back(newOption);
+                break;
+            }
+            case OptionType::Text:
+            {
+                Text newOption(name, abbr[0], type, t.second);
+                options[name].push_back(newOption);
+                break;
+            }*/
+        }
     }
 
     return true;
@@ -99,8 +195,10 @@ bool OptionParser::Validate()
     return AnalyzeSintax();
 }
 
-const string OptionParser::GetToken(int i) const
+const string OptionParser::GetToken(size_t i)
 {
-    //return tokens.at(i);
-    return "hola";
+    if (i < tokens.size())
+        return tokens.at(i).first + ": " + tokens.at(i).second;
+    else
+        return "";
 }

@@ -18,6 +18,10 @@ class OptionDefinition
         OptionDefinition(const string &n, const string &abbr, OptionType t, bool o, size_t q);
         virtual ~OptionDefinition();
 
+        const string GetName() const;
+        const string GetAbbr() const;
+        const OptionType GetType() const;
+
         struct Finder {
             string token;
             Finder(const string &t) : token {t} {};

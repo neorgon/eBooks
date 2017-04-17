@@ -11,7 +11,7 @@ string List::GetName() const
     return name;
 }
 
-char List::GetAbbbr() const
+char List::GetAbbr() const
 {
     return abbr;
 }

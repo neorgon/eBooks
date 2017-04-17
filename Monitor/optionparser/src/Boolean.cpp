@@ -14,7 +14,7 @@ string Boolean::GetName()const
     return name;
 }
 
-char Boolean::GetAbbbr()const
+char Boolean::GetAbbr()const
 {
     return abbr;
 }

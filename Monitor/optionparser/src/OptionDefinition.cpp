@@ -10,3 +10,18 @@ OptionDefinition::~OptionDefinition()
 {
     //dtor
 }
+
+const string OptionDefinition::GetName() const
+{
+    return name;
+}
+
+const string OptionDefinition::GetAbbr() const
+{
+    return abbr;
+}
+
+const OptionType OptionDefinition::GetType() const
+{
+    return type;
+}
