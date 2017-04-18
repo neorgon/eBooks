@@ -1,4 +1,4 @@
-#include "Text.h"
+#include "../include/Text.h"
 
 Text::Text(const string& name, const char abbr, const OptionType type, const string& strValue)
 :name{name}, abbr{abbr}, type{type}, strValue{strValue}

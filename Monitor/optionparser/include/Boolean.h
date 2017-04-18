@@ -2,6 +2,7 @@
 #define BOOLEAN_H
 
 #include "IOptionType.h"
+#include "../exceptions/SemanticException.h"
 
 class Boolean:public IOptionType
 {
@@ -12,7 +13,7 @@ class Boolean:public IOptionType
     bool value = true;
 
     public:
-        Boolean(const string& name, const char abbr, const OptionType type, const string& strValue);
+        Boolean(const string& name, const char abbr, const OptionType type, string strValue);
         string GetName() const override;
         char GetAbbr() const override;
         string GetValueString() const override;

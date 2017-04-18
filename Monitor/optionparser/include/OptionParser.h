@@ -8,8 +8,8 @@
 #include<algorithm>
 #include<map>
 
-#include<OptionDefinition.h>
-#include<IOptionType.h>
+#include"OptionDefinition.h"
+#include"IOptionType.h"
 
 using namespace std;
 
@@ -21,7 +21,7 @@ class OptionParser
 
     vector<OptionDefinition> definitions;
     vector<pair<string, string>> tokens;
-    map<string, vector<IOptionType>> options;
+    map<string, vector<IOptionType*>> options;
 
     void AddDefinition(const char* name, char abbr, OptionType type, bool optional, size_t quantity);
     string isOption(string token);

@@ -1,9 +1,9 @@
-#include <OptionParser.h>
-#include <Boolean.h>
-/*#include <Integer.h>
-#include <List.h>
-#include <Real.h>
-#include <Text.h>*/
+#include "../include/OptionParser.h"
+#include "../include/Boolean.h"
+#include "../include/Integer.h"
+#include "../include/List.h"
+#include "../include/Real.h"
+#include "../include/Text.h"
 
 OptionParser::OptionParser(int argc, const char** args)
 {
@@ -149,18 +149,18 @@ bool OptionParser::AnalyzeSemantic()
         string name = it->GetName();
         string abbr = it->GetAbbr();
         OptionType type = it->GetType();
-        options.insert(pair<string, vector<IOptionType>> (name, vector<IOptionType>()));
+        options.insert(pair<string, vector<IOptionType*>> (name, vector<IOptionType*>()));
         switch(type)
         {
             case OptionType::Boolean:
             {
-                Boolean newOption(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Boolean(name, abbr[0], type, t.second);
                 options[name].push_back(newOption);
                 break;
             }
-            /*case OptionType::Integer:
+            case OptionType::Integer:
             {
-                Integer newOption(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Integer(name, abbr[0], type, t.second);
                 options[name].push_back(newOption);
                 break;
             }
@@ -171,16 +171,16 @@ bool OptionParser::AnalyzeSemantic()
             }
             case OptionType::Real:
             {
-                Real newOption(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Real(name, abbr[0], type, t.second);
                 options[name].push_back(newOption);
                 break;
             }
             case OptionType::Text:
             {
-                Text newOption(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Text(name, abbr[0], type, t.second);
                 options[name].push_back(newOption);
                 break;
-            }*/
+            }
         }
     }
 

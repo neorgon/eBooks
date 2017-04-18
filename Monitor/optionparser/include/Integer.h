@@ -2,6 +2,7 @@
 #define INTEGER_H
 
 #include "IOptionType.h"
+#include "../Exceptions/SemanticException.h"
 
 class Integer: public IOptionType
 {

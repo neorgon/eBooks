@@ -1,4 +1,4 @@
-#include "List.h"
+#include "../include/List.h"
 
 List::List(const string& name, const char abbr, const OptionType type, const vector<IOptionType*>& value)
 :name{name}, abbr{abbr}, type{type}, value{value}

@@ -1,12 +1,19 @@
-#include "Boolean.h"
+#include "../include/Boolean.h"
 
-Boolean::Boolean(const string& name, const char abbr, const OptionType type, const string& strValue="true")
+Boolean::Boolean(const string& name, const char abbr, const OptionType type, string strValue="true")
 :name{name}, abbr{abbr}, type{type}, strValue{strValue}
 {
+	for (auto c: strValue)
+	{
+		if (c<97)
+			c+=32;
+	}
     if (strValue=="false")
         value=0;
-    if (strValue=="true"||strValue==""||strValue==" ")
+    else if (strValue=="true"||strValue==""||strValue==" ")
         value=1;
+    else
+    	throw SemanticException("Error Boolean Type");
 }
 
 string Boolean::GetName()const

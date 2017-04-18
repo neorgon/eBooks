@@ -2,6 +2,7 @@
 #define REAL_H
 
 #include "IOptionType.h"
+#include "../Exceptions/SemanticException.h"
 
 class Real:public IOptionType
 {
@@ -13,7 +14,7 @@ class Real:public IOptionType
 public:
     Real(const string& name, const char abbr, const OptionType type, const string& strValue);
     string GetName() const override;
-    char GetAbbbr() const override;
+    char GetAbbr() const override;
     string GetValueString() const override;
     OptionType GetType() const override;
     float GetValue()const;
