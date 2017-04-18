@@ -40,6 +40,7 @@ class OptionParser
         bool Validate();
 
         const string GetToken(size_t i);
+        const map<string, vector<IOptionType*>> GetOptions() const;
 };
 
 #endif // OPTIONPARSER_H

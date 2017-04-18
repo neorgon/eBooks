@@ -133,7 +133,7 @@ bool OptionParser::AnalyzeSintax()
     {
         it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first));
         if (it == definitions.end() && t.first.compare("EndList") != 0)
-            throw; // No existe el comando en la definición de opciones.
+            cerr << "No existe el comando en la definición de opciones." << endl; //throw; // No existe el comando en la definición de opciones.
     }
 
     return true;
@@ -141,43 +141,94 @@ bool OptionParser::AnalyzeSintax()
 
 bool OptionParser::AnalyzeSemantic()
 {
-    vector <OptionDefinition>::const_iterator it;
+    vector<OptionDefinition>::const_iterator itOptionDefinition;
+    vector<pair<string, string>>::const_iterator itTokens;
+    size_t e = 0;
 
-    for (auto &t : tokens)
+    //for (auto &t : tokens)
+    for (itTokens = tokens.begin(); itTokens < tokens.end(); itTokens++, e++)
     {
-        it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first));
-        string name = it->GetName();
-        string abbr = it->GetAbbr();
-        OptionType type = it->GetType();
+        itOptionDefinition = find_if(definitions.begin(),
+                                     definitions.end(),
+                                     OptionDefinition::Finder(tokens[e].first));
+        string name = itOptionDefinition->GetName();
+        string abbr = itOptionDefinition->GetAbbr();
+        OptionType type = itOptionDefinition->GetType();
         options.insert(pair<string, vector<IOptionType*>> (name, vector<IOptionType*>()));
         switch(type)
         {
             case OptionType::Boolean:
             {
-                IOptionType* newOption = new Boolean(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Boolean(name, abbr[0], type, tokens[e].second);
                 options[name].push_back(newOption);
                 break;
             }
             case OptionType::Integer:
             {
-                IOptionType* newOption = new Integer(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Integer(name, abbr[0], type, tokens[e].second);
                 options[name].push_back(newOption);
                 break;
             }
             case OptionType::List:
             {
                 //List newOption(name, abbr, type, t.second);
+                vector<IOptionType*> value;
+                while(itTokens < tokens.end() && tokens[e].first != "EndList")
+                {
+                    itTokens++;
+                    e++;
+                    itOptionDefinition = find_if(definitions.begin(),
+                                                 definitions.end(),
+                                                 OptionDefinition::Finder(tokens[e].first));
+                    string lName = itOptionDefinition->GetName();
+                    string lAbbr = itOptionDefinition->GetAbbr();
+                    OptionType lType = itOptionDefinition->GetType();
+                    switch(lType)
+                    {
+                        case OptionType::Boolean:
+                        {
+                            IOptionType* newListOption = new Boolean(lName, lAbbr[0], lType, tokens[e].second);
+                            value.push_back(newListOption);
+                            break;
+                        }
+                        case OptionType::Integer:
+                        {
+                            IOptionType* newListOption = new Integer(lName, lAbbr[0], lType, tokens[e].second);
+                            value.push_back(newListOption);
+                            break;
+                        }
+                        case OptionType::List:
+                        {
+                            //
+                            break;
+                        }
+                        case OptionType::Real:
+                        {
+                            IOptionType* newListOption = new Real(lName, lAbbr[0], lType, tokens[e].second);
+                            value.push_back(newListOption);
+                            break;
+                        }
+                        case OptionType::Text:
+                        {
+                            IOptionType* newListOption = new Text(lName, lAbbr[0], lType, tokens[e].second);
+                            value.push_back(newListOption);
+                            break;
+                        }
+                    }
+                }
+                IOptionType* newOption = new List(name, abbr[0], type, value);
+                options[name].push_back(newOption);
                 break;
             }
             case OptionType::Real:
             {
-                IOptionType* newOption = new Real(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Real(name, abbr[0], type, tokens[e].second);
                 options[name].push_back(newOption);
                 break;
             }
             case OptionType::Text:
             {
-                IOptionType* newOption = new Text(name, abbr[0], type, t.second);
+                IOptionType* newOption = new Text(name, abbr[0], type, tokens[e].second);
                 options[name].push_back(newOption);
                 break;
             }
@@ -192,7 +243,7 @@ bool OptionParser::Validate()
     if (tokens.size() == 0)
         return false;
 
-    return AnalyzeSintax();
+    return AnalyzeSintax() && AnalyzeSemantic();
 }
 
 const string OptionParser::GetToken(size_t i)
@@ -201,4 +252,9 @@ const string OptionParser::GetToken(size_t i)
         return tokens.at(i).first + ": " + tokens.at(i).second;
     else
         return "";
+}
+
+const map<string, vector<IOptionType*>> OptionParser::GetOptions() const
+{
+    return options;
 }

@@ -1,3 +1,5 @@
+#include <iostream>
+
 #include "../include/Integer.h"
 
 Integer::Integer(const string& name, const char abbr, const OptionType type, const string& strValue)
@@ -6,7 +8,7 @@ Integer::Integer(const string& name, const char abbr, const OptionType type, con
 	for(auto c : strValue)
 	{
 		if(c<48||c>57)
-			throw; //SemanticException("Error Integer Number Type");
+			cerr << "Error Integer Number Type" << endl; //throw; //SemanticException("Error Integer Number Type");
 	}
     value=stoi(strValue);
 }
