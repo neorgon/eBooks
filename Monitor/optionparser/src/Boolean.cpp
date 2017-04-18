@@ -13,7 +13,7 @@ Boolean::Boolean(const string& name, const char abbr, const OptionType type, str
     else if (strValue=="true"||strValue==""||strValue==" ")
         value=1;
     else
-    	throw SemanticException("Error Boolean Type");
+    	throw; //SemanticException("Error Boolean Type");
 }
 
 string Boolean::GetName()const
