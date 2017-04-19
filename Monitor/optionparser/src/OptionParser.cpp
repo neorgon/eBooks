@@ -73,13 +73,13 @@ string OptionParser::isOption(string token)
         if (token[token.length() - 1] == ']')
         {
             addEndList = true;
-            return token.substr(1, token.length() - 1);
+            return token.substr(1, token.length() - 2);
         }
         return token.substr(1);
     }
     else
     {
-        cerr << "Syntax error: se esparaba un operador." << endl; //throw; //Syntax error: se esparaba un operador.
+        throw SyntaxException ("Operator expected");
         return "";
     }
 }
@@ -133,7 +133,7 @@ bool OptionParser::AnalyzeSintax()
     {
         it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first));
         if (it == definitions.end() && t.first.compare("EndList") != 0)
-            cerr << "No existe el comando en la definición de opciones." << endl; //throw; // No existe el comando en la definición de opciones.
+            throw SyntaxException("Command not found");
     }
 
     return true;
@@ -183,6 +183,8 @@ bool OptionParser::AnalyzeSemantic()
                     string lName = itOptionDefinition->GetName();
                     string lAbbr = itOptionDefinition->GetAbbr();
                     OptionType lType = itOptionDefinition->GetType();
+                    if(tokens[e].second!="]") //hardcore
+
                     switch(lType)
                     {
                         case OptionType::Boolean:

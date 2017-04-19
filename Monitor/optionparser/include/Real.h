@@ -2,7 +2,7 @@
 #define REAL_H
 
 #include "IOptionType.h"
-#include "../Exceptions/SemanticException.h"
+#include "../exceptions/SemanticException.h"
 
 class Real:public IOptionType
 {

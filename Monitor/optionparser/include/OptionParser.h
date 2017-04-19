@@ -10,6 +10,7 @@
 
 #include"OptionDefinition.h"
 #include"IOptionType.h"
+#include"../exceptions/SyntaxException.h"
 
 using namespace std;
 
