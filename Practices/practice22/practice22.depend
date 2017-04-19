@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1492574219 source:c:\users\administrator\documents\github\ebooks\practices\practice22\main.cpp
+	<iostream>
+	<vector>
+	<string>
+	<cstdlib>
+
