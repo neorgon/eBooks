@@ -3,11 +3,10 @@
 
 enum class OptionType
 {
+    Boolean,
     Integer,
     Real,
-    Boolean,
-    Text,
-    List
+    Text
 };
 
 #endif // OPTIONTYPE_H_INCLUDED

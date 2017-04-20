@@ -1,13 +1,12 @@
 # depslib dependency file v1.0
-1492567457 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
+1492724481 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optionparser.cpp
 	"../include/OptionParser.h"
 	"../include/Boolean.h"
 	"../include/Integer.h"
-	"../include/List.h"
 	"../include/Real.h"
 	"../include/Text.h"
 
-1492567457 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optionparser.h
+1492723625 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optionparser.h
 	<iostream>
 	<string>
 	<vector>
@@ -18,12 +17,11 @@
 	"IOptionType.h"
 	"../exceptions/SyntaxException.h"
 
-1492567457 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\main.cpp
+1492724760 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\main.cpp
 	<OptionParser.h>
 	"Integer.h"
 	"Boolean.h"
 	"Real.h"
-	"List.h"
 	"Text.h"
 	"IOptionType.h"
 
@@ -61,7 +59,7 @@
 	<string>
 	"OptionType.h"
 
-1492498309 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optiontype.h
+1492722521 c:\users\administrator\documents\github\ebooks\monitor\optionparser\include\optiontype.h
 
 1492498309 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\src\optiondefinition.cpp
 	"../include/OptionDefinition.h"
@@ -156,4 +154,10 @@
 
 1492498309 c:\users\administrator\documents\github\ebooks\monitor\optionparser\exceptions\syntaxexception.h
 	<exception>
+
+1492498309 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\exceptions\semanticexception.cpp
+	"SemanticException.h"
+
+1492498309 source:c:\users\administrator\documents\github\ebooks\monitor\optionparser\exceptions\syntaxexception.cpp
+	"SyntaxException.h"
 

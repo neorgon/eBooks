@@ -18,7 +18,7 @@ class OptionParser
 {
     string tokenOption;
     string tokenValue;
-    bool addEndList = false;
+    bool addList = false;
 
     vector<OptionDefinition> definitions;
     vector<pair<string, string>> tokens;

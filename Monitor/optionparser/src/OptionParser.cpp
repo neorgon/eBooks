@@ -1,7 +1,6 @@
 #include "../include/OptionParser.h"
 #include "../include/Boolean.h"
 #include "../include/Integer.h"
-#include "../include/List.h"
 #include "../include/Real.h"
 #include "../include/Text.h"
 
@@ -20,28 +19,28 @@ OptionParser::OptionParser(int argc, const char** args)
         }
         else if(tokenValue.empty())
         {
-            if (args[token][0] == '[')
-                tokenValue = "[";
-            else if (args[token][0] == '-')
+            if (args[token][0] == '-')
                 tokenValue = "true";
             else
-            {
-                tokenValue = isValue(string(args[token]));
-                token++;
-            }
+                if (args[token][0] == '[')
+                {
+                    addList = true;
+                    tokenValue = isValue(string(args[token]).substr(1));
+                    token++;
+                }
+                else
+                {
+                    tokenValue = isValue(string(args[token]));
+                    token++;
+                }
         }
 
         if (!tokenOption.empty() && !tokenValue.empty())
         {
             tokens.push_back(make_pair(tokenOption, tokenValue));
-            tokenOption = "";
+            if (!addList)
+                tokenOption = "";
             tokenValue = "";
-        }
-
-        if (addEndList)
-        {
-            tokens.push_back(make_pair("EndList",  "]"));
-            addEndList = false;
         }
     }
 
@@ -56,25 +55,12 @@ OptionParser::~OptionParser()
 
 string OptionParser::isOption(string token)
 {
-    if(token[0] == '[')
-        token = token.substr(1);
-
     if(token[0] == '-' && token[1] == '-')
     {
-        if (token[token.length() - 1] == ']')
-        {
-            addEndList = true;
-            return token.substr(2, token.length() - 1);
-        }
         return token.substr(2);
     }
     else if (token[0] == '-')
     {
-        if (token[token.length() - 1] == ']')
-        {
-            addEndList = true;
-            return token.substr(1, token.length() - 2);
-        }
         return token.substr(1);
     }
     else
@@ -88,7 +74,7 @@ string OptionParser::isValue(const string &token)
 {
     if (token[token.length() - 1] == ']')
     {
-        addEndList = true;
+        addList = false;
         return token.substr(0, token.length() - 1);
     }
     return token;
@@ -118,11 +104,6 @@ void OptionParser::AddBoolean(const char* name, char abbr, bool optional, size_t
 void OptionParser::AddText(const char* name, char abbr, bool optional, size_t quantity)
 {
     AddDefinition(name, abbr, OptionType::Text, optional, quantity);
-}
-
-void OptionParser::AddList(const char* name, char abbr, bool optional, size_t quantity)
-{
-    AddDefinition(name, abbr, OptionType::List, optional, quantity);
 }
 
 bool OptionParser::AnalyzeSintax()
@@ -166,59 +147,6 @@ bool OptionParser::AnalyzeSemantic()
             case OptionType::Integer:
             {
                 IOptionType* newOption = new Integer(name, abbr[0], type, tokens[e].second);
-                options[name].push_back(newOption);
-                break;
-            }
-            case OptionType::List:
-            {
-                //List newOption(name, abbr, type, t.second);
-                vector<IOptionType*> value;
-                while(itTokens < tokens.end() && tokens[e].first != "EndList")
-                {
-                    itTokens++;
-                    e++;
-                    itOptionDefinition = find_if(definitions.begin(),
-                                                 definitions.end(),
-                                                 OptionDefinition::Finder(tokens[e].first));
-                    string lName = itOptionDefinition->GetName();
-                    string lAbbr = itOptionDefinition->GetAbbr();
-                    OptionType lType = itOptionDefinition->GetType();
-                    if(tokens[e].second!="]") //hardcore
-
-                    switch(lType)
-                    {
-                        case OptionType::Boolean:
-                        {
-                            IOptionType* newListOption = new Boolean(lName, lAbbr[0], lType, tokens[e].second);
-                            value.push_back(newListOption);
-                            break;
-                        }
-                        case OptionType::Integer:
-                        {
-                            IOptionType* newListOption = new Integer(lName, lAbbr[0], lType, tokens[e].second);
-                            value.push_back(newListOption);
-                            break;
-                        }
-                        case OptionType::List:
-                        {
-                            //
-                            break;
-                        }
-                        case OptionType::Real:
-                        {
-                            IOptionType* newListOption = new Real(lName, lAbbr[0], lType, tokens[e].second);
-                            value.push_back(newListOption);
-                            break;
-                        }
-                        case OptionType::Text:
-                        {
-                            IOptionType* newListOption = new Text(lName, lAbbr[0], lType, tokens[e].second);
-                            value.push_back(newListOption);
-                            break;
-                        }
-                    }
-                }
-                IOptionType* newOption = new List(name, abbr[0], type, value);
                 options[name].push_back(newOption);
                 break;
             }
