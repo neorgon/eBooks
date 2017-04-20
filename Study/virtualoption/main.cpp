@@ -2,12 +2,10 @@
 
 using namespace std;
 
-enum otype { Integer, Real };
-
 class IOption
 {
     public:
-        virtual void Value(otype) const
+        virtual void Value() const
         {
             cout << "IOption: Type?" << endl;
         }
@@ -16,21 +14,32 @@ class IOption
 class OInteger : public IOption
 {
     public:
-        void Value(otype) const
+        void Value() const
         {
             cout << "OInteger: Integer?" << endl;
         }
 };
 
+class OReal : public IOption
+{
+    public:
+        void Value() const
+        {
+            cout << "OReal: Real?" << endl;
+        }
+};
+
 void get(IOption &o)
 {
-    o.Value(Integer);
+    o.Value();
 }
 
 int main()
 {
-    OInteger option;
-    get(option);
+    OInteger integer;
+    integer.Value();
+    OReal real;
+    real.Value();
 
     return 0;
 }
