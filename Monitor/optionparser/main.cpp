@@ -60,8 +60,8 @@ int main(/*int argc, char* args[]*/)
         op.AddInteger("calorias", 'c');
         op.AddInteger("proteinas", 'p');
         op.AddReal("grasas_saturadas", 'g');
-        op.AddReal("grasas_hidrogenadas", 'h', true, 0);
-        op.AddText("nombre", 'n', false, 2);
+        op.AddReal("grasas_hidrogenadas", 'h', true);
+        op.AddText("nombre", 'n', false);
         op.AddInteger("azucares", 'z');
         op.AddBoolean("bBool", 'b');
         op.AddBoolean("iBool", 'i');

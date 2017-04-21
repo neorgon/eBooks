@@ -24,7 +24,7 @@ class OptionParser
     vector<pair<string, string>> tokens;
     map<string, vector<IOptionType*>> options;
 
-    void AddDefinition(const char* name, char abbr, OptionType type, bool optional, size_t quantity);
+    void AddDefinition(const char* name, char abbr, OptionType type, bool optional);
     string isOption(string token);
     string isValue(const string &token);
     bool AnalyzeSintax();
@@ -33,11 +33,10 @@ class OptionParser
     public:
         OptionParser(int argc, const char** args);
         virtual ~OptionParser();
-        void AddInteger(const char* name, char abbr, bool optional = false, size_t quantity = 1);
-        void AddReal(const char* name, char abbr, bool optional = false, size_t quantity = 1);
-        void AddBoolean(const char* name, char abbr, bool optional = true, size_t quantity = 1);
-        void AddText(const char* name, char abbr, bool optional = false, size_t quantity = 1);
-        void AddList(const char* name, char abbr, bool optional = false, size_t quantity = 1);
+        void AddInteger(const char* name, char abbr, bool optional = false);
+        void AddReal(const char* name, char abbr, bool optional = false);
+        void AddBoolean(const char* name, char abbr, bool optional = true);
+        void AddText(const char* name, char abbr, bool optional = false);
         bool Validate();
 
         const string GetToken(size_t i);

@@ -9,14 +9,15 @@ class Text:public IOptionType
     char abbr;
     OptionType type;
     string strValue;
-public:
-    Text(const string& name, const char abbr, const OptionType type, const string& strValue);
-    string GetName() const override;
-    char GetAbbr() const override;
-    string GetValueString() const override;
-    OptionType GetType() const override;
-    const char* GetValue()const;
-    ~Text();
+
+    public:
+        Text(const string& name, const char abbr, const OptionType type, const string& strValue);
+        string GetName() const override;
+        char GetAbbr() const override;
+        string GetValueString() const override;
+        OptionType GetType() const override;
+        const char* GetValue()const;
+        ~Text();
 };
 
 #endif // TEXT_H

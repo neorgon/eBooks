@@ -80,30 +80,30 @@ string OptionParser::isValue(const string &token)
     return token;
 }
 
-void OptionParser::AddDefinition(const char* name, char abbr, OptionType type, bool optional, size_t quantity)
+void OptionParser::AddDefinition(const char* name, char abbr, OptionType type, bool optional)
 {
-    OptionDefinition newDefinition(string(name), string(1, abbr), type, optional, quantity);
+    OptionDefinition newDefinition(string(name), string(1, abbr), type, optional);
     definitions.push_back(newDefinition);
 }
 
-void OptionParser::AddInteger(const char* name, char abbr, bool optional, size_t quantity)
+void OptionParser::AddInteger(const char* name, char abbr, bool optional)
 {
-    AddDefinition(name, abbr, OptionType::Integer, optional, quantity);
+    AddDefinition(name, abbr, OptionType::Integer, optional);
 }
 
-void OptionParser::AddReal(const char* name, char abbr, bool optional, size_t quantity)
+void OptionParser::AddReal(const char* name, char abbr, bool optional)
 {
-    AddDefinition(name, abbr, OptionType::Real, optional, quantity);
+    AddDefinition(name, abbr, OptionType::Real, optional);
 }
 
-void OptionParser::AddBoolean(const char* name, char abbr, bool optional, size_t quantity)
+void OptionParser::AddBoolean(const char* name, char abbr, bool optional)
 {
-    AddDefinition(name, abbr, OptionType::Boolean, optional, quantity);
+    AddDefinition(name, abbr, OptionType::Boolean, optional);
 }
 
-void OptionParser::AddText(const char* name, char abbr, bool optional, size_t quantity)
+void OptionParser::AddText(const char* name, char abbr, bool optional)
 {
-    AddDefinition(name, abbr, OptionType::Text, optional, quantity);
+    AddDefinition(name, abbr, OptionType::Text, optional);
 }
 
 bool OptionParser::AnalyzeSintax()

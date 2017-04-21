@@ -13,9 +13,9 @@ class OptionDefinition
     string abbr;
     OptionType type;
     bool optional;
-    size_t quantity;
+
     public:
-        OptionDefinition(const string &n, const string &abbr, OptionType t, bool o, size_t q);
+        OptionDefinition(const string &n, const string &abbr, OptionType t, bool o);
         virtual ~OptionDefinition();
 
         const string GetName() const;
