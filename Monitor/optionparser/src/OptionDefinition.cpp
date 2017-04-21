@@ -25,3 +25,8 @@ const OptionType OptionDefinition::GetType() const
 {
     return type;
 }
+
+const bool OptionDefinition::GetOptional() const
+{
+	return optional;
+}

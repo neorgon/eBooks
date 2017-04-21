@@ -44,30 +44,17 @@ TEST_F(ATest, OptionParser_GivenWrongArgsInInteger_ExpectedError)
     op.AddInteger("proteinas", 'p');
 
     //Assert
-    EXPECT_ANY_THROW(op.Validate())<< "valor incorrecto de entrada, se esperaba detectar que se tiene string";
-
-}
-
-TEST_F(ATest, OptionParser_GivenWrongArgsInNames_ExpectedError)
- {
-    //Arrange
-    int argc = 5;
-    const char* args[] = { "Scanner", "--calorias", "250", "p", "100"};
-
-    //Act
-    //Assert
     try {
-        OptionParser op(argc, args);
-        FAIL() <<"Expected SyntaxException";
+        op.Validate();
+        FAIL() <<"Expected SemanticException";
     }
-    catch(SyntaxException const & err) {
-        EXPECT_EQ(err.what(),string("Operator expected"));
+    catch(exception const & err) {
+        EXPECT_EQ(err.what(),string("Error Integer Number Type"));
     }
     catch(...) {
-        FAIL() <<"Expected SyntaxException";
+        FAIL() <<"Expected SemanticException";
     }
 }
-
 
 TEST_F(ATest, OptionParser_GivenWrongArgsInValuesBoolean_ExpectedError)
  {
@@ -84,7 +71,16 @@ TEST_F(ATest, OptionParser_GivenWrongArgsInValuesBoolean_ExpectedError)
 
     //Act
     //Assert
-    EXPECT_ANY_THROW(op.Validate())<< "valor incorrecto de entrada, se esperaba detectar que se tiene string";
+    try {
+        op.Validate();
+        FAIL() <<"Expected SemanticException";
+    }
+    catch(exception const & err) {
+        EXPECT_EQ(err.what(),string("Error Boolean Type"));
+    }
+    catch(...) {
+        FAIL() <<"Expected SemanticException";
+    }
 }
 
 TEST_F(ATest, OptionParser_GivenWrongArgsInValuesReal_ExpectedError)
@@ -102,5 +98,38 @@ TEST_F(ATest, OptionParser_GivenWrongArgsInValuesReal_ExpectedError)
 
     //Act
     //Assert
-    EXPECT_ANY_THROW(op.Validate())<< "valor incorrecto de entrada, se esperaba detectar que se tiene string";
+    try {
+        op.Validate();
+        FAIL() <<"Expected SemanticException";
+    }
+    catch(exception const &err) {
+        EXPECT_EQ(err.what(), string("Error Real Number Type"));
+    }
+    catch(...) {
+        FAIL() <<"Expected SemanticException";
+    }
 }
+
+TEST_F(ATest, OptionParser_GivenWrongArgsInNames_ExpectedError)
+ {
+    //Arrange
+    int argc = 5;
+    const char* args[] = { "Scanner", "--calorias", "250", "p", "100"};
+
+    //Act
+    //Assert
+
+    try {
+        OptionParser op(argc, args);
+        FAIL() <<"Expected SyntaxException";
+    }
+    catch(SyntaxException const & err) {
+        EXPECT_EQ(err.what(),string("Operator expected"));
+    }
+    catch(...) {
+        FAIL() <<"Expected SyntaxException";
+    }
+
+}
+
+

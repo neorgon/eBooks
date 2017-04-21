@@ -1,16 +1,20 @@
 #ifndef OPTIONPARSER_H
 #define OPTIONPARSER_H
 
-#include<iostream>
-#include<string>
-#include<vector>
-#include<utility>
-#include<algorithm>
-#include<map>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <utility>
+#include <algorithm>
+#include <map>
 
-#include"OptionDefinition.h"
-#include"IOptionType.h"
-#include"../exceptions/SyntaxException.h"
+#include "OptionDefinition.h"
+#include "IOptionType.h"
+#include "Boolean.h"
+#include "Integer.h"
+#include "Real.h"
+#include "Text.h"
+#include "../exceptions/SyntaxException.h"
 
 using namespace std;
 

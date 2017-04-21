@@ -7,7 +7,7 @@ Real::Real(const string& name, const char abbr, const OptionType type, const str
 {
 	for(auto c : strValue)
 	{
-		if(c>48||c<57)
+		if(c>47&&c<58)
 		{
 
 		}
@@ -17,7 +17,6 @@ Real::Real(const string& name, const char abbr, const OptionType type, const str
         }
         else
             throw SemanticException("Error Real Number Type");
-        	/*cerr << "Error Real Number Type" << endl;*/
 	}
     value=stof(strValue);
 }

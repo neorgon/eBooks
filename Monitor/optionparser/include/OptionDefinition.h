@@ -21,6 +21,7 @@ class OptionDefinition
         const string GetName() const;
         const string GetAbbr() const;
         const OptionType GetType() const;
+        const bool GetOptional() const;
 
         struct Finder {
             string token;

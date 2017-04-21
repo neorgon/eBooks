@@ -117,6 +117,24 @@ bool OptionParser::AnalyzeSintax()
             throw SyntaxException("Command not found");
     }
 
+    vector<OptionDefinition> trueOptions;
+
+    for (auto j:definitions)
+    	if (j.GetOptional())
+    		trueOptions.push_back(j);
+
+    for (auto i: trueOptions)
+    {
+    	for (auto j: tokens)
+    	{
+    		if(i.GetName()==j.first||i.GetAbbr()==j.first)
+    			trueOptions.pop_back();
+    	}
+    }
+
+    if(!trueOptions.empty())
+    	throw SyntaxException ("Mandatory command not found");
+
     return true;
 }
 
