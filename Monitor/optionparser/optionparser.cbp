@@ -34,6 +34,8 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="exceptions/DefinitionException.cpp" />
+		<Unit filename="exceptions/DefinitionException.h" />
 		<Unit filename="exceptions/SemanticException.cpp" />
 		<Unit filename="exceptions/SemanticException.h" />
 		<Unit filename="exceptions/SyntaxException.cpp" />

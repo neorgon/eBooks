@@ -15,6 +15,7 @@
 #include "Real.h"
 #include "Text.h"
 #include "../exceptions/SyntaxException.h"
+#include "../exceptions/DefinitionException.h"
 
 using namespace std;
 
@@ -31,7 +32,7 @@ class OptionParser
     void AddDefinition(const char* name, char abbr, OptionType type, bool optional);
     string isOption(string token);
     string isValue(const string &token);
-    bool AnalyzeSintax();
+    bool AnalyzeSyntax();
     bool AnalyzeSemantic();
 
     public:

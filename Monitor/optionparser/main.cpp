@@ -45,7 +45,7 @@ int main(/*int argc, char* args[]*/)
         //const char* args[] = { "Scanner", "-p", "100", "--no-incluye", "[--grasas_hidrogenadas", "2.5", "-z", "50]", "--calorias", "250" };
         //const char* args[] = { "Scanner", "--no-incluye", "--no-config" };
         //const char* args[] = { "Scanner", "-c", "45", "-p", "60" };
-        const char* args[] = { "Scanner", "-c", "45", "-p", "[60", "45", "50]" };
+        const char* args[] = { "Scanner", "-ca", "45", "-p", "[60", "45", "50]" };
         //const char* args[] = { "Scanner", "--calorias", "250", "-p", "100", "--grasas_saturadas", "1.8", "--nombre", "cereal kellogs" };
 
         OptionParser op(argc, args);

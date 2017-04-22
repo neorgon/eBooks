@@ -1,8 +1,5 @@
 #include "../include/OptionParser.h"
-#include "../include/Boolean.h"
-#include "../include/Integer.h"
-#include "../include/Real.h"
-#include "../include/Text.h"
+#include <sstream>
 
 OptionParser::OptionParser(int argc, const char** args)
 {
@@ -17,30 +14,40 @@ OptionParser::OptionParser(int argc, const char** args)
             tokenOption = isOption(string(args[token]));
             token++;
         }
-        else if(tokenValue.empty())
-        {
-            if (args[token][0] == '-')
-                tokenValue = "true";
-            else
-                if (args[token][0] == '[')
-                {
-                    addList = true;
-                    tokenValue = isValue(string(args[token]).substr(1));
-                    token++;
-                }
+        else
+            if(tokenValue.empty())
+            {
+                if (args[token][0] == '-')
+                    tokenValue = "true";
                 else
+                    if (args[token][0] == '[')
+                    {
+                        addList = true;
+                        tokenValue = isValue(string(args[token]).substr(1));
+                        token++;
+                    }
+                    else
+                    {
+                        tokenValue = isValue(string(args[token]));
+                        token++;
+                    }
+            }
+            else
+                if (addList)
                 {
-                    tokenValue = isValue(string(args[token]));
-                    token++;
+                   tokenValue += " ";
+                   tokenValue += isValue(string(args[token]));
+                   token++;
                 }
-        }
 
         if (!tokenOption.empty() && !tokenValue.empty())
         {
-            tokens.push_back(make_pair(tokenOption, tokenValue));
             if (!addList)
+            {
+                tokens.push_back(make_pair(tokenOption, tokenValue));
                 tokenOption = "";
-            tokenValue = "";
+                tokenValue = "";
+            }
         }
     }
 
@@ -50,7 +57,13 @@ OptionParser::OptionParser(int argc, const char** args)
 
 OptionParser::~OptionParser()
 {
-    //dtor
+    for (auto m: options)
+    {
+    	for(auto o: m.second)
+    	{
+    		delete o;
+    	}
+    }
 }
 
 string OptionParser::isOption(string token)
@@ -59,15 +72,16 @@ string OptionParser::isOption(string token)
     {
         return token.substr(2);
     }
-    else if (token[0] == '-')
-    {
-        return token.substr(1);
-    }
     else
-    {
-        throw SyntaxException ("Operator expected");
-        return "";
-    }
+        if (token[0] == '-' && token[2] == '\0')
+        {
+            return token.substr(1);
+        }
+        else
+        {
+            throw SyntaxException ("Operator expected");
+            return "";
+        }
 }
 
 string OptionParser::isValue(const string &token)
@@ -82,6 +96,25 @@ string OptionParser::isValue(const string &token)
 
 void OptionParser::AddDefinition(const char* name, char abbr, OptionType type, bool optional)
 {
+    string names = name;
+
+	for (auto i:names)
+	{
+		if ( !(isalpha(i)) && (i != '_') )
+		{
+			throw DefinitionException ("Name declaration error");
+		}
+	}
+
+	if (!isalpha(abbr))
+		throw DefinitionException ("Abbreviation declaration error");
+
+	for (auto& i: definitions)
+	{
+		if(i.GetName()==names||i.GetAbbr()[0]==abbr)
+			throw DefinitionException ("Repeated definition");
+	}
+
     OptionDefinition newDefinition(string(name), string(1, abbr), type, optional);
     definitions.push_back(newDefinition);
 }
@@ -106,15 +139,20 @@ void OptionParser::AddText(const char* name, char abbr, bool optional)
     AddDefinition(name, abbr, OptionType::Text, optional);
 }
 
-bool OptionParser::AnalyzeSintax()
+bool OptionParser::AnalyzeSyntax()
 {
-    vector <OptionDefinition>::const_iterator it;
+    vector <OptionDefinition>::iterator it;
 
     for (auto &t : tokens)
     {
         it = find_if(definitions.begin(), definitions.end(), OptionDefinition::Finder(t.first));
-        if (it == definitions.end() && t.first.compare("EndList") != 0)
+        if (it == definitions.end()/* && t.first.compare("EndList") != 0*/)
             throw SyntaxException("Command not found");
+        else
+            if (it->GetDefined())
+                throw SyntaxException("Duplicated Parameter");
+            else
+                it->SetDefined();
     }
 
     vector<OptionDefinition> trueOptions;
@@ -133,15 +171,29 @@ bool OptionParser::AnalyzeSintax()
     }
 
     if(!trueOptions.empty())
-    	throw SyntaxException ("Mandatory command not found");
+    	throw SyntaxException("Mandatory command not found");
 
     return true;
+}
+
+vector<string> explode(string const &s, char delim)
+{
+    vector<string> result;
+    istringstream iss(s);
+
+    for (string token; getline(iss, token, delim); )
+    {
+        result.push_back(move(token));
+    }
+
+    return result;
 }
 
 bool OptionParser::AnalyzeSemantic()
 {
     vector<OptionDefinition>::const_iterator itOptionDefinition;
     vector<pair<string, string>>::const_iterator itTokens;
+    vector<string> values;
     size_t e = 0;
 
     //for (auto &t : tokens)
@@ -154,33 +206,35 @@ bool OptionParser::AnalyzeSemantic()
         string abbr = itOptionDefinition->GetAbbr();
         OptionType type = itOptionDefinition->GetType();
         options.insert(pair<string, vector<IOptionType*>> (name, vector<IOptionType*>()));
-        switch(type)
-        {
-            case OptionType::Boolean:
+        values = explode(tokens[e].second, ' ');
+        for (auto v : values)
+            switch(type)
             {
-                IOptionType* newOption = new Boolean(name, abbr[0], type, tokens[e].second);
-                options[name].push_back(newOption);
-                break;
+                case OptionType::Boolean:
+                {
+                    IOptionType* newOption = new Boolean(name, abbr[0], type, v);
+                    options[name].push_back(newOption);
+                    break;
+                }
+                case OptionType::Integer:
+                {
+                    IOptionType* newOption = new Integer(name, abbr[0], type, v);
+                    options[name].push_back(newOption);
+                    break;
+                }
+                case OptionType::Real:
+                {
+                    IOptionType* newOption = new Real(name, abbr[0], type, v);
+                    options[name].push_back(newOption);
+                    break;
+                }
+                case OptionType::Text:
+                {
+                    IOptionType* newOption = new Text(name, abbr[0], type, v);
+                    options[name].push_back(newOption);
+                    break;
+                }
             }
-            case OptionType::Integer:
-            {
-                IOptionType* newOption = new Integer(name, abbr[0], type, tokens[e].second);
-                options[name].push_back(newOption);
-                break;
-            }
-            case OptionType::Real:
-            {
-                IOptionType* newOption = new Real(name, abbr[0], type, tokens[e].second);
-                options[name].push_back(newOption);
-                break;
-            }
-            case OptionType::Text:
-            {
-                IOptionType* newOption = new Text(name, abbr[0], type, tokens[e].second);
-                options[name].push_back(newOption);
-                break;
-            }
-        }
     }
 
     return true;
@@ -191,7 +245,7 @@ bool OptionParser::Validate()
     if (tokens.size() == 0)
         return false;
 
-    return AnalyzeSintax() && AnalyzeSemantic();
+    return AnalyzeSyntax() && AnalyzeSemantic();
 }
 
 const string OptionParser::GetToken(size_t i)

@@ -30,3 +30,13 @@ const bool OptionDefinition::GetOptional() const
 {
 	return optional;
 }
+
+const bool OptionDefinition::GetDefined() const
+{
+    return defined;
+}
+
+void OptionDefinition::SetDefined()
+{
+    defined = true;
+}

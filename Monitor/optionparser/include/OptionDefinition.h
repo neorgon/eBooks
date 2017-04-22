@@ -13,6 +13,7 @@ class OptionDefinition
     string abbr;
     OptionType type;
     bool optional;
+    bool defined = false;
 
     public:
         OptionDefinition(const string &n, const string &abbr, OptionType t, bool o);
@@ -22,6 +23,8 @@ class OptionDefinition
         const string GetAbbr() const;
         const OptionType GetType() const;
         const bool GetOptional() const;
+        const bool GetDefined() const;
+        void SetDefined();
 
         struct Finder {
             string token;
