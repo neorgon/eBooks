@@ -1,11 +1,16 @@
 #include <iostream>
 #include <vector>
+#include <map>
+#include <string>
 
 using namespace std;
 
+//template<class T>
+typedef int (*operations)(int, int);
+
 vector<char> operators;
 vector<int> my_stack;
-vector<void(*)()> functions;
+map<char, operations> functions;
 
 template<class element>
 element add(element a, element b)
@@ -60,19 +65,17 @@ element calculate(element a, element b, element (*operation)(element, element))
     return (*operation)(a, b);
 }
 
-void addOperation(void(*function)())
-{
-    functions.push_back(function);
-}
-
 int main(/*int argc, char* args[]*/)
 {
     operators.push_back('+');
     operators.push_back('*');
     operators.push_back('/');
-    addOperation(void(*add)());
+    /*functions.push_back([]{add;});
     functions.push_back(void(*multiply)());
-    functions.push_back(void(*divide)());
+    functions.push_back(void(*divide)());*/
+    functions['+'] = add;
+    functions['*'] = multiply;
+    functions['/'] = divide;
     my_stack.push_back(6);
     my_stack.push_back(8);
     my_stack.push_back(15);
@@ -84,9 +87,9 @@ int main(/*int argc, char* args[]*/)
         my_stack.erase(my_stack.begin());
         int b = my_stack.front();
         my_stack.erase(my_stack.begin());
-        /*char op = operators.front();
+        char op = operators.front();
         operators.erase(operators.begin());
-        int res;
+        /*int res;
         switch (op)
         {
             case '+':
@@ -106,7 +109,7 @@ int main(/*int argc, char* args[]*/)
                 break;
         }
         */
-        my_stack.insert(my_stack.begin(), calculate(a, b, functions.front()));
+        my_stack.insert(my_stack.begin(), calculate(a, b, functions[op]));
         functions.erase(functions.begin());
     }
 
