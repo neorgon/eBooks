@@ -11,154 +11,161 @@ class ITest : public ::testing::Test
 	virtual void TearDown() {
 		
 	}
-/*
-private:
-	auto getValuesOptions(string optionname, vector<IOptionType*> Op){
-		for(auto i:Op)
-	        switch(i->GetType())
-	        {
-	            case OptionType::Boolean:
-	            {
-	                return static_cast<Boolean*>(i)->GetValue();
-	                break;
-	            }
-	            case OptionType::Integer:
-	            {
-	                return static_cast<Integer*>(i)->GetValue();
-	                break;
-	            }
-	            case OptionType::List:
-	            {
-	                
-	                return getValuesOptions(optionname,static_cast<List*>(i)->GetValue());                
-	                break;
-	            }
-	            case OptionType::Real:
-	            {
-	                return static_cast<Real*>(i)->GetValue();
-	                break;
-	            }
-	            case OptionType::Text:
-	            {
-	                return static_cast<Text*>(i)->GetValue();
-	                break;
-	            }
-	        }
-		}*/
+
 };
-
-
-TEST_F(ITest, GetOptions_Giving)
+TEST_F(ITest, OptionsSize)
  {
-    int argc = 10;
-    const char* args[] = { "Scanner", "-p", "100", "--no-incluye", "[--grasas_hidrogenadas", "2.5", "-z", "50]","--calorias", "250" };
+    int argc = 8;
+    const char* args[] = { "Scanner", "-p", "100","-c","458","-z", "48","-i"};
 
     OptionParser op(argc, args);
 
     op.AddInteger("calorias", 'c');
     op.AddInteger("proteinas", 'p');
-    op.AddReal("grasas_saturadas", 'g');
-    op.AddReal("grasas_hidrogenadas", 'h', true, 0);
-    op.AddText("nombre", 'n', false, 2);
-    op.AddList("no-incluye", 'i');
-    op.AddList("incluye", 'e');
     op.AddInteger("azucares", 'z');
-    op.AddBoolean("bBool", 'b');
     op.AddBoolean("iBool", 'i');
 
     op.Validate();
-    map<string, vector<IOptionType*>> options = op.GetOptions();
     
-    EXPECT_EQ(options.size(),3); 
+    map<string, vector<IOptionType*>> options = op.GetOptions();
+    EXPECT_EQ(options.size(),4); 
 }
 
-TEST_F(ITest, AddInteger_GivingOptionType_ExpectedValue)
+TEST_F(ITest, OptionsSize2)
  {
-    int argc = 3;
-    const char* args[] = { "Scanner", "-p", "100" };
+    int argc = 10;
+    const char* args[] = { "Scanner", "-p", "[100","85","45]","-c","458","-z", "48","-i"};
 
     OptionParser op(argc, args);
+
+    op.AddInteger("calorias", 'c');
     op.AddInteger("proteinas", 'p');
+    op.AddInteger("azucares", 'z');
+    op.AddBoolean("iBool", 'i');
+
 
     op.Validate();
+    
     map<string, vector<IOptionType*>> options = op.GetOptions();
-	auto o = options.find("proteinas");    
-    EXPECT_EQ(o.second[0]->GetValue(), "100");    
-
+    EXPECT_EQ(options.size(),4); 
 }
+/////////////////////////////////////////////////////////////////////
 
-TEST_F(ITest, AddInteger_GivingOptionType_ExpectedValueDefault)
+TEST_F(ITest, GetOptions_Giving)
  {
-    int argc = 2;
-    const char* args[] = { "Scanner", "-p"};
+    int argc = 8;
+    const char* args[] = { "Scanner", "-p", "10.50","-c","458","-z", "48","-i"};
 
     OptionParser op(argc, args);
 
+    op.AddInteger("calorias", 'c');
+    op.AddReal("proteinas", 'p');
+    op.AddInteger("azucares", 'z');
+    op.AddBoolean("iBool", 'i');
+
+    op.Validate();
+    
+    map<string, vector<IOptionType*>> options = op.GetOptions();
+
+     for (auto &o : options)
+        {
+             for(auto i:o.second)
+             {
+                if(i->GetName()=="calorias")
+                {
+                        
+                        EXPECT_EQ(i->GetName(),"calorias");
+                        EXPECT_EQ(i->GetAbbr(), 'c');
+                        EXPECT_EQ(static_cast<Integer*>(i)->GetValue() , 458);
+
+
+                }
+
+                if(i->GetName()=="proteinas")
+                {
+                        
+                        EXPECT_EQ(i->GetName(),"proteinas");
+                        EXPECT_EQ(i->GetAbbr(), 'p');
+                        EXPECT_EQ(static_cast<Real*>(i)->GetValue() , 10.5);
+
+
+                }
+                if(i->GetName()=="azucares")
+                {
+                        
+                        EXPECT_EQ(i->GetName(),"azucares");
+                        EXPECT_EQ(i->GetAbbr(), 'z');
+                        EXPECT_EQ(static_cast<Integer*>(i)->GetValue() , 48);
+
+
+                }
+                  if(i->GetName()=="iBool")
+                {
+                        
+                        EXPECT_EQ(i->GetName(),"iBool");
+                        EXPECT_EQ(i->GetAbbr(), 'i');
+                        EXPECT_EQ(static_cast<Boolean*>(i)->GetValue() , 1);
+
+
+                }
+             }
+
+        }
+}
+
+
+TEST_F(ITest, GetOptions_Giving2)
+ {
+    int argc = 10;
+    const char* args[] = { "Scanner", "-p", "[100","85","45]","-c","458","-z", "48","-i"};
+
+    OptionParser op(argc, args);
+
+    op.AddInteger("calorias", 'c');
     op.AddInteger("proteinas", 'p');
+    op.AddInteger("azucares", 'z');
+    op.AddBoolean("iBool", 'i');
+
 
     op.Validate();
+    
     map<string, vector<IOptionType*>> options = op.GetOptions();
-	auto o = options.find("proteinas");    
-    EXPECT_EQ(o.second[0]->GetValue(), "true");    
 
+     for (auto &o : options)
+        {   int j=0;
+             for(auto i:o.second)
+             {
+                if(i->GetName()=="calorias")
+                {
+                        
+                        EXPECT_EQ(i->GetName(),"calorias");
+                        EXPECT_EQ(i->GetAbbr(), 'c');
+                        EXPECT_EQ(static_cast<Integer*>(i)->GetValue() , 458);
+
+
+                }
+
+                if(i->GetName()=="proteinas")
+                {
+                        int values[]={100,85,45};
+                        EXPECT_EQ(i->GetName(),"proteinas");
+                        EXPECT_EQ(i->GetAbbr(), 'p');
+                        EXPECT_EQ(static_cast<Integer*>(i)->GetValue() , values[j]);
+                        j++;
+
+
+                }
+                if(i->GetName()=="azucares")
+                {
+                        
+                        EXPECT_EQ(i->GetName(),"azucares");
+                        EXPECT_EQ(i->GetAbbr(), 'z');
+                        EXPECT_EQ(static_cast<Integer*>(i)->GetValue() , 48);
+
+
+                }
+             }
+
+        }
 }
 
-TEST_F(ITest, AddReal_GivingOptionType_ExpectedValue)
- {
-    int argc = 3;
-    const char* args[] = { "Scanner", "--grasas_saturadas", "0.8" };
-
-    OptionParser op(argc, args);
-   	op.AddReal("grasas_saturadas", 'g');
-
-    op.Validate();
-    map<string, vector<IOptionType*>> options = op.GetOptions();
-	auto o = options.find("grasas_saturadas");    
-    EXPECT_EQ(o.second[0]->GetValue(), "0.8");    
-
-}
-
-TEST_F(ITest, AddReal_GivingOptionType_ExpectedValueDefault)
- {
-    int argc = 3;
-    const char* args[] = { "Scanner", "--grasas_saturadas", "0.8" };
-
-    OptionParser op(argc, args);
-   	op.AddReal("grasas_saturadas", 'g');
-
-    op.Validate();
-    map<string, vector<IOptionType*>> options = op.GetOptions();
-	auto o = options.find("grasas_saturadas");    
-    EXPECT_EQ(o.second[0]->GetValue(), "true");    
-
-}
-
-TEST_F(ITest, AddBoolean_GivingOptionType_ExpectedValue)
- {
-    int argc = 3;
-    const char* args[] = { "Scanner", "-b", "false"};
-
-    OptionParser op(argc, args);
-   	op.AddBoolean("bBool", 'b');
-
-    op.Validate();
-    map<string, vector<IOptionType*>> options = op.GetOptions();
-	auto o = options.find("bBool");    
-    EXPECT_EQ(o.second[0]->GetValue(), "false");    
-
-}
-
-TEST_F(ITest, AddBoolean_GivingOptionType_ExpectedValueDefault)
- {
-    int argc = 3;
-    const char* args[] = { "Scanner", "-b"};
-
-    OptionParser op(argc, args);
-   	op.AddBoolean("bBool", 'b');
-
-    op.Validate();
-    map<string, vector<IOptionType*>> options = op.GetOptions();
-	auto o = options.find("bBool");    
-    EXPECT_EQ(o.second[0]->GetValue(), "true");    
-
-}
