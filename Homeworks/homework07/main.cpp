@@ -1,16 +1,64 @@
 #include <iostream>
 #include <vector>
-#include <map>
 #include <string>
 
 using namespace std;
 
-//template<class T>
-typedef int (*operations)(int, int);
+class IElement
+{
+
+};
+
+template<class TElement>
+class Element : public IElement
+{
+    TElement data;
+};
+
+/*class Vector
+{
+    vector<IElement*> elements;
+};*/
+
+class Parser
+{
+    vector<char> operators;
+    vector<IElement*> elements;
+
+    public:
+        Parser(const char* s);
+};
+
+Parser::Parser(const char* s)
+{
+    string s_number = "";
+    for (int i = 0; s[i] != '\0'; i++)
+    {
+        switch (s[i])
+        {
+            case '+':
+            case '-':
+            case '*':
+            case '/':
+            case '%':
+                operators.push_back(s[i]);
+            break;
+            case '|':
+                if (!s_number.empty())
+                {
+                    elements.push_back(stoi(s_number));
+                    s_number = "";
+                }
+            break;
+            case '0' ... '9':
+                s_number += s[i];
+            break;
+        }
+    }
+}
 
 vector<char> operators;
 vector<int> my_stack;
-map<char, operations> functions;
 
 template<class element>
 element add(element a, element b)
@@ -43,22 +91,6 @@ element my_modulus(element a, element b)
     return a % b;
 }
 
-/*
-int calculate(int a, int b, char o)
-{
-    switch(o)
-    {
-        case '+': return a + b;
-        case '-': return a - b;
-        case '*': return a * b;
-        case '/': return a / b;
-        case '%': return a % b;
-    }
-
-    return 0;
-}
-*/
-
 template<class element>
 element calculate(element a, element b, element (*operation)(element, element))
 {
@@ -67,15 +99,11 @@ element calculate(element a, element b, element (*operation)(element, element))
 
 int main(/*int argc, char* args[]*/)
 {
-    operators.push_back('+');
+    Parser p("6|8|+|15|*|2|/");
+
+    /*operators.push_back('+');
     operators.push_back('*');
     operators.push_back('/');
-    /*functions.push_back([]{add;});
-    functions.push_back(void(*multiply)());
-    functions.push_back(void(*divide)());*/
-    functions['+'] = add;
-    functions['*'] = multiply;
-    functions['/'] = divide;
     my_stack.push_back(6);
     my_stack.push_back(8);
     my_stack.push_back(15);
@@ -89,32 +117,28 @@ int main(/*int argc, char* args[]*/)
         my_stack.erase(my_stack.begin());
         char op = operators.front();
         operators.erase(operators.begin());
-        /*int res;
         switch (op)
         {
             case '+':
-                res = calculate(a, b, add);
+                my_stack.insert(my_stack.begin(), calculate(a, b, add));
                 break;
             case '-':
-                res = calculate(a, b, subtract);
+                my_stack.insert(my_stack.begin(), calculate(a, b, subtract));
                 break;
             case '*':
-                res = calculate(a, b, multiply);
+                my_stack.insert(my_stack.begin(), calculate(a, b, multiply));
                 break;
             case '/':
-                res = calculate(a, b, divide);
+                my_stack.insert(my_stack.begin(), calculate(a, b, divide));
                 break;
             case '%':
-                res = calculate(a, b, my_modulus);
+                my_stack.insert(my_stack.begin(), calculate(a, b, my_modulus));
                 break;
         }
-        */
-        my_stack.insert(my_stack.begin(), calculate(a, b, functions[op]));
-        functions.erase(functions.begin());
     }
 
     for (auto i = my_stack.begin(); i < my_stack.end(); i++)
-        cout << *i << endl;
+        cout << *i << endl;*/
 
     return 0;
 }
