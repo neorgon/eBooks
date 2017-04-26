@@ -11,7 +11,7 @@ Real::Real(const string& name, const char abbr, const OptionType type, const str
 		{
 
 		}
-		else if (c==46)
+		else if (c==46 || c == 45)
         {
 
         }

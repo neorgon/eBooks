@@ -7,7 +7,8 @@ Integer::Integer(const string& name, const char abbr, const OptionType type, con
 {
 	for(auto c : strValue)
 	{
-		if(c<48||c>57)
+	    if(c != 45)
+		if(c < 48 || c > 57)
 			throw SemanticException("Error Integer Number Type");
 	}
     value=stoi(strValue);

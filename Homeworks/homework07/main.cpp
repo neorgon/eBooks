@@ -4,15 +4,24 @@
 
 using namespace std;
 
+template<class TElement>
 class IElement
 {
-
+    public:
+        virtual TElement GetData() const = 0;
 };
 
 template<class TElement>
-class Element : public IElement
+class Element : public IElement<int>
 {
     TElement data;
+
+    public:
+        Element(TElement e) : data{e} {}
+        int GetData() const
+        {
+            return data;
+        }
 };
 
 /*class Vector
@@ -23,7 +32,7 @@ class Element : public IElement
 class Parser
 {
     vector<char> operators;
-    vector<IElement*> elements;
+    vector<IElement> elements;
 
     public:
         Parser(const char* s);
@@ -46,7 +55,8 @@ Parser::Parser(const char* s)
             case '|':
                 if (!s_number.empty())
                 {
-                    elements.push_back(stoi(s_number));
+                    IElement* e = new Element<int>(stoi(s_number));
+                    elements.push_back(e);
                     s_number = "";
                 }
             break;
@@ -55,6 +65,9 @@ Parser::Parser(const char* s)
             break;
         }
     }
+
+    for (auto &e : elements)
+        cout << e->GetData() << endl;
 }
 
 vector<char> operators;

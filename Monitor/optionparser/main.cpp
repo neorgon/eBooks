@@ -79,7 +79,7 @@ int main(/*int argc, char* args[]*/)
     op.AddBoolean("iBool", 'i', false);
 */
     int argc = 5;
-    const char* args[] = { "Scanner", "--calorias", "250", "-g", "10.0"};
+    const char* args[] = { "Scanner", "--calorias", "250", "-g", "-10.0"};
 
     //Act
     //Assert

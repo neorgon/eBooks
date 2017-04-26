@@ -17,7 +17,8 @@ OptionParser::OptionParser(int argc, const char** args)
         else
             if(tokenValue.empty())
             {
-                if (args[token][0] == '-')
+                if (args[token][0] == '-' &&
+                    (args[token][1] < '0' || args[token][1] > '9'))
                     tokenValue = "true";
                 else
                     if (args[token][0] == '[')
@@ -79,8 +80,7 @@ string OptionParser::isOption(string token)
         }
         else
         {
-            throw SyntaxException ("Operator expected");
-            return "";
+            throw SyntaxException ("Wrong format Option.");
         }
 }
 
