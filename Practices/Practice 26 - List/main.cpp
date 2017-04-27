@@ -1,5 +1,5 @@
 #include <iostream>
-#include <list> //consumen mucha memoria, son mas lectos de acceder a un elemento.
+#include <list> //consumen mucha memoria, son mas lentos de acceder a un elemento.
 
 using namespace std;
 

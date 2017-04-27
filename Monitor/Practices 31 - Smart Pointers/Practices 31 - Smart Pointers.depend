@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1493329220 source:c:\users\administrator\documents\github\ebooks\monitor\practices 31 - smart pointers\main.cpp
+	<iostream>
+	<memory>
+
