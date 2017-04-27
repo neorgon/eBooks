@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1493308817 source:c:\users\administrator\documents\github\ebooks\practices\practices 30 - maps\main.cpp
+	<iostream>
+	<map>
+	<unordered_map>
+
