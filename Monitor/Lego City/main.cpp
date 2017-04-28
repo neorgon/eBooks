@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-#include <set>
+#include <map>
+#include <algorithm>
 
 using namespace std;
 
@@ -21,29 +22,25 @@ string Street::GetName() const
 class Block
 {
     string name;
-    int number;
-    set<Street*> streets;
 
     public:
-        Block(const string &n, int i) : name{n}, number{i} {}
+        Block(const string &n) : name{n} {}
         string GetName() const;
         int GetNumber() const;
-        void AddStreet(const string &name);
+
+        struct Finder {
+            string name;
+            Finder(const string &n) : name{n} {};
+            bool operator()(const Block &b) const
+            {
+                return b.name.compare(name) == 0;
+            }
+        };
 };
 
 string Block::GetName() const
 {
     return name;
-}
-
-int Block::GetNumber() const
-{
-    return number;
-}
-
-void Block::AddStreet(const string &name)
-{
-    streets.insert(new Street(name));
 }
 
 class Vehicle
@@ -58,38 +55,64 @@ class Semaphore
 
 class City
 {
-    vector<Block*> blocks;
+    vector<Block> blocks;
+    vector<Street> streets;
+    map<string, vector<Block*>> address;
 
     public:
-        void AddBlock(const string &name, int number);
+        void AddBlock(const string &name);
+        void AddStreet(const string &name);
+        Block GetBlock(const string &name) const;
         void Show() const;
 };
 
-void City::AddBlock(const string &name, int number)
+void City::AddBlock(const string &name)
 {
-    blocks.push_back(new Block(name, number));
+    blocks.push_back(Block(name));
+}
+
+void City::AddStreet(const string &name)
+{
+    streets.push_back(Street(name));
+}
+
+Block City::GetBlock(const string &name) const
+{
+    auto it = find_if(blocks.begin(), blocks.end(), Block::Finder(name));
+    if (it != blocks.end())
+        return *it;
 }
 
 void City::Show() const
 {
     cout << ".:LEGO CITY:.\n";
     for (auto &b : blocks)
-        cout << b->GetName() << ":" << b->GetNumber() << endl;
+        cout << b.GetName() << endl;
+    for (auto &s : streets)
+        cout << "Street: " << s.GetName() << endl;
 }
 
 int main()
 {
     City legocity;
 
-    legocity.AddBlock("A", 1);
-    legocity.AddBlock("A", 2);
-    legocity.AddBlock("A", 3);
-    legocity.AddBlock("B", 1);
-    legocity.AddBlock("B", 2);
-    legocity.AddBlock("B", 3);
-    legocity.AddBlock("C", 1);
-    legocity.AddBlock("C", 2);
-    legocity.AddBlock("C", 3);
+    legocity.AddBlock("A1");
+    legocity.AddBlock("A2");
+    legocity.AddBlock("A3");
+    legocity.AddBlock("B4");
+    legocity.AddBlock("B5");
+    legocity.AddBlock("B6");
+    legocity.AddBlock("C7");
+    legocity.AddBlock("C8");
+    legocity.AddBlock("C9");
+    legocity.AddStreet("SH1");
+    legocity.AddStreet("SH2");
+    legocity.AddStreet("SH3");
+    legocity.AddStreet("SH4");
+    legocity.AddStreet("SV1");
+    legocity.AddStreet("SV2");
+    legocity.AddStreet("SV3");
+    legocity.AddStreet("SV4");
     legocity.Show();
 
     return 0;
