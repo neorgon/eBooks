@@ -44,8 +44,14 @@ class Semaphore
     bool CanGo;
     pair<string, string> location;
 
-
+    public:
+        bool GetStatus();
 };
+
+bool Semaphore::GetStatus()
+{
+    return CanGo;
+}
 
 class Vehicle
 {
