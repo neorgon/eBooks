@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1493497580 source:c:\users\nestor\documents\github\ebooks\monitor\lego city\main.cpp
+	<iostream>
+	<vector>
+	<map>
+	<algorithm>
+

@@ -26,16 +26,7 @@ class Block
     public:
         Block(const string &n) : name{n} {}
         string GetName() const;
-        int GetNumber() const;
-
-        struct Finder {
-            string name;
-            Finder(const string &n) : name{n} {};
-            bool operator()(const Block &b) const
-            {
-                return b.name.compare(name) == 0;
-            }
-        };
+        friend bool operator==(const Block &b1, const Block &b2);
 };
 
 string Block::GetName() const
@@ -43,12 +34,20 @@ string Block::GetName() const
     return name;
 }
 
-class Vehicle
+bool operator==(const Block &b1, const Block &b2)
 {
+    return b1.name == b2.name;
+}
+
+class Semaphore
+{
+    bool CanGo;
+    pair<string, string> location;
+
 
 };
 
-class Semaphore
+class Vehicle
 {
 
 };
@@ -57,12 +56,13 @@ class City
 {
     vector<Block> blocks;
     vector<Street> streets;
-    map<string, vector<Block*>> address;
+    map<string, vector<Block>> address;
 
     public:
         void AddBlock(const string &name);
         void AddStreet(const string &name);
         Block GetBlock(const string &name) const;
+        void InsertAddress(const string &street, const string &block);
         void Show() const;
 };
 
@@ -78,18 +78,30 @@ void City::AddStreet(const string &name)
 
 Block City::GetBlock(const string &name) const
 {
-    auto it = find_if(blocks.begin(), blocks.end(), Block::Finder(name));
+    auto it = find(blocks.begin(), blocks.end(), Block(name));
     if (it != blocks.end())
         return *it;
+    return Block("");
+}
+
+void City::InsertAddress(const string &street, const string &block)
+{
+    address.insert(pair<string, vector<Block>> (street, vector<Block>()));
+    address[street].push_back(GetBlock(block));
 }
 
 void City::Show() const
 {
     cout << ".:LEGO CITY:.\n";
-    for (auto &b : blocks)
-        cout << b.GetName() << endl;
-    for (auto &s : streets)
-        cout << "Street: " << s.GetName() << endl;
+    for (auto &a: address)
+    {
+        cout << a.first << endl;
+        for (auto &b : a.second)
+        {
+            cout << b.GetName() << " ";
+        }
+        cout << endl;
+    }
 }
 
 int main()
@@ -105,6 +117,7 @@ int main()
     legocity.AddBlock("C7");
     legocity.AddBlock("C8");
     legocity.AddBlock("C9");
+    /*
     legocity.AddStreet("SH1");
     legocity.AddStreet("SH2");
     legocity.AddStreet("SH3");
@@ -113,6 +126,25 @@ int main()
     legocity.AddStreet("SV2");
     legocity.AddStreet("SV3");
     legocity.AddStreet("SV4");
+    */
+    legocity.InsertAddress("SH1", "A1");
+    legocity.InsertAddress("SH1", "A2");
+    legocity.InsertAddress("SH1", "A3");
+    legocity.InsertAddress("SH2", "A1");
+    legocity.InsertAddress("SH2", "A2");
+    legocity.InsertAddress("SH2", "A3");
+    legocity.InsertAddress("SH2", "B4");
+    legocity.InsertAddress("SH2", "B5");
+    legocity.InsertAddress("SH2", "B6");
+    legocity.InsertAddress("SH3", "B4");
+    legocity.InsertAddress("SH3", "B5");
+    legocity.InsertAddress("SH3", "B6");
+    legocity.InsertAddress("SH3", "A1");
+    legocity.InsertAddress("SH3", "A2");
+    legocity.InsertAddress("SH3", "A3");
+    legocity.InsertAddress("SH4", "C7");
+    legocity.InsertAddress("SH4", "C8");
+    legocity.InsertAddress("SH4", "C9");
     legocity.Show();
 
     return 0;
