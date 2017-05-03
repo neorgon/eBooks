@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1493829503 source:c:\users\administrator\documents\github\ebooks\practices\practice 34 - streams\main.cpp
+	<iostream>
+	<vector>
+	<fstream>
+
