@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1493892137 source:c:\users\nestor\documents\github\ebooks\monitor\traffic light\main.cpp
+	<iostream>
+	<set>
+	<vector>
+	<memory>
+
