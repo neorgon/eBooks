@@ -16,7 +16,7 @@ void Vehicle::Move()
 		{
 			auto it = find_if( route.begin(), route.end(),
              [](const pair<shared_ptr<TrafficLight>, bool>& element)
-             { 
+             {
              	return element.first == ubication;
              });
 			if (it==ruote.end())
@@ -37,7 +37,9 @@ size_t Vehicle::GetArrivalTime()const
 	return arrivalTime;
 }
 
+/*
 Vehicle::~Vehicle()
 {
 
 }
+*/
