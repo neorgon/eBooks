@@ -8,6 +8,7 @@
 
 using namespace std;
 
+class TrafficLight;
 class Vehicle
 {
 	size_t lincencePlate;
@@ -23,7 +24,7 @@ public:
 	void Move();
 	shared_ptr<TrafficLight> GetLocation() const;
 	size_t GetArrivalTime()  const;
-	~Vehicle();
+	//~Vehicle();
 };
 
 #endif // VEHICLE_H

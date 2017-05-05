@@ -1,31 +1,51 @@
 #include "../include/TrafficLight.h"
 
-TrafficLight::TrafficLight(size_t trafficLightld,bool state,vector<string> places,size_t interval,size_t stack):trafficLightld{trafficLightld},state{state},places{places},interval{interval},stack{stack}
+string TrafficLight::GetTLID() const
 {
-
-}
-bool TrafficLight::getState()
-{
-    return state;
-}
-size_t TrafficLight::getId()
-{
-    return trafficLightld;
-}
-void TrafficLight::setState(bool newState)
-{
-    state=newState;
-}
-/*void TrafficLight::addQueue(Vehicle aux)
-{
-
-}*/
-void TrafficLight::reduceQueue()
-{
-
+    return ID;
 }
 
-TrafficLight::~TrafficLight()
+bool TrafficLight::GetLight() const
 {
-    //dtor
+    return light;
+}
+
+size_t TrafficLight::CountFreeSpaces() const
+{
+    return maxLTQueue - vehicles.size();
+}
+
+bool TrafficLight::SwitchLight()
+{
+    return !light;
+}
+
+bool TrafficLight::EnQueue(const Vehicle &v)
+{
+    if (maxLTQueue < vehicles.size())
+    {
+        vehicles.push(make_shared<Vehicle>(v));
+        return true;
+    }
+
+    return false;
+}
+
+shared_ptr<Vehicle> TrafficLight::FirstVehicle()
+{
+    if (vehicles.empty())
+        return nullptr;
+
+    return vehicles.front();
+}
+
+bool TrafficLight::DeQueue()
+{
+    if (vehicles.empty())
+        return false;
+    if (!light)
+        return false;
+    vehicles.pop();
+
+    return true;
 }
