@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1494045694 source:c:\users\nestor\documents\github\ebooks\practices\ejercicio 01\main.cpp
+	<iostream>
+	<string>
+	<unordered_map>
+	<vector>
+	<map>
+	<tuple>
+	<set>
+	<memory>
+	<algorithm>
+

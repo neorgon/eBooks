@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1494036136 source:c:\users\nestor\documents\github\ebooks\practices\borrar\main.cpp
+	<iostream>
+	<map>
+	<algorithm>
+	<vector>
+	<tuple>
+
