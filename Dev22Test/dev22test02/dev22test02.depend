@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1494084371 source:c:\users\administrator\documents\github\ebooks\dev22test\dev22test02\main.cpp
+	<iostream>
+	<sstream>
+	<vector>
+	<map>
+	<stack>
+	<algorithm>
+
