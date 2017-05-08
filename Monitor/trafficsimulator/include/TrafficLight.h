@@ -11,12 +11,13 @@ using namespace std;
 class TrafficLight
 {
     string ID;
-    size_t maxLTQueue;
+    size_t countdown;
+    size_t maxVQueue;
     bool light;
     queue<shared_ptr<Vehicle>> vehicles;
 
     public:
-        TrafficLight(const string &id, size_t m, bool l = true) : ID{id}, maxLTQueue{m}, light{l} {};
+        TrafficLight(const string &id, size_t c, size_t m, bool l = true) : ID{id}, countdown{c}, maxVQueue{m}, light{l} {};
         string GetTLID() const;
         bool GetLight() const;
         size_t CountFreeSpaces() const;

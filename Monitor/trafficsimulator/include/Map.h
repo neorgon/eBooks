@@ -10,15 +10,13 @@ using namespace std;
 class Map
 {
 
-    map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> mapTraffictLigth;
-    //map<Vehicle,vector<int>> routes;
-    vector<string> places;
-    vector<size_t> adyacent;
+    map<int,vector<int>> mapTraffictLigth;
+    vector<int> adyacent;
 
     public:
 
  		Map();
-        map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> createMap(int sizeMap);
+        map<int,vector<int>> createMap(int sizeMap);
         void show();
         virtual ~Map();
 

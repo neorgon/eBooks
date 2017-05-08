@@ -1,10 +1,13 @@
 
-#include "include/TrafficSimulator.h"
+//#include "include/TrafficSimulator.h"
 //#include "TrafficSimulator.h"
-
+#include "include/Map.h"
 
 int main()
 {
-	TrafficSimulator* a = new TrafficSimulator(3);
-	a->InitializeVehicles();
+	Map m;
+	m.createMap(4);
+	m.show();
+	//TrafficSimulator* a = new TrafficSimulator(3);
+	//a->InitializeVehicles();
 }

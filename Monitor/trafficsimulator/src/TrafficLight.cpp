@@ -12,7 +12,7 @@ bool TrafficLight::GetLight() const
 
 size_t TrafficLight::CountFreeSpaces() const
 {
-    return maxLTQueue - vehicles.size();
+    return maxVQueue - vehicles.size();
 }
 
 bool TrafficLight::SwitchLight()
@@ -22,7 +22,7 @@ bool TrafficLight::SwitchLight()
 
 bool TrafficLight::EnQueue(const Vehicle &v)
 {
-    if (maxLTQueue < vehicles.size())
+    if (maxVQueue < vehicles.size())
     {
         vehicles.push(make_shared<Vehicle>(v));
         return true;
