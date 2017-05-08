@@ -1,0 +1,17 @@
+# depslib dependency file v1.0
+1494255511 source:c:\users\administrator\documents\github\ebooks\monitor\borrar\main.cpp
+	<windows.h>
+	<iostream>
+	<stdio.h>
+	<unistd.h>
+	<iostream>
+	<iostream>
+	<conio.h>
+	<stdlib.h>
+	<ctime>
+	<iostream>
+	<iostream>
+	<vector>
+	<string>
+	<map>
+
