@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 			</Target>
 			<Target title="Release">
@@ -22,6 +23,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -32,7 +34,17 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Map.h" />
+		<Unit filename="include/TrafficLight.h" />
+		<Unit filename="include/TrafficSimulator.h" />
+		<Unit filename="include/Vehicle.h" />
+		<Unit filename="include/ViewScreen.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/Map.cpp" />
+		<Unit filename="src/TrafficLight.cpp" />
+		<Unit filename="src/TrafficSimulator.cpp" />
+		<Unit filename="src/Vehicle.cpp" />
+		<Unit filename="src/ViewScreen.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
