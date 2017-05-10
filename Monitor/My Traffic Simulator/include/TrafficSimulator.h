@@ -1,6 +1,10 @@
 #ifndef TRAFFICSIMULATOR_H
 #define TRAFFICSIMULATOR_H
 
+#include "Map.h"
+#include "Vehicle.h"
+//#include "../include/Vehicle.h"
+//#include "../include/Map.h"
 #include <vector>
 #include <memory>
 #include <string>
@@ -8,9 +12,9 @@
 #include <iostream>
 #include <ctime>
 #include <math.h>
-#include <Map.h>
+#include <exception>
 
-using namespace std;
+//using namespace std;
 
 class TrafficSimulator
 {
@@ -19,7 +23,7 @@ class TrafficSimulator
 	int vehicleStartPoint;
 	int vehicleEndPoint;
 	Map* mapSimulator;
-	map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> mapTraffictLight;
+	map<int,vector<int>> mapTraffictLight;
 	//vector<Vehicle*> vehicles;
 
 	public:
@@ -29,9 +33,10 @@ class TrafficSimulator
 	void BuildMap(int trafficLightsQuantity);
 	void StartSimulation();
 	void InitializeVehicles();
-	//Vehicle* CreateVehicles(int vehicleQuantity, int vehicleStartPointX, int vehicleStartPointY);
+	//Vehicle* CreateVehicles(vector <pair<shared_ptr<TrafficLight>, bool>> route, int vehicleStartPointX, int vehicleStartPointY);
 	int RandomInteger(int lowest, int highest);
 
 };
 
 #endif // TRAFFICSIMULATOR_H
+

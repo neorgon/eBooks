@@ -1,23 +1,27 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
-
 #include <vector>
 #include <memory>
 #include <utility>
 
 #include "TrafficLight.h"
 
+
 using namespace std;
 
 class TrafficLight;
+class TrafficSimulator;
+
 class Vehicle
 {
+	
 	size_t lincencePlate;
 	double speed=1;
 	vector <pair<shared_ptr<TrafficLight>, bool>> route;
 	size_t startTime;
 	shared_ptr<TrafficLight> ubication;
 	size_t arrivalTime=0;
+	size_t indice=0;
 public:
 	Vehicle(double speed,
 			vector <pair<shared_ptr<TrafficLight>, bool>> route,

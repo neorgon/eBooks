@@ -38,13 +38,13 @@
 		<Unit filename="include/TrafficLight.h" />
 		<Unit filename="include/TrafficSimulator.h" />
 		<Unit filename="include/Vehicle.h" />
-		<Unit filename="include/ViewScreen.h" />
+		<Unit filename="include/WindowsConsole.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Map.cpp" />
 		<Unit filename="src/TrafficLight.cpp" />
 		<Unit filename="src/TrafficSimulator.cpp" />
 		<Unit filename="src/Vehicle.cpp" />
-		<Unit filename="src/ViewScreen.cpp" />
+		<Unit filename="src/WindowsConsole.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />

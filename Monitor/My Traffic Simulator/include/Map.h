@@ -1,22 +1,35 @@
 #ifndef MAP_H
 #define MAP_H
-
 #include "TrafficLight.h"
-#include <map>
+#include <algorithm>
+#include <iostream>
 #include <vector>
 #include <memory>
-#include <iostream>
+#include <deque>
+#include <stack>
+#include <map>
 using namespace std;
 
 class Map
 {
-    int sizeMap;
-    map<int,vector<int>> mapTraffictLigth;
+    map<int,vector<int>> mapTrafficLight;
     vector<int> adyacent;
 
+    vector<TrafficLight*> VectorTrafictlight;
+    map<int,vector<TrafficLight*>> mapLight;
+
     public:
-        map<int,vector<int>> createMap(int sm);
+
+ 		Map();
+        map<int,vector<TrafficLight*>> createMap(int sizeMap);
+        vector<int> createRoute(int origin,int destination);
+        map<int,vector<TrafficLight*>> get_mapTLight();        
+    	bool findStack(stack<int> auxStack,int value);
+    	bool findQueue(deque<int>& vertices,int value);
         void show();
+        void showMap();
+        virtual ~Map();
+
 };
 
 #endif // MAP_H

@@ -1,4 +1,4 @@
-#include "TrafficLight.h"
+#include "../include/TrafficLight.h"
 
 string TrafficLight::GetTLID() const
 {
@@ -7,7 +7,7 @@ string TrafficLight::GetTLID() const
 
 bool TrafficLight::GetLight() const
 {
-    return light;
+    return green;
 }
 
 size_t TrafficLight::CountFreeSpaces() const
@@ -17,7 +17,7 @@ size_t TrafficLight::CountFreeSpaces() const
 
 bool TrafficLight::SwitchLight()
 {
-    return !light;
+    return !green;
 }
 
 bool TrafficLight::EnQueue(const Vehicle &v)

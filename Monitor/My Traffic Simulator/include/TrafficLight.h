@@ -1,6 +1,5 @@
 #ifndef TRAFFICLIGHT_H
 #define TRAFFICLIGHT_H
-
 #include <string>
 #include <queue>
 #include <memory>
@@ -14,11 +13,11 @@ class TrafficLight
     string ID;
     size_t countdown;
     size_t maxVQueue;
-    bool light;
+    bool green;
     queue<shared_ptr<Vehicle>> vehicles;
 
     public:
-        TrafficLight(const string &id, size_t c, size_t m, bool l = true) : ID{id}, countdown{c}, maxVQueue{m}, light{l} {};
+        TrafficLight(const string &id, size_t c, size_t m, bool l = true) : ID{id}, countdown{c}, maxVQueue{m}, green{l} {};
         string GetTLID() const;
         bool GetLight() const;
         size_t CountFreeSpaces() const;

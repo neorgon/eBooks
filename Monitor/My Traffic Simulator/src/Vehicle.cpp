@@ -1,4 +1,4 @@
-#include "Vehicle.h"
+#include "../include/Vehicle.h"
 
 Vehicle::Vehicle(double speed,
 			vector <pair<shared_ptr<TrafficLight>, bool>> route,
@@ -6,25 +6,20 @@ Vehicle::Vehicle(double speed,
 :speed{speed}, route{route}, startTime{startTime}, ubication{route[0].first}
 {
 	lincencePlate++;
+	if (!ubication->EnQueue(*this))
+		throw "TrafficLight Full";
 }
 
 void Vehicle::Move()
 {
 	arrivalTime++;
-	/*size_t ligthPosition=ubication->MoveVehicle(this);
-	if (!ligthPosition)
+	if(ubication->FirstVehicle().get()==this)
+		if (route.at(indice++).first->EnQueue(*this))
 		{
-			auto it = find_if( route.begin(), route.end(),
-             [](const pair<shared_ptr<TrafficLight>, bool>& element)
-             {
-             	return element.first == ubication;
-             });
-			if (it==ruote.end())
-				throw "Route not found";
-			it->second=true;
-			it++;
-			ubication=it->firsr;
-		}*/
+			ubication=route.at(indice).first;
+		}
+
+
 }
 
 shared_ptr<TrafficLight> Vehicle::GetLocation() const

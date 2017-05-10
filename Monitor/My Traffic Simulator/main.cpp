@@ -6,6 +6,6 @@
 int main()
 {
     Map m;
-	m.createMap(8);
+	m.createMap(4);
 	m.show();
 }
