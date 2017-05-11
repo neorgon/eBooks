@@ -20,9 +20,10 @@ class TrafficLight
 
     public:
         TrafficLight(size_t id, size_t d, size_t c, size_t m, bool l = true) :
-            ID{id}, direction{d}, countdown{c}, maxVQueue{m}, green{l},vehicles{maxVQueue}
+            ID{id}, direction{d}, countdown{c}, maxVQueue{m}, green{l}
         {
-
+            for (size_t i = 0; i < maxVQueue; i++)
+                vehicles[i] = nullptr;
             timer = countdown;
         };
         size_t GetTLID() const;

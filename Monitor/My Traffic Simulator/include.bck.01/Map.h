@@ -1,7 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
-
-
+#include "TrafficLight.h"
+#include <algorithm>
 #include <iostream>
 #include <vector>
 #include <memory>
@@ -9,8 +9,6 @@
 #include <stack>
 #include <map>
 using namespace std;
-
-class TrafficLight;
 
 class Map
 {

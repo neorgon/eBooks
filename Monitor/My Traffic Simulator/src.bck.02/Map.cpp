@@ -1,8 +1,5 @@
 #include "../include/Map.h"
-#include "../include/TrafficLight.h"
-
-#include <algorithm>
-
+//#include "../include/TrafficLight.h"
 Map::Map()
 {
     //ctor

@@ -1,0 +1,11 @@
+WindowsConsole
+
+-Tengo un mapa, especificado por TLs
+-Tengo una lista de TLs
+-Por cada TL una cantidad que indica los vehículos en espera
+
+Use Simulation
+Simulation.Map.GetTLs
+Simulation.GetVhs
+
+Puedo usar una lista de tuplas<idTL, <int, int>, vhs, green>
