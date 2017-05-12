@@ -19,9 +19,10 @@ void WindowsConsole::GetXY(short int &x, short int &y)
 	}
 }
 
-void WindowsConsole::PrintTL(size_t maxTLs)
+void WindowsConsole::PrintMap(vector<tuple<int, pair<int, int>, int, bool>> &tls)
 {
     size_t x, y;
+    size_t maxTLs = tls.size();
 
     for (size_t i = 1; i <= maxTLs; i++)
     {

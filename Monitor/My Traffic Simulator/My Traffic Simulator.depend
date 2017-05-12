@@ -1,37 +1,41 @@
 # depslib dependency file v1.0
-1494304113 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+1494542144 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\main.cpp
 	<Map.h>
 
-1494299251 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\map.h
-	"TrafficLight.h"
-	<map>
+1494542144 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\map.h
+	<iostream>
 	<vector>
 	<memory>
-	<iostream>
+	<deque>
+	<stack>
+	<map>
 
-1494298579 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
+1494542144 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
 	<string>
-	<queue>
+	<deque>
 	<memory>
 	"Vehicle.h"
 
-1494297800 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
+1494542144 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
 	<vector>
 	<memory>
 	<utility>
-	"TrafficLight.h"
+	<iostream>
 
-1494304533 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
+1494542144 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
+	"../include/Map.h"
+	"../include/TrafficLight.h"
+	<algorithm>
+
+1494542144 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
+	"../include/TrafficLight.h"
+
+1494542144 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
+	"../include/TrafficSimulator.h"
+
+1494542144 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
 	"Map.h"
-	<ViewScreen.h>
-
-1494297746 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
-	"TrafficLight.h"
-
-1494298566 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
-	"TrafficSimulator.h"
-
-1494298306 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
+	"Vehicle.h"
 	<vector>
 	<memory>
 	<string>
@@ -39,10 +43,12 @@
 	<iostream>
 	<ctime>
 	<math.h>
-	<Map.h>
+	<exception>
 
-1494297836 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
-	"Vehicle.h"
+1494542144 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
+	"../include/Vehicle.h"
+	"../include/TrafficLight.h"
+	"../include/Map.h"
 
 1494303381 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\viewscreen.h
 	<iostream>

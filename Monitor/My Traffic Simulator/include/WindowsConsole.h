@@ -2,6 +2,8 @@
 #define WINDOWSCONSOLE_H
 
 #include <iostream>
+#include <tuple>
+#include <vector>
 #include <windows.h>
 
 using namespace std;
@@ -23,7 +25,7 @@ class WindowsConsole
 
         void GotoXY(short int x, short int y);
         void GetXY(short int &x, short int &y);
-        void PrintTL(size_t maxTLs);
+        void PrintMap(vector<tuple<int, pair<int, int>, int, bool>> &tls);
 };
 
 #endif // WINDOWSCONSOLE_H
