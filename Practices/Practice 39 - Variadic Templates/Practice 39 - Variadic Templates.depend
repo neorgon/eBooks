@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1494623990 source:c:\users\administrator\documents\github\ebooks\practices\practice 39 - variadic templates\main.cpp
+	<iostream>
+	<string>
+	<set>
+

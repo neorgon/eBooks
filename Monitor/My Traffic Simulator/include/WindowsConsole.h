@@ -25,7 +25,7 @@ class WindowsConsole
 
         void GotoXY(short int x, short int y);
         void GetXY(short int &x, short int &y);
-        void PrintMap(vector<tuple<int, pair<int, int>, int, bool>> &tls);
+        void PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool, int>> &tls, size_t mapSize);
 };
 
 #endif // WINDOWSCONSOLE_H
