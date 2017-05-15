@@ -1,6 +1,7 @@
 # depslib dependency file v1.0
-1494542144 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+1494693892 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\main.cpp
 	<Map.h>
+	<WindowsConsole.h>
 
 1494542144 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\map.h
 	<iostream>
@@ -117,4 +118,13 @@
 	<tuple>
 	<vector>
 	<windows.h>
+
+1494724826 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
+	<iostream>
+	<tuple>
+	<vector>
+	<windows.h>
+
+1494693383 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
+	"WindowsConsole.h"
 

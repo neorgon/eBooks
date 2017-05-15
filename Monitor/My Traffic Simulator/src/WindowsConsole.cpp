@@ -19,18 +19,26 @@ void WindowsConsole::GetXY(short int &x, short int &y)
 	}
 }
 
-void WindowsConsole::PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool, int>> &tls, size_t mapSize)
+void WindowsConsole::SetColor(int color)
 {
-    size_t x = 0, y = 0;
+    SetConsoleTextAttribute(GetStdHandle (STD_OUTPUT_HANDLE), color);
+}
+
+void WindowsConsole::PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool>> &tls, size_t mapSize)
+{
+    size_t x = 1, y = 1;
 
     for (auto &t : tls)
     {
-        GotoXY(x * 7, y * 3);
+        SetColor(7);
+        GotoXY(x * dx, y * dy);
         cout << ":"; //<< get<2>(t)
+        DrawDirection(x * dx, y * dy, get<2>(t), get<3>(t));
+        DrawDirection(x * dx, y * dy, get<5>(t), get<6>(t));
 
-        if ((x + 1) % mapSize == 0)
+        if (x % mapSize == 0)
         {
-            x = 0;
+            x = 1;
             y++;
         }
         else
@@ -38,16 +46,57 @@ void WindowsConsole::PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, 
             x++;
         }
     }
+}
 
-    /*for (size_t i = 1; i <= tls.size(); i++)
+void WindowsConsole::DrawDirection(int cx, int cy, size_t dir, bool tlGreen)
+{
+    int i;
+
+    switch (dir)
     {
-        x = i + (i - 1) * 7;
-        for(size_t j = 1; j <= tls.size(); j++)
-        {
-            y = j + (j - 1) * 3;
-            j % 2 == 0 ? SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 2) : SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), 4);
-            GotoXY(x, y);
+        case 0:
+            for (i = cx + 1; i < cx + (dx - 1); i++)
+            {
+                SetColor(7);
+                GotoXY(i, cy);
+                cout << char(196);
+            }
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(i, cy);
             cout << "*";
-        }
-    }*/
+        break;
+        case 90:
+            for (i = cy - 1; i > cy - (dy - 1); i--)
+            {
+                SetColor(7);
+                GotoXY(cx, i);
+                cout << char(179);
+            }
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx, i);
+            cout << "*";
+        break;
+        case 180:
+            for (i = cx - 1; i > cx - (dx - 1); i--)
+            {
+                SetColor(7);
+                GotoXY(i, cy);
+                cout << char(196);
+            }
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(i, cy);
+            cout << "*";
+        break;
+        case 270:
+            for (i = cy + 1; i < cy + (dy - 1); i++)
+            {
+                SetColor(7);
+                GotoXY(cx, i);
+                cout << char(179);
+            }
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx, i);
+            cout << "*";
+        break;
+    }
 }

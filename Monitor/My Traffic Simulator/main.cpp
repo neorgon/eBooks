@@ -6,33 +6,35 @@ using namespace std;
 
 int main()
 {
-    vector<tuple<int, int, size_t, bool, int, size_t, bool, int>> tls =
+    vector<tuple<int, int, size_t, bool, int, size_t, bool>> tls =
         {
-            make_tuple(1, 0, 90, true, 2, 0, false, 3),
-            make_tuple(2, 4, 270, false, 0, 0, true, 2),
-            make_tuple(3, 1, 90, true, 4, 0, false, 2),
-            make_tuple(4, 3, 180, false, 0, 180, true, 1)
-            /*,
-            make_tuple(1, make_pair(make_pair(0, true), make_pair(2, false)), 3),
-            make_tuple(2, make_pair(make_pair(3, true), make_pair(0, false)), 2),
-            make_tuple(3, make_pair(make_pair(0, true), make_pair(4, false)), 2),
-            make_tuple(4, make_pair(make_pair(0, true), make_pair(1, false)), 1),
-            make_tuple(1, make_pair(make_pair(0, true), make_pair(2, false)), 3),
-            make_tuple(2, make_pair(make_pair(3, true), make_pair(0, false)), 2),
-            make_tuple(3, make_pair(make_pair(0, true), make_pair(4, false)), 2),
-            make_tuple(4, make_pair(make_pair(0, true), make_pair(1, false)), 1),
-            make_tuple(1, make_pair(make_pair(0, true), make_pair(2, false)), 3),
-            make_tuple(2, make_pair(make_pair(3, true), make_pair(0, false)), 2),
-            make_tuple(3, make_pair(make_pair(0, true), make_pair(4, false)), 2),
-            make_tuple(4, make_pair(make_pair(0, true), make_pair(1, false)), 1)*/
+            make_tuple(1, 0, 90,  true,  2, 0,   false),
+            make_tuple(2, 4, 270, false, 0, 0,   true),
+            make_tuple(3, 1, 90,  true,  0, 0,   false),
+            make_tuple(4, 3, 270, false, 0, 0,   true)
+            ,
+            make_tuple(5, 0, 90,  true,  2, 180, false),
+            make_tuple(6, 4, 270, false, 0, 180, true),
+            make_tuple(7, 1, 90,  true,  0, 180, false),
+            make_tuple(8, 3, 270, false, 0, 180, true),
+
+            make_tuple(9, 0, 90,   true,  2, 0, false),
+            make_tuple(10, 4, 270, false, 0, 0, true),
+            make_tuple(11, 1, 90,  true,  0, 0, false),
+            make_tuple(12, 3, 270, false, 0, 0, true),
+
+            make_tuple(13, 0, 90,  true,  2, 180, false),
+            make_tuple(14, 4, 270, false, 0, 180, true),
+            make_tuple(15, 1, 90,  true,  0, 180, false),
+            make_tuple(16, 3, 270, false, 0, 180, true)
         };
 
     Map m;
 	m.createMap(4);
 	//m.show();
 
-	WindowsConsole wc(600, 800, "Traffic Simulator");
-	wc.PrintMap(tls, 2);
+	WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
+	wc.PrintMap(tls, 4);
 
     getchar();
 
