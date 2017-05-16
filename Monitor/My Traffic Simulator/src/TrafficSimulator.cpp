@@ -1,92 +1,321 @@
-/*
- * Source Singapore Statistics
- * https://www.lta.gov.sg/content/dam/ltaweb/corp/PublicationsResearch/files/FactsandFigures/Statistics%20in%20Brief%202014.pdf
- * according to the statistics in 2013
- * there are 2227 traffic lights in the city
- * and 540063 cars
- * this will be used to the simulation and create the quantity of cars according to the traffic lights
- * annual mileage 17800
- * this will be for the frecuency of the cars
- * */
-
 #include "../include/TrafficSimulator.h"
+#include "../include/Map.h"
+#include <typeinfo>
+#include <utility>
 
-#define TRAFFICLIGHTSFROMSTATISTICS 2227
-#define VEHICLESFROMSTATISTICS 540063
-
-TrafficSimulator::TrafficSimulator():TrafficSimulator{4}
+TrafficSimulator::TrafficSimulator()
 {
-}
-
-TrafficSimulator::TrafficSimulator(int trafficLightsQuantity)
-	:trafficLightsQuantity(trafficLightsQuantity)
-{
-	srand((unsigned)time(0));
-	if (trafficLightsQuantity%2==0)
-    {
-        BuildMap(trafficLightsQuantity);
-        //InitializeVehicles();
-
-    }
-    else
-    {
-        cerr<<"Argument must be an even number";
-        //throw std::invalid_argument("Argument must be an even number");
-    }
-
 }
 
 TrafficSimulator::~TrafficSimulator()
 {
 }
 
-void TrafficSimulator::BuildMap(int trafficLightsQuantity)
-{
-    mapSimulator = new Map();
-    auto mapTraffictLight = mapSimulator->createMap(trafficLightsQuantity);
-    //mapSimulator->show();
-
-}
-
-void TrafficSimulator::StartSimulation()
-{
-    map<int, vector<int>>::iterator it = mapTraffictLight.begin();
-
-	for (it=mapTraffictLight.begin(); it!=mapTraffictLight.end(); ++it)
-    	cout <<"  "<< it->first << " : " << it->second[0] << " : "<< it->second[1] << '\n';
-
-}
-/*
-void TrafficSimulator::InitializeVehicles()
-{
-    vehicleQuantity = (int)(trafficLightsQuantity * VEHICLESFROMSTATISTICS / TRAFFICLIGHTSFROMSTATISTICS + 0.5);
-
-    vector <pair<shared_ptr<TrafficLight>, bool>> route {};
-
-	for ( int i = 0; i < vehicleQuantity ; i++)
-	{
-		vehicleStartPoint = RandomInteger(1,trafficLightsQuantity);
-		vehicleEndPoint = RandomInteger(1,trafficLightsQuantity);
-
-		vehicles.push_back(CreateVehicles( route, vehicleStartPoint, vehicleEndPoint));
-
-	}
-}
-
-Vehicle* TrafficSimulator::CreateVehicles( vector <pair<shared_ptr<TrafficLight>, bool>> route, int vehicleStartPoint, int vehicleEndPoint)
-{
-	Vehicle* v = nullptr;
-	//v = new Vehicle(vehicleStartPoint,vehicleEndPoint);
-	v = new Vehicle((double)RandomInteger(1,10), route, (size_t)RandomInteger(1,24));
-	return v;
-}
-*/
 int TrafficSimulator::RandomInteger(int lowest, int highest)
 {
 
     int random_integer;
     int range=(highest-lowest)+1;
     random_integer = lowest+int(range*rand()/(RAND_MAX + 1.0));
-	return random_integer;
+    return random_integer;
 }
 
+
+
+Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
+{
+
+    mapAux=map->get_mapTLight();
+
+    size_t tam=mapAux.size();
+
+    for ( size_t i = 1; i <= vehicleQuantity ; i++)
+    {
+        if(i<=vehicleQuantity/2)
+        {
+            vehicleStartPoint =(size_t) RandomInteger(1,tam/2);
+            vehicleEndPoint = (size_t)RandomInteger((tam/2)+1,tam);
+        }
+        else
+        {
+            vehicleStartPoint =(size_t)RandomInteger((tam/2)+1,tam);
+            vehicleEndPoint = (size_t)RandomInteger(1,tam/2);
+        }
+
+
+        cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"\n";
+        pair<size_t,shared_ptr<TrafficLight>> origin = make_pair((size_t)vehicleStartPoint, mapAux[vehicleStartPoint][RandomInteger(0,1)]);
+        pair<size_t,shared_ptr<TrafficLight>> destination = make_pair((size_t)vehicleEndPoint,mapAux[vehicleEndPoint][RandomInteger(0,1)]);
+        vehicle = make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, map);
+        vehicles.push_back(vehicle);
+
+    }
+
+
+    Simulation* simulationTraffic=new Simulation(map,name,vehicles);
+    ///move vehicles//
+    /*
+    for (auto & i: vehicles)
+    {
+        i->Move();
+    }
+    */
+    return simulationTraffic;
+
+}
+
+void TrafficSimulator::StartSimulation(Simulation *simulation, int cycles)
+{
+	auto mapSim = simulation->getMap();
+	auto trafficLightsSim = mapSim->get_mapTLight();
+	auto vehiclesSim = simulation->getVehicles();
+
+	char ch;
+    bool loop=false;
+    if(cycles==0)
+    {
+        while(loop==false)
+        {
+            getchar();
+            ClearScreen();
+            cout<<"press escape to end simulation"<<endl;
+            cout<<"press space to continue"<<endl;
+            ch=getch();
+            if(ch=='\0')
+                loop = true;
+            else
+            {
+                if(ch==' ')
+                {
+                    for(auto& i:vehiclesSim)
+                    {
+
+                        if (vehiclesSim.size() == 0)
+                        {
+                            loop = true;
+                            break;
+                        }
+
+                        try
+                        {
+                            i->Move();
+                        }
+                        catch (...)
+                        {
+                            cout<<"Simulation ended due to a car arrived";
+                        }
+                        ClearScreen();
+                        cout<<"Simulation: "<<simulation->getName();
+                        mapSim->show();
+                        //cout << "\r%"<<i;
+                        //mapSimulator->show();
+                        //auto vehicleArrived = i->Move();
+                        /*if(vehicleArrived)
+                        {
+                            if (i != auxVehicles.end())
+                            auxVehicles.erase(i);
+                        }*/
+                    }
+                    for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
+                    {
+
+                        it->second[0]->Update();
+                        it->second[1]->Update();
+
+                    }
+                    //llamar al visualizador
+                }
+            }
+
+        }
+        cout<<"simulation terminated"<<endl;
+    }
+    else
+    {
+        for(auto i = 0; i<cycles; i++)
+        {
+            getchar();
+            ClearScreen();
+            cout<<"press escape to end simulation"<<endl;
+            cout<<"press space to continue"<<endl;
+            ch=getch();
+            if(ch=='\0')
+                loop = true;
+            else
+            {
+                if(ch==' ')
+                {
+                    for(auto& i:vehiclesSim)
+                    {
+                        if (vehiclesSim.size() == 0)
+                        {
+                            loop = true;
+                            break;
+                        }
+
+                        try
+                        {
+                            i->Move();
+                        }
+                        catch (...)
+                        {
+                            cout<<"Simulation ended due to a car arrived";
+                        }
+                        ClearScreen();
+                        cout<<"Simulation: "<<simulation->getName();
+                        mapSim->show();
+                        //cout << "\r%"<<i;
+                        //mapSimulator->show();
+                        //auto vehicleArrived = i->Move();
+                        /*if(vehicleArrived)
+                        {
+                            if (i != auxVehicles.end())
+                            auxVehicles.erase(i);
+                        }*/
+                    }
+                    for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
+                    {
+                        //i[0]->Update();
+                        //i[1]->Update();
+                        //mapAux[i][0]->Update();
+                        it->second[0]->Update();
+                        it->second[1]->Update();
+
+                    }
+                    //llamar al visualizador
+                }
+            }
+        }
+    }
+}
+
+void TrafficSimulator::StartSimulation(string simulationName, int cycles)
+{
+	char ch;
+	auto auxVehicles = vehicles;
+    bool loop=false;
+    if(cycles==0)
+    {
+        while(loop==false)
+        {
+            getchar();
+            ClearScreen();
+            cout<<"press escape to end simulation"<<endl;
+            cout<<"press space to continue"<<endl;
+            ch=getch();
+            if(ch=='\0')
+                loop = true;
+            else
+            {
+                if(ch==' ')
+                {
+                    for(auto& i:auxVehicles)
+                    {
+
+                        if (auxVehicles.size() == 0)
+                        {
+                            loop = true;
+                            break;
+                        }
+
+
+                        try
+                        {
+                            i->Move();
+                        }
+                        catch (...)
+                        {
+                            cout<<"Simulation ended due to a car arrived";
+                        }
+                        ClearScreen();
+                        cout<<"Simulation: "<<simulationName;
+                        //cout << "\r%"<<i;
+                        //mapSimulator->show();
+                        //auto vehicleArrived = i->Move();
+                        /*if(vehicleArrived)
+                        {
+                            if (i != auxVehicles.end())
+                            auxVehicles.erase(i);
+                        }*/
+                    }
+                    for(auto it=mapAux.begin(); it!=mapAux.end(); ++it)
+                    {
+
+                        it->second[0]->Update();
+                        it->second[1]->Update();
+
+                    }
+                    //llamar al visualizador
+                }
+            }
+
+        }
+        cout<<"simulation terminated"<<endl;
+    }
+    else
+    {
+        for(auto i = 0; i<cycles; i++)
+        {
+            getchar();
+            ClearScreen();
+            cout<<"press escape to end simulation"<<endl;
+            cout<<"press space to continue"<<endl;
+            ch=getch();
+            if(ch=='\0')
+                loop = true;
+            else
+            {
+                if(ch==' ')
+                {
+                    for(auto& i:auxVehicles)
+                    {
+                        if (auxVehicles.size() == 0)
+                        {
+                            loop = true;
+                            break;
+                        }
+
+                        try
+                        {
+                            i->Move();
+                        }
+                        catch (...)
+                        {
+                            cout<<"Simulation ended due to a car arrived";
+                        }
+                        ClearScreen();
+                        cout<<"Simulation: "<<simulationName;
+                        //cout << "\r%"<<i;
+                        //mapSimulator->show();
+                        //auto vehicleArrived = i->Move();
+                        /*if(vehicleArrived)
+                        {
+                            if (i != auxVehicles.end())
+                            auxVehicles.erase(i);
+                        }*/
+                    }
+                    for(auto it=mapAux.begin(); it!=mapAux.end(); ++it)
+                    {
+                        //i[0]->Update();
+                        //i[1]->Update();
+                        //mapAux[i][0]->Update();
+                        it->second[0]->Update();
+                        it->second[1]->Update();
+
+                    }
+                    //llamar al visualizador
+                }
+            }
+        }
+    }
+}
+
+void TrafficSimulator::ClearScreen()
+{
+  #ifdef WINDOWS
+  system("cls");
+  #endif
+  #ifdef LINUX
+  system("clear");
+  #endif
+}

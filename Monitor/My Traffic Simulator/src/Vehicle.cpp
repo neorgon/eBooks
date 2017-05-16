@@ -3,45 +3,105 @@
 #include "../include/TrafficLight.h"
 #include "../include/Map.h"
 
-size_t Vehicle::licencePlate=100;
-
-Vehicle::Vehicle(double speed, pair<size_t,shared_ptr<TrafficLight>> origen,
-			pair<size_t,shared_ptr<TrafficLight>> destino, shared_ptr<Map> map/*,
+Vehicle::Vehicle(size_t licencePlate, double speed,const pair<size_t,shared_ptr<TrafficLight>>& origin,
+			const pair<size_t,shared_ptr<TrafficLight>>& destiny,const shared_ptr<Map>& map/*,
 			size_t startTime*/)
-:speed{speed}, /*startTime{startTime},*/ ubication{origen.second}
-{
-	licencePlate++;
-	//if (!ubication->EnQueue(*this))
-	//	return;
+:licencePlate{licencePlate},speed{speed} /*startTime{startTime},*/ 
+{ 	
+	if (origin.second==nullptr)
+		throw;
+	ubication=origin.second;
+	if (!ubication->EnQueue(make_shared<Vehicle>(*this)))
+		cout<<"error no push"<<endl;
+	cout<<"AN: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+	//cout<<" Auto indice n: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 	//pedir cambio de vector;
-	vector<int> v = map->createRoute((int)origen.first,(int)destino.first);
+	vector<int> v = map->createRoute((int)origin.first,(int)destiny.first);
 	//hardcore
-	shared_ptr<TrafficLight> t=make_shared<TrafficLight>(1,1,2,2,true);
-	for (auto& i: v)
+	//auto mymapa=map->get_mapTLight();
+		for (auto& i: v)
 	{
-		route.push_back(make_pair((size_t)i,t));
+		route.push_back(make_pair((size_t)i,map->get_mapTLight()[i][0]));
 
 	}
+	
 	
 
 }
 
 void Vehicle::Move()
 {
+	if(state)
+	{
+		double bufferspped = speed;
 	arrivalTime++;
-		if(ubication->FirstVehicle().get()==this) 
-			if (route.at(indice++).second->EnQueue(*this))
+	auto at=ubication->GetVehiculoLocation(make_shared<Vehicle>(*this));
+	//verificar luz verde con velocidad mayor
+
+	if (at<=speed)
+	{   
+		if(ubication->GetLight())
+		{
+			indice++;
+			if (route.at(indice).second->EnQueue(make_shared<Vehicle>(*this),(speed-at))==1)
+				{
+					ubication->Clean(at);
+					ubication=route.at(indice).second;
+					cout<<"ubicacion nueva: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+				}
+			else
+				{
+					indice--;
+					speed=at-1;
+					ubication->Clean(at);
+					ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
+				}
+		}
+		else
 			{
-				ubication=route.at(indice).second;
-			}
+				speed=at-1;
+				ubication->Clean(at);
+				ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
+				}
+
+	}
+	else if(at>speed)
+	{
+		ubication->Clean(at);
+		ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
+		cout<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+		
+	}
+
+	//	if(ubication->FirstVehicle().get()->GetLicencePlate()==this->GetLicencePlate()
+	//		&& ubication->GetLight()) 
+	//		if (route.at(indice++).second->EnQueue(make_shared<Vehicle>(*this)),5)
+	//		{
+	//			ubication=route.at(indice++).second;
+	//		}
 		//if(ubication==route.back().first);
 			//boos->RegisterVehicle(this); 	
-	for (auto& i: route)
-	{
-		cout<<i.first<<i.second->GetTLID()<<licencePlate<<endl;
+			//cout<<"auno numero: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+		cout<<endl;
+		cout<<"nodo inicio id semaforo :"<<ubication->GetTLID()
+		<<" auto n: "<<ubication->CountVehicles()<<endl;
+		for (auto& i: route)
+		{
+			cout<<"nodo: "<<i.first<<" id semaforo :"<<i.second->GetTLID()
+			<<" auto n: "<<i.second->CountVehicles()<<endl;
+		
+		}
+	
+		
+
+	speed=bufferspped;
+	if (ubication==route.back().second)
+		{
+			state=false;
+		}
 	}
 	
-
+	
 }
 
 size_t Vehicle::GetLicencePlate() const
@@ -58,7 +118,8 @@ size_t Vehicle::GetArrivalTime()const
 {
 	return arrivalTime;
 }
-
+double Vehicle::getspeed()
+{return speed;}
 /*
 Vehicle::~Vehicle()
 {

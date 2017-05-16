@@ -1,5 +1,34 @@
 #include "WindowsConsole.h"
 
+#include <stdio.h>
+#include <unistd.h>
+#include <TrafficLight.h>
+
+void WindowsConsole::ClearScreen() const
+{
+    HANDLE                     hStdOut;
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    DWORD                      count;
+    DWORD                      cellCount;
+    COORD                      homeCoords = { 0, 0 };
+
+    hStdOut = GetStdHandle(STD_OUTPUT_HANDLE);
+    if (hStdOut == INVALID_HANDLE_VALUE) return;
+
+    /* Get the number of cells in the current buffer */
+    if (!GetConsoleScreenBufferInfo(hStdOut, &csbi)) return;
+    cellCount = csbi.dwSize.X *csbi.dwSize.Y;
+
+    /* Fill the entire buffer with spaces */
+    if (!FillConsoleOutputCharacter(hStdOut, (TCHAR) ' ', cellCount, homeCoords, &count)) return;
+
+    /* Fill the entire buffer with the current colors and attributes */
+    if (!FillConsoleOutputAttribute(hStdOut, csbi.wAttributes, cellCount, homeCoords, &count)) return;
+
+    /* Move the cursor home */
+    SetConsoleCursorPosition( hStdOut, homeCoords );
+}
+
 void WindowsConsole::GotoXY(short int x, short int y)
 {
 	COORD coord = {x, y};
@@ -22,6 +51,51 @@ void WindowsConsole::GetXY(short int &x, short int &y)
 void WindowsConsole::SetColor(int color)
 {
     SetConsoleTextAttribute(GetStdHandle (STD_OUTPUT_HANDLE), color);
+}
+
+void WindowsConsole::PrintCity() const
+{
+    const char city[] =
+    "\n\
+                             *                *                   *     \n\
+                 *                                     *                \n\
+         *              |           *             *        *         *  \n\
+              *        -+-                 *                            \n\
+           __           |      *             *          *        *      \n\
+       ___|  |   *     _|_              *    ____    ____               \n\
+       [_]|``|__      _| |_        *    |   |....|  |....|    *     *   \n\
+          |     |   _|[] []|_    ___    |   |....|  | ___|__            \n\
+       [_]|  `` |__|_  ______|  |   |  |_|  |....|  || -- - |   *     * \n\
+          |________  |__     |  |# #|  |_|  |....|  || - -- |  _____    \n\
+       [_]| _____ |     |__[]|  |   |  |_|  |....|__|| -- - | |* * *|   \n\
+          | [___] |        |__  |# #|  |_|  |....|__|| -- -_|_|* * *|   \n\
+       [_]|       | ``        | |   |__| |__|....|  || ___|* *|* * *|   \n\
+          | _____ |           |__  #|_______|....|  | |* *|* *|* * *|   \n\
+       [_]| [___] |       ``     |__|_______|__  |  | |* *|* *|* * *|   \n\
+          |       |            __|_____________|__    |* *|* *|* * *|   \n\
+       [_]| _____ |  ``      _|___________________|_  |* *|* *|* * *|   \n\
+          | [___] |         |_______________________|  ______________   \n\
+        __|_______|_________|_______________________| _________________ \n\
+       |_______________________________________________________________|\n\
+       |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\
+       ||||||||||||||||||||||  Traffic Simulator  ||||||||||||||||||||||\n\
+       |||||||||||||||    ...:: FUNDACION JALA ::...    ||||||||||||||||\n\
+       ||||||||||||||||||||||||||||DEV INT 22|||||||||||||||||||||||||||\n\
+       |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\
+       |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\
+       |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n\
+    ";
+
+    for (int i = 0; i < 18; i ++) printf("\n");
+    printf("%s", city);
+    int j = 300000;
+    for (int i = 0; i < 18; i ++) {
+        usleep(j);
+        j = (int)(j * 0.9);
+        printf("\n");
+    }
+    printf("Press any key to continue\n");
+    getchar();
 }
 
 void WindowsConsole::PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool>> &tls, size_t mapSize)

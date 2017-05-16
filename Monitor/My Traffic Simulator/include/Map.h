@@ -14,21 +14,28 @@ class TrafficLight;
 
 class Map
 {
+    enum TrafficOrientation
+    {
+        goRight = 0,
+        goLeft  = 180,
+        goUp    = 90,
+        goDown  = 270
+    };
+
     map<int,vector<int>> mapTrafficLight;
     vector<int> adyacent;
 
-    vector<TrafficLight*> VectorTrafictlight;
-    map<int,vector<TrafficLight*>> mapLight;
-
+    vector<shared_ptr<TrafficLight>> VectorTrafictlight;
+    map<int,vector<shared_ptr<TrafficLight>>> mapLight;
     public:
-
- 		Map();
-        map<int,vector<TrafficLight*>> createMap(int sizeMap);
+ 		Map(int sizeMap , size_t timeTrafficLight , size_t maxVehicle);
+        // void createMap(int sizeMap);
+        //void InitializeTrafficLight(size_t timeTrafficLight,size_t maxVehicle);
         vector<int> createRoute(int origin,int destination);
-        map<int,vector<TrafficLight*>> get_mapTLight();        
+        map<int,vector<shared_ptr<TrafficLight>>> get_mapTLight();
     	bool findStack(stack<int> auxStack,int value);
     	bool findQueue(deque<int>& vertices,int value);
-        void show();
+         void show();
         void showMap();
         virtual ~Map();
 

@@ -1,4 +1,3 @@
-//#include <iostream>
 #include <Map.h>
 #include <WindowsConsole.h>
 
@@ -29,11 +28,9 @@ int main()
             make_tuple(16, 3, 270, false, 0, 180, true)
         };
 
-    Map m;
-	m.createMap(4);
-	//m.show();
-
 	WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
+	wc.PrintCity();
+	wc.ClearScreen();
 	wc.PrintMap(tls, 4);
 
     getchar();

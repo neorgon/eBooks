@@ -18,7 +18,7 @@ class Map;
 class Vehicle
 {
 	
-	static size_t licencePlate;
+	size_t licencePlate;
 	double speed;
 	vector <pair<size_t,shared_ptr<TrafficLight>>> route;
 	//size_t startTime;
@@ -27,11 +27,12 @@ class Vehicle
 	size_t indice=0;
 	bool state=true;
 public:
-	Vehicle(double speed, pair<size_t,shared_ptr<TrafficLight>> origen,
-			pair<size_t,shared_ptr<TrafficLight>> destino, shared_ptr<Map> map/*,
+	Vehicle(size_t licencePlate,double speed,const pair<size_t,shared_ptr<TrafficLight>>& origin,
+			const pair<size_t,shared_ptr<TrafficLight>>& destiny,const shared_ptr<Map>& map/*,
 			size_t startTime*/);
 	void Move();
 	size_t GetLicencePlate() const;
+	double getspeed();
 	shared_ptr<TrafficLight> GetLocation() const;
 	size_t GetArrivalTime()  const;
 	//~Vehicle();

@@ -25,9 +25,11 @@ class WindowsConsole
             MoveWindow(console, wSizePos.left, wSizePos.top, vsWidth, vsHeight, TRUE);
         }
 
+        void ClearScreen() const;
         void GotoXY(short int x, short int y);
         void GetXY(short int &x, short int &y);
         void SetColor(int color);
+        void PrintCity() const;
         void PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool>> &tls, size_t mapSize);
         void DrawDirection(int cx, int cy, size_t dir, bool tlGreen);
 };

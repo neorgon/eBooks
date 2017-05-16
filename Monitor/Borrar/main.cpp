@@ -1,3 +1,4 @@
+/*
 #include <iostream>
 #include <windows.h>
 
@@ -49,9 +50,9 @@ int main() {
 	}
 	return 0;
 }
+*/
 
 /*
-
 #include <iostream>
 #include <windows.h>
 
@@ -92,7 +93,7 @@ int main() {
     Author: http://HelloACM.com
             http://CodingForSpeed.com
 */
-/*
+
 #include <stdio.h>
 #include <unistd.h> // for usleep function
 
@@ -124,7 +125,7 @@ int main()
     printf("Visit http://HelloACM.com !\n");
     return 0;
 }
-*/
+
 /*
 
 #include <iostream>
