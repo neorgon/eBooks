@@ -1,32 +1,25 @@
 #ifndef MAP_H
 #define MAP_H
 
-
 #include <iostream>
 #include <vector>
 #include <memory>
 #include <deque>
 #include <stack>
 #include <map>
-using namespace std;
+#include <Direction.h>
+#include <TrafficLight.h>
 
-class TrafficLight;
+using namespace std;
 
 class Map
 {
-    enum TrafficOrientation
-    {
-        goRight = 0,
-        goLeft  = 180,
-        goUp    = 90,
-        goDown  = 270
-    };
-
     map<int,vector<int>> mapTrafficLight;
     vector<int> adyacent;
 
     vector<shared_ptr<TrafficLight>> VectorTrafictlight;
     map<int,vector<shared_ptr<TrafficLight>>> mapLight;
+
     public:
  		Map(int sizeMap , size_t timeTrafficLight , size_t maxVehicle);
         // void createMap(int sizeMap);

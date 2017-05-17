@@ -34,13 +34,16 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="include/Direction.h" />
 		<Unit filename="include/Map.h" />
+		<Unit filename="include/Simulation.h" />
 		<Unit filename="include/TrafficLight.h" />
 		<Unit filename="include/TrafficSimulator.h" />
 		<Unit filename="include/Vehicle.h" />
 		<Unit filename="include/WindowsConsole.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/Map.cpp" />
+		<Unit filename="src/Simulation.cpp" />
 		<Unit filename="src/TrafficLight.cpp" />
 		<Unit filename="src/TrafficSimulator.cpp" />
 		<Unit filename="src/Vehicle.cpp" />

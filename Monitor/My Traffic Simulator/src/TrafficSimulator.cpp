@@ -1,10 +1,8 @@
 #include "../include/TrafficSimulator.h"
-#include "../include/Map.h"
-#include <typeinfo>
-#include <utility>
 
 TrafficSimulator::TrafficSimulator()
 {
+    srand((unsigned)time(0));
 }
 
 TrafficSimulator::~TrafficSimulator()
@@ -24,10 +22,10 @@ int TrafficSimulator::RandomInteger(int lowest, int highest)
 
 Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
 {
+    mapSim = map;
+    trafficLightsSim=map->get_mapTLight();
 
-    mapAux=map->get_mapTLight();
-
-    size_t tam=mapAux.size();
+    size_t tam=trafficLightsSim.size();
 
     for ( size_t i = 1; i <= vehicleQuantity ; i++)
     {
@@ -44,270 +42,128 @@ Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,si
 
 
         cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"\n";
-        pair<size_t,shared_ptr<TrafficLight>> origin = make_pair((size_t)vehicleStartPoint, mapAux[vehicleStartPoint][RandomInteger(0,1)]);
-        pair<size_t,shared_ptr<TrafficLight>> destination = make_pair((size_t)vehicleEndPoint,mapAux[vehicleEndPoint][RandomInteger(0,1)]);
+        pair<size_t,shared_ptr<TrafficLight>> origin = make_pair((size_t)vehicleStartPoint, trafficLightsSim[vehicleStartPoint][RandomInteger(0,1)]);
+        pair<size_t,shared_ptr<TrafficLight>> destination = make_pair((size_t)vehicleEndPoint,trafficLightsSim[vehicleEndPoint][RandomInteger(0,1)]);
         vehicle = make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, map);
         vehicles.push_back(vehicle);
 
     }
 
 
-    Simulation* simulationTraffic=new Simulation(map,name,vehicles);
-    ///move vehicles//
-    /*
-    for (auto & i: vehicles)
-    {
-        i->Move();
-    }
-    */
+    simulationTraffic=new Simulation(map,name,vehicles);
+
     return simulationTraffic;
 
 }
 
+bool TrafficSimulator::ValidateSimulation(Simulation *simulation)
+{
+    auto name = simulation->getName();
+    if (name == simulationTraffic->getName())
+        return true;
+    return false;
+}
+
+bool TrafficSimulator::ValidateSimulation(string name)
+{
+    if (name == simulationTraffic->getName())
+        return true;
+    return false;
+}
+
+void TrafficSimulator::StartLoopSim(int cycles)
+{
+    string msg;
+    char ch;
+    bool loop=false;
+    bool cyclesFlag = false;
+    if(cycles!=0)
+        cyclesFlag = true;
+
+    while(loop==false)
+    {
+        getch();
+        ClearScreen();
+        cout<<"press escape to end simulation"<<endl;
+        cout<<"press space to continue"<<endl;
+        ch=getch();
+        if(ch=='\033')
+            loop = true;
+        else
+        {
+            if(ch==' ')
+            {
+                for(auto& i:vehicles)
+                {
+                    if (vehicles.size() == 0)
+                    {
+                        loop = true;
+                        msg = "all cars arrived, simulation ended";
+                        break;
+                    }
+
+                    try
+                    {
+                        i->Move();
+                    }
+                    catch (...)
+                    {
+                        cout<<"Simulation ended due to a car arrived";
+                    }
+                    ClearScreen();
+                    cout<<"Simulation: "<<simulationTraffic->getName();
+                    mapSim->show();
+                    //cout << "\r%"<<i;
+                    //mapSimulator->show();
+                    //auto vehicleArrived = i->Move();
+                    /*if(vehicleArrived)
+                    {
+                        if (i != auxVehicles.end())
+                        auxVehicles.erase(i);
+                    }*/
+                }
+
+                for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
+                {
+
+                    it->second[0]->Update();
+                    it->second[1]->Update();
+                }
+                if (cyclesFlag)
+                {
+                    if(cycles==0)
+                    {
+                        loop = true;
+                        msg = "number of cycles reached, simulation ended";
+                        break;
+                    }
+                    cycles--;
+                }
+                cout<<cycles;
+
+                    //llamar al visualizador
+            }
+        }
+
+    }
+    cout<<msg<<endl;
+}
 void TrafficSimulator::StartSimulation(Simulation *simulation, int cycles)
 {
-	auto mapSim = simulation->getMap();
-	auto trafficLightsSim = mapSim->get_mapTLight();
-	auto vehiclesSim = simulation->getVehicles();
-
-	char ch;
-    bool loop=false;
-    if(cycles==0)
-    {
-        while(loop==false)
-        {
-            getchar();
-            ClearScreen();
-            cout<<"press escape to end simulation"<<endl;
-            cout<<"press space to continue"<<endl;
-            ch=getch();
-            if(ch=='\0')
-                loop = true;
-            else
-            {
-                if(ch==' ')
-                {
-                    for(auto& i:vehiclesSim)
-                    {
-
-                        if (vehiclesSim.size() == 0)
-                        {
-                            loop = true;
-                            break;
-                        }
-
-                        try
-                        {
-                            i->Move();
-                        }
-                        catch (...)
-                        {
-                            cout<<"Simulation ended due to a car arrived";
-                        }
-                        ClearScreen();
-                        cout<<"Simulation: "<<simulation->getName();
-                        mapSim->show();
-                        //cout << "\r%"<<i;
-                        //mapSimulator->show();
-                        //auto vehicleArrived = i->Move();
-                        /*if(vehicleArrived)
-                        {
-                            if (i != auxVehicles.end())
-                            auxVehicles.erase(i);
-                        }*/
-                    }
-                    for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
-                    {
-
-                        it->second[0]->Update();
-                        it->second[1]->Update();
-
-                    }
-                    //llamar al visualizador
-                }
-            }
-
-        }
-        cout<<"simulation terminated"<<endl;
-    }
+    auto forValidation = simulation;
+    if(!ValidateSimulation(forValidation))
+        cout<<"not a valid simulation, please give the right simulation for this traffic simulator";
     else
-    {
-        for(auto i = 0; i<cycles; i++)
-        {
-            getchar();
-            ClearScreen();
-            cout<<"press escape to end simulation"<<endl;
-            cout<<"press space to continue"<<endl;
-            ch=getch();
-            if(ch=='\0')
-                loop = true;
-            else
-            {
-                if(ch==' ')
-                {
-                    for(auto& i:vehiclesSim)
-                    {
-                        if (vehiclesSim.size() == 0)
-                        {
-                            loop = true;
-                            break;
-                        }
-
-                        try
-                        {
-                            i->Move();
-                        }
-                        catch (...)
-                        {
-                            cout<<"Simulation ended due to a car arrived";
-                        }
-                        ClearScreen();
-                        cout<<"Simulation: "<<simulation->getName();
-                        mapSim->show();
-                        //cout << "\r%"<<i;
-                        //mapSimulator->show();
-                        //auto vehicleArrived = i->Move();
-                        /*if(vehicleArrived)
-                        {
-                            if (i != auxVehicles.end())
-                            auxVehicles.erase(i);
-                        }*/
-                    }
-                    for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
-                    {
-                        //i[0]->Update();
-                        //i[1]->Update();
-                        //mapAux[i][0]->Update();
-                        it->second[0]->Update();
-                        it->second[1]->Update();
-
-                    }
-                    //llamar al visualizador
-                }
-            }
-        }
-    }
+        StartLoopSim(cycles);
 }
 
 void TrafficSimulator::StartSimulation(string simulationName, int cycles)
 {
-	char ch;
-	auto auxVehicles = vehicles;
-    bool loop=false;
-    if(cycles==0)
-    {
-        while(loop==false)
-        {
-            getchar();
-            ClearScreen();
-            cout<<"press escape to end simulation"<<endl;
-            cout<<"press space to continue"<<endl;
-            ch=getch();
-            if(ch=='\0')
-                loop = true;
-            else
-            {
-                if(ch==' ')
-                {
-                    for(auto& i:auxVehicles)
-                    {
-
-                        if (auxVehicles.size() == 0)
-                        {
-                            loop = true;
-                            break;
-                        }
-
-
-                        try
-                        {
-                            i->Move();
-                        }
-                        catch (...)
-                        {
-                            cout<<"Simulation ended due to a car arrived";
-                        }
-                        ClearScreen();
-                        cout<<"Simulation: "<<simulationName;
-                        //cout << "\r%"<<i;
-                        //mapSimulator->show();
-                        //auto vehicleArrived = i->Move();
-                        /*if(vehicleArrived)
-                        {
-                            if (i != auxVehicles.end())
-                            auxVehicles.erase(i);
-                        }*/
-                    }
-                    for(auto it=mapAux.begin(); it!=mapAux.end(); ++it)
-                    {
-
-                        it->second[0]->Update();
-                        it->second[1]->Update();
-
-                    }
-                    //llamar al visualizador
-                }
-            }
-
-        }
-        cout<<"simulation terminated"<<endl;
-    }
+    auto forValidation = simulationName;
+    if(!ValidateSimulation(forValidation))
+        cout<<"not a valid simulation, please give the right simulation for this traffic simulator";
     else
-    {
-        for(auto i = 0; i<cycles; i++)
-        {
-            getchar();
-            ClearScreen();
-            cout<<"press escape to end simulation"<<endl;
-            cout<<"press space to continue"<<endl;
-            ch=getch();
-            if(ch=='\0')
-                loop = true;
-            else
-            {
-                if(ch==' ')
-                {
-                    for(auto& i:auxVehicles)
-                    {
-                        if (auxVehicles.size() == 0)
-                        {
-                            loop = true;
-                            break;
-                        }
-
-                        try
-                        {
-                            i->Move();
-                        }
-                        catch (...)
-                        {
-                            cout<<"Simulation ended due to a car arrived";
-                        }
-                        ClearScreen();
-                        cout<<"Simulation: "<<simulationName;
-                        //cout << "\r%"<<i;
-                        //mapSimulator->show();
-                        //auto vehicleArrived = i->Move();
-                        /*if(vehicleArrived)
-                        {
-                            if (i != auxVehicles.end())
-                            auxVehicles.erase(i);
-                        }*/
-                    }
-                    for(auto it=mapAux.begin(); it!=mapAux.end(); ++it)
-                    {
-                        //i[0]->Update();
-                        //i[1]->Update();
-                        //mapAux[i][0]->Update();
-                        it->second[0]->Update();
-                        it->second[1]->Update();
-
-                    }
-                    //llamar al visualizador
-                }
-            }
-        }
-    }
+        StartLoopSim(cycles);
 }
 
 void TrafficSimulator::ClearScreen()

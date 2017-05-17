@@ -29,12 +29,10 @@ class TrafficLight
              direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, green{light}
         {
             vehicles.resize(maxVQueue);
-           // cout<<"numero de vehiculos antes null"<<vehicles.size()<<endl;
             for(auto& i: vehicles)
             {
-                i=nullptr;
+                i = nullptr;
             }
-            //cout<<"numero de vehiculos"<<vehicles.size()<<endl;
             timer = countdown;
         };
         size_t GetTLID() const;
