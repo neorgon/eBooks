@@ -14,24 +14,18 @@ using namespace std;
 
 class Map
 {
-    map<int,vector<int>> mapTrafficLight;
-    vector<int> adyacent;
-
-    vector<shared_ptr<TrafficLight>> VectorTrafictlight;
-    map<int,vector<shared_ptr<TrafficLight>>> mapLight;
+    int sizeMap;
+    map<int, vector<int>> mapRoutes;
+    map<int, vector<shared_ptr<TrafficLight>>> mapTrafficLight;
 
     public:
- 		Map(int sizeMap , size_t timeTrafficLight , size_t maxVehicle);
-        // void createMap(int sizeMap);
-        //void InitializeTrafficLight(size_t timeTrafficLight,size_t maxVehicle);
-        vector<int> createRoute(int origin,int destination);
-        map<int,vector<shared_ptr<TrafficLight>>> get_mapTLight();
-    	bool findStack(stack<int> auxStack,int value);
-    	bool findQueue(deque<int>& vertices,int value);
-         void show();
+ 		Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle);
+        vector<int> createRoute(int origin, int destination);
+        map<int, vector<shared_ptr<TrafficLight>>> GetMapTrafficLight() const;
+    	bool findStack(stack<int> auxStack, int value);
+    	bool findQueue(deque<int>& vertices, int value);
+        void show();
         void showMap();
-        virtual ~Map();
-
 };
 
 #endif // MAP_H

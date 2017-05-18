@@ -5,16 +5,9 @@ using namespace std;
 
 int main()
 {
-    size_t vehicleQuantity = 5;
-	size_t speedMin = 1;
-	size_t speedMax = 2;
-	size_t timeTrafficLight = 2;
-	size_t Vehicles = 10;
-	TrafficSimulator a = TrafficSimulator();
-	shared_ptr<Map> mapa = make_shared<Map>(4, timeTrafficLight, Vehicles); //<<--- this is mine
-	Simulation* s = a.BuildSimulation(mapa, "primera", vehicleQuantity, speedMin, speedMax);
-
-    a.StartSimulation(s, 20);
+	Map mapa = Map(4, 2, 10);
+	mapa.showMap();
+	mapa.show();
 
     /*vector<tuple<int, int, size_t, bool, int, size_t, bool>> tls =
         {
@@ -42,7 +35,7 @@ int main()
 	WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
 	wc.PrintCity();
 	wc.ClearScreen();
-	wc.PrintMap(tls, 4);
+	wc.PrintMap(mapa.GetMapTrafficLight(), 4);
 
     getchar();*/
 

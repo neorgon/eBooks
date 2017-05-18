@@ -2,8 +2,7 @@
 #define WINDOWSCONSOLE_H
 
 #include <iostream>
-#include <tuple>
-#include <vector>
+#include <Map.h>
 #include <windows.h>
 
 using namespace std;
@@ -30,7 +29,7 @@ class WindowsConsole
         void GetXY(short int &x, short int &y);
         void SetColor(int color);
         void PrintCity() const;
-        void PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool>> &tls, size_t mapSize);
+        void PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize);
         void DrawDirection(int cx, int cy, size_t dir, bool tlGreen);
 };
 

@@ -3,27 +3,29 @@
 
 #include <algorithm>
 
-Map::Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle)
+Map::Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{sizeMap}
 {
 	int id = 0;
 	size_t direction;
+    vector<int> adyacents;
+    vector<shared_ptr<TrafficLight>> VectorTrafictlight;
 
 	for (int i = 1; i <= sizeMap; ++i)
 	{
 		for (int j = 1; j <= sizeMap; ++j)
 		{
 			id++;
-			adyacent = {0,0};
+			adyacents = {0, 0};
 
 		 	if ((i % 2 != 0) && (j % 2 != 0))
 			{
 				if (id - (sizeMap * i) != 0)
 				{
-					adyacent[0] = id + 1;
+					adyacents[0] = id + 1;
 				}
 				if (id-sizeMap>=1)
 				{
-					adyacent[1] = id - sizeMap;
+					adyacents[1] = id - sizeMap;
 				}
 				direction = static_cast<int>(Direction::goRight);
 				direction = static_cast<int>(Direction::goUp);
@@ -33,11 +35,11 @@ Map::Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle)
 			{
 				if (id - (sizeMap * i) !=0 )
 				{
-					adyacent[0] = id + 1;
+					adyacents[0] = id + 1;
 				}
 				if (id + sizeMap <= sizeMap * sizeMap)
 				{
-					adyacent[1] = id + sizeMap;
+					adyacents[1] = id + sizeMap;
 				}
 				direction = static_cast<int>(Direction::goRight);
 				direction = static_cast<int>(Direction::goDown);
@@ -47,11 +49,11 @@ Map::Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle)
 			{
 				if (id - (sizeMap * (i - 1) + 1) != 0)
 				{
-					adyacent[0] = id - 1;
+					adyacents[0] = id - 1;
 				}
 				if (id - sizeMap >= 1)
 				{
-					adyacent[1] = id - sizeMap;
+					adyacents[1] = id - sizeMap;
 				}
 				direction = static_cast<int>(Direction::goLeft);
 				direction = static_cast<int>(Direction::goUp);
@@ -61,11 +63,11 @@ Map::Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle)
 			{
 				if (id - (sizeMap * (i - 1) + 1) !=0 )
 				{
-					adyacent[0] = id - 1;
+					adyacents[0] = id - 1;
 				}
 				if (id + sizeMap <= sizeMap * sizeMap)
 				{
-					adyacent[1] = id + sizeMap;
+					adyacents[1] = id + sizeMap;
 				}
                 direction = static_cast<int>(Direction::goLeft);
                 direction = static_cast<int>(Direction::goDown);
@@ -80,8 +82,8 @@ Map::Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle)
                 make_shared<TrafficLight>(direction, timeTrafficLight, maxVehicle,  false)
             );
 
-			mapTrafficLight.insert(pair<int, vector<int>> (id, adyacent));
-			mapLight.insert(pair<int, vector<shared_ptr<TrafficLight>>> (id, VectorTrafictlight));
+			mapRoutes.insert(pair<int, vector<int>> (id, adyacents));
+			mapTrafficLight.insert(pair<int, vector<shared_ptr<TrafficLight>>> (id, VectorTrafictlight));
 			VectorTrafictlight.clear();
 		}
 	}
@@ -91,7 +93,7 @@ void Map::showMap()
 {
 	//map<int,vector<int>>::iterator it = mapTrafficLight.begin();
 		cout<<"\n ID  AdH  AdV\n-------------------\n";
-	for (auto it=mapTrafficLight.begin(); it!=mapTrafficLight.end(); ++it)
+	for (auto it = mapRoutes.begin(); it != mapRoutes.end(); ++it)
     	cout <<"  "<< it->first << " : " << it->second[0] << " : "<< it->second[1] << '\n';
 }
 
@@ -100,9 +102,9 @@ void Map::show()
 {
 
 	cout<<"\nNODO  TL  TL\n-------------------\n";
-	for(auto it=mapLight.begin(); it!=mapLight.end(); ++it)
+	for(auto it = mapTrafficLight.begin(); it != mapTrafficLight.end(); ++it)
 	{
-		cout<< "  " << it->first <<"  " << it->second[0]->GetTLID() <<"  "<< it->second[0]->CountVehicles() <<"  " << it->second[1]->GetTLID() <<" "<< it->second[1]->CountVehicles() <<"\n";
+		cout<< "  " << it->first <<"  " << it->second[0]->GetTLID() <<"  "<< it->second[0]->GetDirection() <<"  " << it->second[1]->GetTLID() <<" "<< it->second[1]->GetDirection() <<"\n";
 	}
 }
 
@@ -124,9 +126,9 @@ vector<int> Map::createRoute(int origin,int destination)
         else
         {
           	map<int,vector<int>>::iterator itMap;
-          	itMap = mapTrafficLight.find(vertex);
+          	itMap = mapRoutes.find(vertex);
           	vector<int> adjacentVertex;
-          	if (itMap != mapTrafficLight.end())
+          	if (itMap != mapRoutes.end())
           	{
             	adjacentVertex = itMap->second;
           	}
@@ -156,7 +158,7 @@ vector<int> Map::createRoute(int origin,int destination)
 		int anotherPath;
 		anotherPath = routes.top();
 		routes.pop();
-		auto trafficLight = mapTrafficLight.find(anotherPath);
+		auto trafficLight = mapRoutes.find(anotherPath);
 		auto adjacents = trafficLight->second;
 		for(auto& i : adjacents)
         {
@@ -165,10 +167,7 @@ vector<int> Map::createRoute(int origin,int destination)
                 path = trafficLight->first;
                 route.push_back(trafficLight->first);
             }
-
-
         }
-
 	}
 
 
@@ -209,12 +208,8 @@ bool Map::findQueue(deque<int>& vertices,int value)
   	}
   	return false;
 }
-Map::~Map()
-{
-    //dtor
-}
 
-map<int,vector<shared_ptr<TrafficLight>>> Map::get_mapTLight()
+map<int, vector<shared_ptr<TrafficLight>>> Map::GetMapTrafficLight() const
 {
-	return mapLight;
+	return mapTrafficLight;
 }

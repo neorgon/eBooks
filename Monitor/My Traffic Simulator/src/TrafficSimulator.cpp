@@ -23,9 +23,9 @@ int TrafficSimulator::RandomInteger(int lowest, int highest)
 Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
 {
     mapSim = map;
-    trafficLightsSim=map->get_mapTLight();
+    trafficLightsSim = map->GetMapTrafficLight();
 
-    size_t tam=trafficLightsSim.size();
+    size_t tam = trafficLightsSim.size();
 
     for ( size_t i = 1; i <= vehicleQuantity ; i++)
     {

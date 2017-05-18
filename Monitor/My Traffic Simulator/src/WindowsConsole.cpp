@@ -98,7 +98,7 @@ void WindowsConsole::PrintCity() const
     getchar();
 }
 
-void WindowsConsole::PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, bool>> &tls, size_t mapSize)
+void WindowsConsole::PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize)
 {
     size_t x = 1, y = 1;
 
@@ -107,8 +107,8 @@ void WindowsConsole::PrintMap(vector<tuple<int, int, size_t, bool, int, size_t, 
         SetColor(7);
         GotoXY(x * dx, y * dy);
         cout << ":"; //<< get<2>(t)
-        DrawDirection(x * dx, y * dy, get<2>(t), get<3>(t));
-        DrawDirection(x * dx, y * dy, get<5>(t), get<6>(t));
+        DrawDirection(x * dx, y * dy, t.second[0]->GetDirection(), t.second[0]->GetLight());
+        DrawDirection(x * dx, y * dy, t.second[1]->GetDirection(), t.second[1]->GetLight());
 
         if (x % mapSize == 0)
         {

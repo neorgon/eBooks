@@ -6,8 +6,8 @@
 Vehicle::Vehicle(size_t licencePlate, double speed,const pair<size_t,shared_ptr<TrafficLight>>& origin,
 			const pair<size_t,shared_ptr<TrafficLight>>& destiny,const shared_ptr<Map>& map/*,
 			size_t startTime*/)
-:licencePlate{licencePlate},speed{speed} /*startTime{startTime},*/ 
-{ 	
+:licencePlate{licencePlate},speed{speed} /*startTime{startTime},*/
+{
 	if (origin.second==nullptr)
 		throw;
 	ubication=origin.second;
@@ -21,12 +21,9 @@ Vehicle::Vehicle(size_t licencePlate, double speed,const pair<size_t,shared_ptr<
 	//auto mymapa=map->get_mapTLight();
 		for (auto& i: v)
 	{
-		route.push_back(make_pair((size_t)i,map->get_mapTLight()[i][0]));
+		route.push_back(make_pair((size_t)i, map->GetMapTrafficLight()[i][0]));
 
 	}
-	
-	
-
 }
 
 void Vehicle::Move()
@@ -39,7 +36,7 @@ void Vehicle::Move()
 	//verificar luz verde con velocidad mayor
 
 	if (at<=speed)
-	{   
+	{
 		if(ubication->GetLight())
 		{
 			indice++;
@@ -70,17 +67,17 @@ void Vehicle::Move()
 		ubication->Clean(at);
 		ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
 		cout<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
-		
+
 	}
 
 	//	if(ubication->FirstVehicle().get()->GetLicencePlate()==this->GetLicencePlate()
-	//		&& ubication->GetLight()) 
+	//		&& ubication->GetLight())
 	//		if (route.at(indice++).second->EnQueue(make_shared<Vehicle>(*this)),5)
 	//		{
 	//			ubication=route.at(indice++).second;
 	//		}
 		//if(ubication==route.back().first);
-			//boos->RegisterVehicle(this); 	
+			//boos->RegisterVehicle(this);
 			//cout<<"auno numero: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 		cout<<endl;
 		cout<<"nodo inicio id semaforo :"<<ubication->GetTLID()
@@ -89,10 +86,10 @@ void Vehicle::Move()
 		{
 			cout<<"nodo: "<<i.first<<" id semaforo :"<<i.second->GetTLID()
 			<<" auto n: "<<i.second->CountVehicles()<<endl;
-		
+
 		}
-	
-		
+
+
 
 	speed=bufferspped;
 	if (ubication==route.back().second)
@@ -100,8 +97,8 @@ void Vehicle::Move()
 			state=false;
 		}
 	}
-	
-	
+
+
 }
 
 size_t Vehicle::GetLicencePlate() const
