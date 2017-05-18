@@ -1,8 +1,4 @@
 #include "../include/TrafficLight.h"
-#include <algorithm>
-#include <iostream>
-
-
 
 size_t TrafficLight::GetTLID() const
 {

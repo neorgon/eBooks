@@ -1,8 +1,4 @@
-#include "WindowsConsole.h"
-
-#include <stdio.h>
-#include <unistd.h>
-#include <TrafficLight.h>
+#include "../include/WindowsConsole.h"
 
 void WindowsConsole::ClearScreen() const
 {
@@ -101,15 +97,17 @@ void WindowsConsole::PrintCity() const
 void WindowsConsole::PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize)
 {
     size_t x = 1, y = 1;
+    int cx, cy;
 
     for (auto &t : tls)
     {
         SetColor(7);
         GotoXY(x * dx, y * dy);
-        cout << ":"; //<< get<2>(t)
-        DrawDirection(x * dx, y * dy, t.second[0]->GetDirection(), t.second[0]->GetLight());
-        DrawDirection(x * dx, y * dy, t.second[1]->GetDirection(), t.second[1]->GetLight());
-
+        cout << ":";
+        DrawDirection(cx = x * dx, cy = y * dy, t.second[0]->GetDirection(), t.second[0]->GetLight());
+        t.second[0]->SetCoord(cx, cy);
+        DrawDirection(cx = x * dx, cy = y * dy, t.second[1]->GetDirection(), t.second[1]->GetLight());
+        t.second[1]->SetCoord(cx, cy);
         if (x % mapSize == 0)
         {
             x = 1;
@@ -122,7 +120,7 @@ void WindowsConsole::PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &
     }
 }
 
-void WindowsConsole::DrawDirection(int cx, int cy, size_t dir, bool tlGreen)
+void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen)
 {
     int i;
 
@@ -138,6 +136,7 @@ void WindowsConsole::DrawDirection(int cx, int cy, size_t dir, bool tlGreen)
             tlGreen ?  SetColor(10): SetColor(12);
             GotoXY(i, cy);
             cout << "*";
+            cx = i;
         break;
         case 90:
             for (i = cy - 1; i > cy - (dy - 1); i--)
@@ -149,6 +148,7 @@ void WindowsConsole::DrawDirection(int cx, int cy, size_t dir, bool tlGreen)
             tlGreen ?  SetColor(10): SetColor(12);
             GotoXY(cx, i);
             cout << "*";
+            cy = i;
         break;
         case 180:
             for (i = cx - 1; i > cx - (dx - 1); i--)
@@ -160,6 +160,7 @@ void WindowsConsole::DrawDirection(int cx, int cy, size_t dir, bool tlGreen)
             tlGreen ?  SetColor(10): SetColor(12);
             GotoXY(i, cy);
             cout << "*";
+            cx = i;
         break;
         case 270:
             for (i = cy + 1; i < cy + (dy - 1); i++)
@@ -171,6 +172,7 @@ void WindowsConsole::DrawDirection(int cx, int cy, size_t dir, bool tlGreen)
             tlGreen ?  SetColor(10): SetColor(12);
             GotoXY(cx, i);
             cout << "*";
+            cy = i;
         break;
     }
 }

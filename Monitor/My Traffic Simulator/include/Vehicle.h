@@ -1,13 +1,13 @@
 #ifndef VEHICLE_H
 #define VEHICLE_H
 
-
 #include <vector>
 #include <memory>
 #include <utility>
 #include <iostream>
 
-
+#include "../include/TrafficLight.h"
+#include "../include/Map.h"
 
 using namespace std;
 
@@ -17,7 +17,7 @@ class Map;
 
 class Vehicle
 {
-	
+
 	size_t licencePlate;
 	double speed;
 	vector <pair<size_t,shared_ptr<TrafficLight>>> route;

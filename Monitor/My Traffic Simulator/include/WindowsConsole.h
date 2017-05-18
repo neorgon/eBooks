@@ -2,8 +2,12 @@
 #define WINDOWSCONSOLE_H
 
 #include <iostream>
-#include <Map.h>
 #include <windows.h>
+#include <stdio.h>
+#include <unistd.h>
+
+#include "../include/TrafficLight.h"
+#include "../include/Map.h"
 
 using namespace std;
 
@@ -30,7 +34,7 @@ class WindowsConsole
         void SetColor(int color);
         void PrintCity() const;
         void PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize);
-        void DrawDirection(int cx, int cy, size_t dir, bool tlGreen);
+        void DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen);
 };
 
 #endif // WINDOWSCONSOLE_H

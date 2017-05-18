@@ -1,4 +1,5 @@
 #include "../include/Simulation.h"
+
 Simulation::Simulation(shared_ptr< Map> mapTrafficLight,string name,vector<shared_ptr<Vehicle>> Vehicles):map{mapTrafficLight},
 name{name},vehicles{Vehicles}
 {

@@ -7,11 +7,13 @@
 #include <deque>
 #include <stack>
 #include <map>
-#include <Direction.h>
-#include <TrafficLight.h>
+#include <algorithm>
+
+#include "../include/Direction.h"
 
 using namespace std;
 
+class TrafficLight;
 class Map
 {
     int sizeMap;
@@ -22,6 +24,7 @@ class Map
  		Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle);
         vector<int> createRoute(int origin, int destination);
         map<int, vector<shared_ptr<TrafficLight>>> GetMapTrafficLight() const;
+		int getSizeMap() const;
     	bool findStack(stack<int> auxStack, int value);
     	bool findQueue(deque<int>& vertices, int value);
         void show();

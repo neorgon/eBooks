@@ -18,17 +18,19 @@ int TrafficSimulator::RandomInteger(int lowest, int highest)
     return random_integer;
 }
 
-
-
 Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
 {
     mapSim = map;
-    trafficLightsSim = map->GetMapTrafficLight();
-
+    int sizeMap = map->getSizeMap();
     size_t tam = trafficLightsSim.size();
+    vehicleStartPoint =2;
+    vehicleEndPoint =3;
+    trafficLightsSim = map->GetMapTrafficLight();
 
     for ( size_t i = 1; i <= vehicleQuantity ; i++)
     {
+
+        funcion:
         if(i<=vehicleQuantity/2)
         {
             vehicleStartPoint =(size_t) RandomInteger(1,tam/2);
@@ -38,10 +40,22 @@ Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,si
         {
             vehicleStartPoint =(size_t)RandomInteger((tam/2)+1,tam);
             vehicleEndPoint = (size_t)RandomInteger(1,tam/2);
+
         }
 
+        vector<int> XYStartPoint=convertCoordinates((int)vehicleStartPoint);
+        vector<int> XYEndPoint=convertCoordinates((int)vehicleEndPoint);
+        int resStartPointX=XYEndPoint[0]-XYStartPoint[0];
+        int resEndPointY=XYEndPoint[1]-XYStartPoint[1];
 
-        cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"\n";
+        if( (abs(resStartPointX)==1 && abs(resEndPointY)==0) || (abs(resStartPointX)==0 && abs(resEndPointY)==1))
+        {
+            //cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA+++++++++++++\n";
+            //cout<<" ESTA alado********\n";
+            goto funcion;
+        }
+
+        cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA\n";
         pair<size_t,shared_ptr<TrafficLight>> origin = make_pair((size_t)vehicleStartPoint, trafficLightsSim[vehicleStartPoint][RandomInteger(0,1)]);
         pair<size_t,shared_ptr<TrafficLight>> destination = make_pair((size_t)vehicleEndPoint,trafficLightsSim[vehicleEndPoint][RandomInteger(0,1)]);
         vehicle = make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, map);
@@ -174,4 +188,16 @@ void TrafficSimulator::ClearScreen()
   #ifdef LINUX
   system("clear");
   #endif
+}
+
+vector<int> TrafficSimulator::convertCoordinates(int x)
+{
+    vector<int> aux;
+    int sizeMap=5;
+    aux={0,0};
+
+    aux[0]=(int)ceil((double)x/sizeMap);
+    aux[1]= sizeMap-((sizeMap*aux[0])-x);
+
+    return aux;
 }

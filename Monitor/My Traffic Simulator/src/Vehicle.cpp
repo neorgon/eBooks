@@ -1,8 +1,5 @@
 #include "../include/Vehicle.h"
 
-#include "../include/TrafficLight.h"
-#include "../include/Map.h"
-
 Vehicle::Vehicle(size_t licencePlate, double speed,const pair<size_t,shared_ptr<TrafficLight>>& origin,
 			const pair<size_t,shared_ptr<TrafficLight>>& destiny,const shared_ptr<Map>& map/*,
 			size_t startTime*/)
