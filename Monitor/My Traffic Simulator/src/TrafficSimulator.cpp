@@ -1,4 +1,5 @@
 #include "../include/TrafficSimulator.h"
+using my_point = pair<size_t,shared_ptr<TrafficLight>>;
 
 TrafficSimulator::TrafficSimulator()
 {
@@ -18,53 +19,51 @@ int TrafficSimulator::RandomInteger(int lowest, int highest)
     return random_integer;
 }
 
-Simulation* TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
+shared_ptr<Simulation> TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
 {
     mapSim = map;
     int sizeMap = map->getSizeMap();
-    size_t tam = trafficLightsSim.size();
-    vehicleStartPoint =2;
-    vehicleEndPoint =3;
     trafficLightsSim = map->GetMapTrafficLight();
+    size_t tam = trafficLightsSim.size();
+    vector<int> XYStartPoint;
+    vector<int> XYEndPoint;
+    int resStartPointX;
+    int resEndPointY;
 
     for ( size_t i = 1; i <= vehicleQuantity ; i++)
     {
-
-        funcion:
-        if(i<=vehicleQuantity/2)
+        do
         {
-            vehicleStartPoint =(size_t) RandomInteger(1,tam/2);
-            vehicleEndPoint = (size_t)RandomInteger((tam/2)+1,tam);
-        }
-        else
-        {
-            vehicleStartPoint =(size_t)RandomInteger((tam/2)+1,tam);
-            vehicleEndPoint = (size_t)RandomInteger(1,tam/2);
+            if(i<=vehicleQuantity/2)
+            {
+                vehicleStartPoint =(size_t) RandomInteger(1,tam/2);
+                vehicleEndPoint = (size_t)RandomInteger((tam/2)+1,tam);
+            }
+            else
+            {
+                vehicleStartPoint =(size_t)RandomInteger((tam/2)+1,tam);
+                vehicleEndPoint = (size_t)RandomInteger(1,tam/2);
+            }
 
-        }
-
-        vector<int> XYStartPoint=convertCoordinates((int)vehicleStartPoint);
-        vector<int> XYEndPoint=convertCoordinates((int)vehicleEndPoint);
-        int resStartPointX=XYEndPoint[0]-XYStartPoint[0];
-        int resEndPointY=XYEndPoint[1]-XYStartPoint[1];
-
-        if( (abs(resStartPointX)==1 && abs(resEndPointY)==0) || (abs(resStartPointX)==0 && abs(resEndPointY)==1))
-        {
-            //cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA+++++++++++++\n";
-            //cout<<" ESTA alado********\n";
-            goto funcion;
+            XYStartPoint=ConvertCoordinates((int)vehicleStartPoint, sizeMap);
+            XYEndPoint=ConvertCoordinates((int)vehicleEndPoint, sizeMap);
+            resStartPointX=XYEndPoint[0]-XYStartPoint[0];
+            resEndPointY=XYEndPoint[1]-XYStartPoint[1];
         }
 
+        while( (abs(resStartPointX)== 1 && abs(resEndPointY)== 0) || (abs(resStartPointX)== 0 && abs(resEndPointY)== 1));
+        
+            
         cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA\n";
-        pair<size_t,shared_ptr<TrafficLight>> origin = make_pair((size_t)vehicleStartPoint, trafficLightsSim[vehicleStartPoint][RandomInteger(0,1)]);
-        pair<size_t,shared_ptr<TrafficLight>> destination = make_pair((size_t)vehicleEndPoint,trafficLightsSim[vehicleEndPoint][RandomInteger(0,1)]);
-        vehicle = make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, map);
-        vehicles.push_back(vehicle);
+        my_point origin = make_pair((size_t)vehicleStartPoint, trafficLightsSim[vehicleStartPoint][RandomInteger(0,1)]);
+        my_point destination = make_pair((size_t)vehicleEndPoint,trafficLightsSim[vehicleEndPoint][RandomInteger(0,1)]);
+        vehicles.push_back(make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, map));
 
     }
 
 
-    simulationTraffic=new Simulation(map,name,vehicles);
+    simulationTraffic=make_shared<Simulation>(map,name,vehicles);
+    simulations.push_back(simulationTraffic);
 
     return simulationTraffic;
 
@@ -190,10 +189,10 @@ void TrafficSimulator::ClearScreen()
   #endif
 }
 
-vector<int> TrafficSimulator::convertCoordinates(int x)
+vector<int> TrafficSimulator::ConvertCoordinates(int x,int sizeMap)
 {
     vector<int> aux;
-    int sizeMap=5;
+    
     aux={0,0};
 
     aux[0]=(int)ceil((double)x/sizeMap);

@@ -70,7 +70,7 @@
 1494304081 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\viewscreen.cpp
 	"ViewScreen.h"
 
-1495113915 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+1495118508 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
 	<TrafficSimulator.h>
 	<WindowsConsole.h>
 
@@ -108,7 +108,7 @@
 1495112617 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
 	"../include/TrafficSimulator.h"
 
-1495111320 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
+1495139004 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
 	"Simulation.h"
 	"Map.h"
 	"Vehicle.h"
