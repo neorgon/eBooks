@@ -7,23 +7,14 @@
 			<Cursor1 position="200" topLine="3" />
 		</Cursor>
 	</File>
-	<File name="src\Vehicle.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\TrafficLight.cpp" open="1" top="0" tabpos="9" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="31" topLine="0" />
+			<Cursor1 position="282" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\WindowsConsole.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Map.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="4496" topLine="69" />
-		</Cursor>
-		<Folding>
-			<Collapse line="3" />
-			<Collapse line="28" />
-		</Folding>
-	</File>
-	<File name="include\TrafficSimulator.h" open="0" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="287" topLine="2" />
+			<Cursor1 position="70" topLine="2" />
 		</Cursor>
 	</File>
 	<File name="src\Simulation.cpp" open="0" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -31,24 +22,38 @@
 			<Cursor1 position="36" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="include\WindowsConsole.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\Vehicle.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="138" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\TrafficLight.cpp" open="0" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="38" topLine="0" />
+			<Cursor1 position="31" topLine="0" />
 		</Cursor>
 	</File>
 	<File name="include\TrafficLight.h" open="1" top="0" tabpos="4" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="129" topLine="30" />
+			<Cursor1 position="1435" topLine="33" />
 		</Cursor>
 	</File>
-	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="src\WindowsConsole.cpp" open="1" top="0" tabpos="5" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="334" topLine="0" />
+			<Cursor1 position="6616" topLine="142" />
+		</Cursor>
+		<Folding>
+			<Collapse line="3" />
+			<Collapse line="28" />
+		</Folding>
+	</File>
+	<File name="include\TrafficSimulator.h" open="1" top="0" tabpos="7" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="656" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="include\WindowsConsole.h" open="1" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="1160" topLine="16" />
+		</Cursor>
+	</File>
+	<File name="src\TrafficSimulator.cpp" open="1" top="0" tabpos="8" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+		<Cursor>
+			<Cursor1 position="2872" topLine="76" />
 		</Cursor>
 	</File>
 	<File name="include\Simulation.h" open="0" top="0" tabpos="0" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
@@ -61,14 +66,9 @@
 			<Cursor1 position="36" topLine="0" />
 		</Cursor>
 	</File>
-	<File name="src\TrafficSimulator.cpp" open="0" top="0" tabpos="6" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
+	<File name="main.cpp" open="1" top="1" tabpos="1" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
 		<Cursor>
-			<Cursor1 position="605" topLine="0" />
-		</Cursor>
-	</File>
-	<File name="src\Map.cpp" open="1" top="0" tabpos="3" split="0" active="1" splitpos="0" zoom_1="0" zoom_2="0">
-		<Cursor>
-			<Cursor1 position="67" topLine="72" />
+			<Cursor1 position="452" topLine="6" />
 		</Cursor>
 	</File>
 </CodeBlocks_layout_file>
