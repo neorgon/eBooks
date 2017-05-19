@@ -35,6 +35,7 @@ class WindowsConsole
         void PrintCity() const;
         void PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize);
         void DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen);
+        void UpdateMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls);
 };
 
 #endif // WINDOWSCONSOLE_H

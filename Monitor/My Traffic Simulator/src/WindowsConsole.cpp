@@ -176,3 +176,16 @@ void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen)
         break;
     }
 }
+
+void WindowsConsole::UpdateMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls)
+{
+    for (auto &t : tls)
+    {
+        t.second[0]->GetLight() ? SetColor(10) : SetColor(12);
+        GotoXY(t.second[0]->GetCoord().x, t.second[0]->GetCoord().y);
+        cout << "*";
+        t.second[1]->GetLight() ? SetColor(10) : SetColor(12);
+        GotoXY(t.second[1]->GetCoord().x, t.second[1]->GetCoord().y);
+        cout << "*";
+    }
+}

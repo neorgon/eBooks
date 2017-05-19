@@ -1,10 +1,6 @@
 #ifndef TRAFFICSIMULATOR_H
 #define TRAFFICSIMULATOR_H
 
-#include "Simulation.h"
-#include "Map.h"
-#include "Vehicle.h"
-#include "TrafficLight.h"
 #include <vector>
 #include <memory>
 #include <string>
@@ -19,6 +15,11 @@
 #include <typeinfo>
 #include <stdlib.h>
 #include <time.h>
+
+#include "Simulation.h"
+#include "Map.h"
+#include "Vehicle.h"
+#include "TrafficLight.h"
 
 #define WINDOWS 1
 
@@ -48,7 +49,6 @@ class TrafficSimulator
     void StartSimulation(string simulationName, int cycles = 0);
     void ClearScreen();
     vector<int> ConvertCoordinates(int x ,int sizeMap);
-
 };
 
 #endif // TRAFFICSIMULATOR_H

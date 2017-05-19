@@ -121,7 +121,7 @@ void TrafficLight::Update()
     }
     else
     {
-        green=SwitchLight();
+        green = SwitchLight();
         timer = countdown;
     }
 /*
