@@ -23,56 +23,55 @@ Vehicle::Vehicle(size_t licencePlate, double speed,const pair<size_t,shared_ptr<
 	}
 }
 
-void Vehicle::Move()
+void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 {
 	if(state)
 	{
 		double bufferspped = speed;
-	arrivalTime++;
-	auto at=ubication->GetVehiculoLocation(make_shared<Vehicle>(*this));
-	//verificar luz verde con velocidad mayor
+		arrivalTime++;
+		auto at=ubication->GetVehiculoLocation(make_shared<Vehicle>(*this));
+		//verificar luz verde con velocidad mayor
 
-	if (at<=speed)
-	{
-		if(ubication->GetLight())
-		{
-			indice++;
-			if (route.at(indice).second->EnQueue(make_shared<Vehicle>(*this),(speed-at))==1)
-				{
-					ubication->Clean(at);
-					ubication=route.at(indice).second;
-					cout<<"ubicacion nueva: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
-				}
+		if (at<=speed)
+		{   
+			if(ubication->GetLight())
+			{
+				indice++;
+				if (route.at(indice).second->EnQueue(make_shared<Vehicle>(*this),(speed-at))==1)
+					{
+						ubication->Clean(at);
+						ubication=route.at(indice).second;
+						cout<<"ubicacion nueva: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+					}
+				else
+					{
+						indice--;
+						speed=at-1;
+						ubication->Clean(at);
+						ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
+					}
+			}
 			else
-				{
-					indice--;
-					speed=at-1;
-					ubication->Clean(at);
-					ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
-				}
-		}
-		else
 			{
 				speed=at-1;
 				ubication->Clean(at);
 				ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
-				}
+			}
 
-	}
-	else if(at>speed)
-	{
-		ubication->Clean(at);
-		ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
-		cout<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+		}
+		else if(at>speed)
+		{
+			ubication->Clean(at);
+			ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
+			cout<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+		}
 
-	}
-
-	//	if(ubication->FirstVehicle().get()->GetLicencePlate()==this->GetLicencePlate()
-	//		&& ubication->GetLight())
-	//		if (route.at(indice++).second->EnQueue(make_shared<Vehicle>(*this)),5)
-	//		{
-	//			ubication=route.at(indice++).second;
-	//		}
+		//	if(ubication->FirstVehicle().get()->GetLicencePlate()==this->GetLicencePlate()
+		//		&& ubication->GetLight()) 
+		//		if (route.at(indice++).second->EnQueue(make_shared<Vehicle>(*this)),5)
+		//		{
+		//			ubication=route.at(indice++).second;
+		//		}
 		//if(ubication==route.back().first);
 			//boos->RegisterVehicle(this);
 			//cout<<"auno numero: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
@@ -85,17 +84,16 @@ void Vehicle::Move()
 			<<" auto n: "<<i.second->CountVehicles()<<endl;
 
 		}
-
-
-
-	speed=bufferspped;
-	if (ubication==route.back().second)
+		speed=bufferspped;
+		if (ubication==route.back().second)
 		{
 			state=false;
 		}
 	}
-
-
+	else
+	{
+		func(make_shared<Vehicle>(*this));
+	}
 }
 
 size_t Vehicle::GetLicencePlate() const

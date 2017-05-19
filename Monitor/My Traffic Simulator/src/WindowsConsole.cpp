@@ -49,6 +49,20 @@ void WindowsConsole::SetColor(int color)
     SetConsoleTextAttribute(GetStdHandle (STD_OUTPUT_HANDLE), color);
 }
 
+void WindowsConsole::Print(int c, int x, int y, const char* s)
+{
+    SetColor(c);
+    GotoXY(x, y);
+    cout << s;
+}
+
+void WindowsConsole::Print(int c, int x, int y, char s)
+{
+    SetColor(c);
+    GotoXY(x, y);
+    cout << s;
+}
+
 void WindowsConsole::PrintCity() const
 {
     const char city[] =
@@ -101,12 +115,24 @@ void WindowsConsole::PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &
 
     for (auto &t : tls)
     {
-        SetColor(7);
-        GotoXY(x * dx, y * dy);
-        cout << ":";
-        DrawDirection(cx = x * dx, cy = y * dy, t.second[0]->GetDirection(), t.second[0]->GetLight());
+        Print(7, x * dx, y * dy, ":");
+        DrawDirection
+            (
+                cx = x * dx,
+                cy = y * dy,
+                t.second[0]->GetDirection(),
+                t.second[0]->GetLight(),
+                t.second[0]->CountVehicles()
+            );
         t.second[0]->SetCoord(cx, cy);
-        DrawDirection(cx = x * dx, cy = y * dy, t.second[1]->GetDirection(), t.second[1]->GetLight());
+        DrawDirection
+            (
+                cx = x * dx,
+                cy = y * dy,
+                t.second[1]->GetDirection(),
+                t.second[1]->GetLight(),
+                t.second[1]->CountVehicles()
+            );
         t.second[1]->SetCoord(cx, cy);
         if (x % mapSize == 0)
         {
@@ -120,7 +146,7 @@ void WindowsConsole::PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &
     }
 }
 
-void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen)
+void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen, size_t vehicles)
 {
     int i;
 
@@ -129,50 +155,57 @@ void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen)
         case 0:
             for (i = cx + 1; i < cx + (dx - 1); i++)
             {
-                SetColor(7);
-                GotoXY(i, cy);
-                cout << char(196);
+                Print(7, i, cy, char(196));
             }
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(i, cy);
-            cout << "*";
+            Print(15, i - 3, cy, to_string(vehicles).c_str());
+            Print(tlGreen ? 10 : 12, i, cy, "*");
             cx = i;
         break;
         case 90:
             for (i = cy - 1; i > cy - (dy - 1); i--)
             {
-                SetColor(7);
-                GotoXY(cx, i);
-                cout << char(179);
+                Print(7, cx, i, char(179));
             }
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(cx, i);
-            cout << "*";
+            Print(15, cx, i + 1, to_string(vehicles).c_str());
+            Print(tlGreen ? 10 : 12, cx, i, "*");
             cy = i;
         break;
         case 180:
             for (i = cx - 1; i > cx - (dx - 1); i--)
             {
-                SetColor(7);
-                GotoXY(i, cy);
-                cout << char(196);
+                Print(7, i, cy, char(196));
             }
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(i, cy);
-            cout << "*";
+            Print(15, i + 3, cy, to_string(vehicles).c_str());
+            Print(tlGreen ? 10 : 12, i, cy, "*");
             cx = i;
         break;
         case 270:
             for (i = cy + 1; i < cy + (dy - 1); i++)
             {
-                SetColor(7);
-                GotoXY(cx, i);
-                cout << char(179);
+                Print(7, cx, i, char(179));
             }
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(cx, i);
-            cout << "*";
+            Print(15, cx, i - 1, to_string(vehicles).c_str());
+            Print(tlGreen ? 10 : 12, cx, i, "*");
             cy = i;
+        break;
+    }
+}
+
+void WindowsConsole::UpdateNVehicles(int d, int c, int x, int y, const char* s)
+{
+    switch (d)
+    {
+        case 0:
+            Print(15, x - 3, y, s);
+        break;
+        case 90:
+            Print(15, x, y + 1, s);
+        break;
+        case 180:
+            Print(15, x + 3, y, s);
+        break;
+        case 270:
+            Print(15, x, y - 1, s);
         break;
     }
 }
@@ -181,11 +214,23 @@ void WindowsConsole::UpdateMap(const map<int, vector<shared_ptr<TrafficLight>>> 
 {
     for (auto &t : tls)
     {
-        t.second[0]->GetLight() ? SetColor(10) : SetColor(12);
-        GotoXY(t.second[0]->GetCoord().x, t.second[0]->GetCoord().y);
-        cout << "*";
-        t.second[1]->GetLight() ? SetColor(10) : SetColor(12);
-        GotoXY(t.second[1]->GetCoord().x, t.second[1]->GetCoord().y);
-        cout << "*";
+        Print(t.second[0]->GetLight() ? 10 : 12, t.second[0]->GetCoord().x, t.second[0]->GetCoord().y, "*");
+        UpdateNVehicles
+        (
+            t.second[0]->GetDirection(),
+            15,
+            t.second[0]->GetCoord().x,
+            t.second[0]->GetCoord().y,
+            to_string(t.second[0]->CountVehicles()).c_str()
+        );
+        Print(t.second[1]->GetLight() ? 10 : 12, t.second[1]->GetCoord().x, t.second[1]->GetCoord().y, "*");
+        UpdateNVehicles
+        (
+            t.second[1]->GetDirection(),
+            15,
+            t.second[1]->GetCoord().x,
+            t.second[1]->GetCoord().y,
+            to_string(t.second[1]->CountVehicles()).c_str()
+         );
     }
 }

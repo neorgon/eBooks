@@ -44,7 +44,7 @@ class TrafficLight
         void SetCoord(int x, int y);
         size_t CountVehicles() const;
         size_t GetMaxVQueue()const;
-        bool SwitchLight();
+        void SwitchLight();
         bool EnQueue(const shared_ptr<Vehicle>& v);
         bool EnQueue(const shared_ptr<Vehicle>& v,size_t id);
         void Clean(size_t at);

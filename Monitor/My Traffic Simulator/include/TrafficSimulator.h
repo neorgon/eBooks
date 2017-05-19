@@ -15,6 +15,8 @@
 #include <typeinfo>
 #include <stdlib.h>
 #include <time.h>
+#include <functional>
+
 
 #include "Simulation.h"
 #include "Map.h"
@@ -25,29 +27,28 @@
 
 using namespace std;
 class Map;
+class TrafficLight;
 class TrafficSimulator
 {
-	int trafficLightsQuantity;
-	size_t vehicleStartPoint;
-	size_t vehicleEndPoint;
-	map<int,vector<shared_ptr<TrafficLight>>> trafficLightsSim;
-	vector<shared_ptr<Vehicle>> vehicles;
-	shared_ptr<Map> mapSim;
-	shared_ptr<Simulation> simulationTraffic;
-	vector<shared_ptr<Simulation>> simulations;
+	
+	
+	map<string,shared_ptr<Simulation>> simulations;
+
 
 	public:
 	TrafficSimulator();
 	~TrafficSimulator();
 	int RandomInteger(int lowest, int highest);
-	shared_ptr<Simulation> BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,
+	void BuildSimulation(shared_ptr<Map>& map,string name,size_t vehicleQuantity,
 	size_t speedMin,size_t speedMax);
-    bool ValidateSimulation(string name);
+    /*bool ValidateSimulation(string name);
     bool ValidateSimulation(Simulation *simulation);
     void StartLoopSim(int cycles = 0);
     void StartSimulation(Simulation *simulation, int cycles = 0);
     void StartSimulation(string simulationName, int cycles = 0);
-    void ClearScreen();
+    void ClearScreen();*/
+    vector<string> Data;
+
     vector<int> ConvertCoordinates(int x ,int sizeMap);
 };
 

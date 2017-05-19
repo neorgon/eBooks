@@ -18,6 +18,9 @@ class WindowsConsole
     size_t vsHeight, vsWidth;
     const char* windowTitle;
     int dx, dy;
+    void Print(int c, int x, int y, const char* s);
+    void Print(int c, int x, int y, char s);
+    void UpdateNVehicles(int d, int c, int x, int y, const char* s);
 
     public:
         WindowsConsole(size_t h, size_t w, const char* t, int dx, int dy) :
@@ -34,7 +37,7 @@ class WindowsConsole
         void SetColor(int color);
         void PrintCity() const;
         void PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize);
-        void DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen);
+        void DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen, size_t vehicles);
         void UpdateMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls);
 };
 

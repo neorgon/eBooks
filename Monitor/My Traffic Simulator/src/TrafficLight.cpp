@@ -33,7 +33,7 @@ size_t TrafficLight::CountVehicles() const
 
     while (p < maxVQueue)
     {
-        if (vehicles[p]!=nullptr)
+        if (vehicles[p] != nullptr)
             v++;
         p++;
     }
@@ -46,9 +46,9 @@ size_t TrafficLight::GetMaxVQueue()const
     return maxVQueue;
 }
 
-bool TrafficLight::SwitchLight()
+void TrafficLight::SwitchLight()
 {
-    return !green;
+    green = !green;
 }
 
 bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v)
@@ -121,7 +121,7 @@ void TrafficLight::Update()
     }
     else
     {
-        green = SwitchLight();
+        SwitchLight();
         timer = countdown;
     }
 /*

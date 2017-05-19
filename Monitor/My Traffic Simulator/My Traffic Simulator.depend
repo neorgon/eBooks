@@ -67,9 +67,9 @@
 1494304081 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\viewscreen.cpp
 	"ViewScreen.h"
 
-1495118508 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
-	<TrafficSimulator.h>
-	<WindowsConsole.h>
+1495199600 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+	"../include/TrafficSimulator.h"
+	"../include/WindowsConsole.h"
 
 1495115074 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\map.h
 	<iostream>
@@ -81,35 +81,33 @@
 	<algorithm>
 	"../include/Direction.h"
 
-1495114956 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
+1495198144 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
 	<string>
 	<deque>
 	<memory>
 	"../include/Vehicle.h"
 
-1495114766 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
+1495196731 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
 	<vector>
 	<memory>
 	<utility>
 	<iostream>
+	<functional>
 	"../include/TrafficLight.h"
 	"../include/Map.h"
 
-1495114986 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
+1495199733 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
 	"../include/TrafficLight.h"
 
 1495115116 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
 	"../include/TrafficLight.h"
 	"../include/Map.h"
 
-1495112617 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
+1495197057 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
 	"../include/TrafficSimulator.h"
+	"../include/TrafficLight.h"
 
-1495139004 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
-	"Simulation.h"
-	"Map.h"
-	"Vehicle.h"
-	"TrafficLight.h"
+1495196747 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
 	<vector>
 	<memory>
 	<string>
@@ -124,14 +122,19 @@
 	<typeinfo>
 	<stdlib.h>
 	<time.h>
+	<functional>
+	"Simulation.h"
+	"Map.h"
+	"Vehicle.h"
+	"TrafficLight.h"
 
-1495114766 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
+1495196731 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
 	"../include/Vehicle.h"
 
-1495116364 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
+1495206290 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
 	"../include/WindowsConsole.h"
 
-1495114724 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
+1495209890 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
 	<iostream>
 	<windows.h>
 	<stdio.h>

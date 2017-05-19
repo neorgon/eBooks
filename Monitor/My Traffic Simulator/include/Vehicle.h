@@ -5,6 +5,7 @@
 #include <memory>
 #include <utility>
 #include <iostream>
+#include <functional>
 
 #include "../include/TrafficLight.h"
 #include "../include/Map.h"
@@ -30,7 +31,7 @@ public:
 	Vehicle(size_t licencePlate,double speed,const pair<size_t,shared_ptr<TrafficLight>>& origin,
 			const pair<size_t,shared_ptr<TrafficLight>>& destiny,const shared_ptr<Map>& map/*,
 			size_t startTime*/);
-	void Move();
+	void Move(function<void(shared_ptr<Vehicle>)> func);
 	size_t GetLicencePlate() const;
 	double getspeed();
 	shared_ptr<TrafficLight> GetLocation() const;

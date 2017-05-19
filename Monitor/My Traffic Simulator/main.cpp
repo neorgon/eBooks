@@ -13,6 +13,10 @@ int main()
 	auto TLs = mapa.GetMapTrafficLight();
 	wc.PrintMap(TLs, mapa.getSizeMap());
 
+    /*wc.SetColor(15);
+    wc.GotoXY(11, 4);
+    cout << "15";*/
+
     getchar();
 
     for (auto t : TLs)

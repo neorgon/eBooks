@@ -1,4 +1,6 @@
 #include "../include/TrafficSimulator.h"
+
+#include "../include/TrafficLight.h"
 using my_point = pair<size_t,shared_ptr<TrafficLight>>;
 
 TrafficSimulator::TrafficSimulator()
@@ -19,16 +21,18 @@ int TrafficSimulator::RandomInteger(int lowest, int highest)
     return random_integer;
 }
 
-shared_ptr<Simulation> TrafficSimulator::BuildSimulation(shared_ptr<Map> map,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
+void TrafficSimulator::BuildSimulation(shared_ptr<Map>& mapSimulation,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
 {
-    mapSim = map;
-    int sizeMap = map->getSizeMap();
-    trafficLightsSim = map->GetMapTrafficLight();
+    map <int, vector<shared_ptr<TrafficLight>>> trafficLightsSim= mapSimulation->GetMapTrafficLight();
+    int sizeMap = mapSimulation->getSizeMap();
     size_t tam = trafficLightsSim.size();
+    vector<shared_ptr<Vehicle>> vehicles;
     vector<int> XYStartPoint;
     vector<int> XYEndPoint;
     int resStartPointX;
     int resEndPointY;
+    size_t vehicleStartPoint;
+    size_t vehicleEndPoint;
 
     for ( size_t i = 1; i <= vehicleQuantity ; i++)
     {
@@ -52,23 +56,20 @@ shared_ptr<Simulation> TrafficSimulator::BuildSimulation(shared_ptr<Map> map,str
         }
 
         while( (abs(resStartPointX)== 1 && abs(resEndPointY)== 0) || (abs(resStartPointX)== 0 && abs(resEndPointY)== 1));
-        
-            
+
+
         cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA\n";
         my_point origin = make_pair((size_t)vehicleStartPoint, trafficLightsSim[vehicleStartPoint][RandomInteger(0,1)]);
         my_point destination = make_pair((size_t)vehicleEndPoint,trafficLightsSim[vehicleEndPoint][RandomInteger(0,1)]);
-        vehicles.push_back(make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, map));
+        vehicles.push_back(make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, mapSimulation));
 
     }
 
 
-    simulationTraffic=make_shared<Simulation>(map,name,vehicles);
-    simulations.push_back(simulationTraffic);
-
-    return simulationTraffic;
-
+    simulations[name]=make_shared<Simulation>(mapSimulation,name,vehicles);
+  
 }
-
+/*
 bool TrafficSimulator::ValidateSimulation(Simulation *simulation)
 {
     auto name = simulation->getName();
@@ -115,9 +116,13 @@ void TrafficSimulator::StartLoopSim(int cycles)
                         break;
                     }
 
-                    try
+                    /*try
                     {
-                        i->Move();
+                        i->Move([&](shared_ptr<Vehicle> me){
+                        Data.push_back("auto :"+to_string( me->GetLicencePlate())+"Time : "+to_string( me->GetArrivalTime()));
+                        cout<<me->GetArrivalTime()<<endl;
+                        return;
+                        });
                     }
                     catch (...)
                     {
@@ -126,14 +131,15 @@ void TrafficSimulator::StartLoopSim(int cycles)
                     ClearScreen();
                     cout<<"Simulation: "<<simulationTraffic->getName();
                     mapSim->show();
+
                     //cout << "\r%"<<i;
                     //mapSimulator->show();
                     //auto vehicleArrived = i->Move();
-                    /*if(vehicleArrived)
+                    if(vehicleArrived)
                     {
                         if (i != auxVehicles.end())
                         auxVehicles.erase(i);
-                    }*/
+                    }
                 }
 
                 for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
@@ -188,11 +194,11 @@ void TrafficSimulator::ClearScreen()
   system("clear");
   #endif
 }
-
+*/
 vector<int> TrafficSimulator::ConvertCoordinates(int x,int sizeMap)
 {
     vector<int> aux;
-    
+
     aux={0,0};
 
     aux[0]=(int)ceil((double)x/sizeMap);
