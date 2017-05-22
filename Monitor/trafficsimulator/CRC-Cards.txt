@@ -34,3 +34,15 @@ Responsabilidad:
 Colaborador:
 Vehicle
 TrafficLight
+
+Nombre de la clase
+-WindowsConsole
+Responsabilidad:
+-Mostrar los semáforos creados en el Traffic Simulator
+-Mostrar las colas de autos representados por números entre los semáforos
+-Mostrar los cambios en cada momento de la simulación
+Colaborador:
+TrafficSimulator
+
+
+El simulador debe guardar todos los ciclos (clase ciclo o iteración)

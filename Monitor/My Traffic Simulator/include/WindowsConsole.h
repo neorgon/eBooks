@@ -18,9 +18,6 @@ class WindowsConsole
     size_t vsHeight, vsWidth;
     const char* windowTitle;
     int dx, dy;
-    void Print(int c, int x, int y, const char* s);
-    void Print(int c, int x, int y, char s);
-    void UpdateNVehicles(int d, int c, int x, int y, const char* s);
 
     public:
         WindowsConsole(size_t h, size_t w, const char* t, int dx, int dy) :

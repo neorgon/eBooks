@@ -79,8 +79,8 @@ bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v,size_t id)
 	//cout<<"otro encolado"<<endl;
 	//cout<<id<<endl;
     size_t i=vehicles.size()-(id+1);
-    cout<<i<<endl;
-    cout<<vehicles.size()<<endl;
+    //cout<<i<<endl;
+    //cout<<vehicles.size()<<endl;
     while (i < vehicles.size())
     {// cout<<"ciclo"<<endl;
     	if( vehicles[i] == nullptr)

@@ -10,7 +10,7 @@ Vehicle::Vehicle(size_t licencePlate, double speed,const pair<size_t,shared_ptr<
 	ubication=origin.second;
 	if (!ubication->EnQueue(make_shared<Vehicle>(*this)))
 		cout<<"error no push"<<endl;
-	cout<<"AN: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+	//cout<<"AN: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 	//cout<<" Auto indice n: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 	//pedir cambio de vector;
 	vector<int> v = map->createRoute((int)origin.first,(int)destiny.first);
@@ -33,7 +33,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 		//verificar luz verde con velocidad mayor
 
 		if (at<=speed)
-		{   
+		{
 			if(ubication->GetLight())
 			{
 				indice++;
@@ -41,7 +41,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 					{
 						ubication->Clean(at);
 						ubication=route.at(indice).second;
-						cout<<"ubicacion nueva: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+						//cout<<"ubicacion nueva: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 					}
 				else
 					{
@@ -63,11 +63,11 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 		{
 			ubication->Clean(at);
 			ubication->EnQueue(make_shared<Vehicle>(*this),(ubication->GetMaxVQueue()-at+speed));
-			cout<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+			//cout<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 		}
 
 		//	if(ubication->FirstVehicle().get()->GetLicencePlate()==this->GetLicencePlate()
-		//		&& ubication->GetLight()) 
+		//		&& ubication->GetLight())
 		//		if (route.at(indice++).second->EnQueue(make_shared<Vehicle>(*this)),5)
 		//		{
 		//			ubication=route.at(indice++).second;
@@ -75,15 +75,16 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 		//if(ubication==route.back().first);
 			//boos->RegisterVehicle(this);
 			//cout<<"auno numero: "<<ubication->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
-		cout<<endl;
-		cout<<"nodo inicio id semaforo :"<<ubication->GetTLID()
-		<<" auto n: "<<ubication->CountVehicles()<<endl;
+		//cout<<endl;
+		//cout<<"nodo inicio id semaforo :"<<ubication->GetTLID()
+		//<<" auto n: "<<ubication->CountVehicles()<<endl;
+		/*
 		for (auto& i: route)
 		{
 			cout<<"nodo: "<<i.first<<" id semaforo :"<<i.second->GetTLID()
 			<<" auto n: "<<i.second->CountVehicles()<<endl;
-
 		}
+		*/
 		speed=bufferspped;
 		if (ubication==route.back().second)
 		{

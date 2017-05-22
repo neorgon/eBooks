@@ -1,6 +1,5 @@
 #include "../include/TrafficSimulator.h"
 
-#include "../include/TrafficLight.h"
 using my_point = pair<size_t,shared_ptr<TrafficLight>>;
 
 TrafficSimulator::TrafficSimulator()
@@ -58,7 +57,7 @@ void TrafficSimulator::BuildSimulation(shared_ptr<Map>& mapSimulation,string nam
         while( (abs(resStartPointX)== 1 && abs(resEndPointY)== 0) || (abs(resStartPointX)== 0 && abs(resEndPointY)== 1));
 
 
-        cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA\n";
+        //cout<<vehicleStartPoint<<"---"<<i<<"----"<<vehicleEndPoint<<"RUTA\n";
         my_point origin = make_pair((size_t)vehicleStartPoint, trafficLightsSim[vehicleStartPoint][RandomInteger(0,1)]);
         my_point destination = make_pair((size_t)vehicleEndPoint,trafficLightsSim[vehicleEndPoint][RandomInteger(0,1)]);
         vehicles.push_back(make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),origin, destination, mapSimulation));
@@ -67,26 +66,15 @@ void TrafficSimulator::BuildSimulation(shared_ptr<Map>& mapSimulation,string nam
 
 
     simulations[name]=make_shared<Simulation>(mapSimulation,name,vehicles);
-  
-}
-/*
-bool TrafficSimulator::ValidateSimulation(Simulation *simulation)
-{
-    auto name = simulation->getName();
-    if (name == simulationTraffic->getName())
-        return true;
-    return false;
+
 }
 
-bool TrafficSimulator::ValidateSimulation(string name)
+void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator simulationIterator, int cycles)
 {
-    if (name == simulationTraffic->getName())
-        return true;
-    return false;
-}
-
-void TrafficSimulator::StartLoopSim(int cycles)
-{
+    //cout<<simulationIterator->second->getName();
+    auto vehicles = simulationIterator->second->getVehicles();
+    auto mapSim = simulationIterator->second->getMap();
+    auto trafficLightsSim = mapSim->GetMapTrafficLight();
     string msg;
     char ch;
     bool loop=false;
@@ -97,9 +85,12 @@ void TrafficSimulator::StartLoopSim(int cycles)
     while(loop==false)
     {
         getch();
-        ClearScreen();
-        cout<<"press escape to end simulation"<<endl;
-        cout<<"press space to continue"<<endl;
+        WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
+        wc.ClearScreen();
+        //cout<<"press escape to end simulation"<<endl;
+        //cout<<"press space to continue"<<endl;
+
+        wc.PrintMap(trafficLightsSim, mapSim->getSizeMap());
         ch=getch();
         if(ch=='\033')
             loop = true;
@@ -115,31 +106,21 @@ void TrafficSimulator::StartLoopSim(int cycles)
                         msg = "all cars arrived, simulation ended";
                         break;
                     }
-
-                    /*try
+                    try
                     {
                         i->Move([&](shared_ptr<Vehicle> me){
                         Data.push_back("auto :"+to_string( me->GetLicencePlate())+"Time : "+to_string( me->GetArrivalTime()));
-                        cout<<me->GetArrivalTime()<<endl;
+                        //cout<<me->GetArrivalTime()<<endl;
                         return;
                         });
                     }
-                    catch (...)
+                    catch(...)
                     {
-                        cout<<"Simulation ended due to a car arrived";
+                        cout<<"a car arrvied";
                     }
-                    ClearScreen();
-                    cout<<"Simulation: "<<simulationTraffic->getName();
-                    mapSim->show();
 
-                    //cout << "\r%"<<i;
-                    //mapSimulator->show();
-                    //auto vehicleArrived = i->Move();
-                    if(vehicleArrived)
-                    {
-                        if (i != auxVehicles.end())
-                        auxVehicles.erase(i);
-                    }
+                    //cout<<"Simulation: "<<simulationIterator->second->getName();
+                    //mapSim->show();
                 }
 
                 for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
@@ -158,43 +139,26 @@ void TrafficSimulator::StartLoopSim(int cycles)
                     }
                     cycles--;
                 }
-                cout<<cycles;
+                //cout<<cycles;
+                wc.UpdateMap(trafficLightsSim);
 
-                    //llamar al visualizador
             }
         }
 
     }
     cout<<msg<<endl;
 }
-void TrafficSimulator::StartSimulation(Simulation *simulation, int cycles)
-{
-    auto forValidation = simulation;
-    if(!ValidateSimulation(forValidation))
-        cout<<"not a valid simulation, please give the right simulation for this traffic simulator";
-    else
-        StartLoopSim(cycles);
-}
 
 void TrafficSimulator::StartSimulation(string simulationName, int cycles)
 {
-    auto forValidation = simulationName;
-    if(!ValidateSimulation(forValidation))
+    map<string,shared_ptr<Simulation>>::iterator it;
+    it = simulations.find(simulationName);
+    if (it == simulations.end())
         cout<<"not a valid simulation, please give the right simulation for this traffic simulator";
     else
-        StartLoopSim(cycles);
+        StartLoopSim(it, cycles);
 }
 
-void TrafficSimulator::ClearScreen()
-{
-  #ifdef WINDOWS
-  system("cls");
-  #endif
-  #ifdef LINUX
-  system("clear");
-  #endif
-}
-*/
 vector<int> TrafficSimulator::ConvertCoordinates(int x,int sizeMap)
 {
     vector<int> aux;

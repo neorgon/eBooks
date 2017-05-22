@@ -1,38 +1,50 @@
 #ifndef TRAFFICSIMULATOR_H
 #define TRAFFICSIMULATOR_H
 
-//#include "../include/Vehicle.h"
-#include "../include/Map.h"
 #include <vector>
 #include <memory>
 #include <string>
 #include <utility>
 #include <iostream>
-#include <ctime>
 #include <math.h>
+#include <exception>
+#include <conio.h>
+#include <iomanip>
+#include <windows.h>
+#include <map>
+#include <typeinfo>
+#include <stdlib.h>
+#include <time.h>
+#include <functional>
+
+#include "WindowsConsole.h"
+#include "Simulation.h"
+#include "Map.h"
+#include "Vehicle.h"
+#include "TrafficLight.h"
+
+#define WINDOWS 1
 
 using namespace std;
-
+class Map;
+class TrafficLight;
 class TrafficSimulator
 {
-	int trafficLightsQuantity;
-	int vehicleQuantity;
-	int vehicleStartPoint;
-	int vehicleEndPoint;
-	Map* mapSimulator;
-	map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> mapTraffictLight;
-	//vector<Vehicle*> vehicles;
+
+
+	map<string,shared_ptr<Simulation>> simulations;
+
 
 	public:
 	TrafficSimulator();
-	TrafficSimulator(int trafficLightsQuantity);
 	~TrafficSimulator();
-	void BuildMap(int trafficLightsQuantity);
-	void StartSimulation();
-	void InitializeVehicles();
-	//Vehicle* CreateVehicles(int vehicleQuantity, int vehicleStartPointX, int vehicleStartPointY);
 	int RandomInteger(int lowest, int highest);
-
+	void BuildSimulation(shared_ptr<Map>& map,string name,size_t vehicleQuantity,
+	size_t speedMin,size_t speedMax);
+    void StartLoopSim(map<string,shared_ptr<Simulation>>::iterator simulationIterator, int cycles = 0);
+    void StartSimulation(string simulationName, int cycles = 0);
+    vector<string> Data;
+    vector<int> ConvertCoordinates(int x ,int sizeMap);
 };
 
 #endif // TRAFFICSIMULATOR_H

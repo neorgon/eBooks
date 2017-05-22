@@ -1,30 +1,57 @@
 #ifndef TRAFFICLIGHT_H
 #define TRAFFICLIGHT_H
+
 #include <string>
-#include <queue>
+#include <deque>
 #include <memory>
-#include "Vehicle.h"
+
+#include "../include/Vehicle.h"
 
 using namespace std;
 
-//class Vehicle;
+struct MapCoord
+{
+    int x, y;
+};
+
+class Vehicle;
 class TrafficLight
 {
-    string ID;
+    size_t ID=1;
+    size_t direction;
     size_t countdown;
     size_t maxVQueue;
-    bool light;
-    queue<shared_ptr<Vehicle>> vehicles;
+    bool green;
+    size_t timer;
+    MapCoord coord;
+    deque<shared_ptr<Vehicle>> vehicles;
 
     public:
-        TrafficLight(const string &id, size_t c, size_t m, bool l = true) : ID{id}, countdown{c}, maxVQueue{m}, light{l} {};
-        string GetTLID() const;
+        TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, bool light = true) :
+             direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, green{light}
+        {
+            vehicles.resize(maxVQueue);
+            for(auto& i: vehicles)
+            {
+                i = nullptr;
+            }
+            timer = countdown;
+        };
+        size_t GetTLID() const;
+        size_t GetDirection() const;
         bool GetLight() const;
-        size_t CountFreeSpaces() const;
-        bool SwitchLight();
-        bool EnQueue(const Vehicle &v);
-        shared_ptr<Vehicle> FirstVehicle();
+        MapCoord GetCoord() const;
+        void SetCoord(int x, int y);
+        size_t CountVehicles() const;
+        size_t GetMaxVQueue()const;
+        void SwitchLight();
+        bool EnQueue(const shared_ptr<Vehicle>& v);
+        bool EnQueue(const shared_ptr<Vehicle>& v,size_t id);
+        void Clean(size_t at);
+        shared_ptr<Vehicle> FirstVehicle() const;
         bool DeQueue();
+        void Update();
+        size_t GetVehiculoLocation(const shared_ptr<Vehicle>& v) const;
 };
 
 #endif // TRAFFICLIGHT_H

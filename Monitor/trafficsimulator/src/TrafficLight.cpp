@@ -1,51 +1,160 @@
 #include "../include/TrafficLight.h"
 
-string TrafficLight::GetTLID() const
+size_t TrafficLight::GetTLID() const
 {
     return ID;
 }
 
+size_t TrafficLight::GetDirection() const
+{
+    return direction;
+}
+
 bool TrafficLight::GetLight() const
 {
-    return light;
+    return green;
 }
 
-size_t TrafficLight::CountFreeSpaces() const
+MapCoord TrafficLight::GetCoord() const
 {
-    return maxVQueue - vehicles.size();
+    return coord;
 }
 
-bool TrafficLight::SwitchLight()
+void TrafficLight::SetCoord(int x, int y)
 {
-    return !light;
+    coord.x = x;
+    coord.y = y;
 }
 
-bool TrafficLight::EnQueue(const Vehicle &v)
+size_t TrafficLight::CountVehicles() const
 {
-    if (maxVQueue < vehicles.size())
+    size_t p = 0;
+    size_t v = 0;
+
+    while (p < maxVQueue)
     {
-        vehicles.push(make_shared<Vehicle>(v));
-        return true;
+        if (vehicles[p] != nullptr)
+            v++;
+        p++;
+    }
+
+    return v;
+}
+
+size_t TrafficLight::GetMaxVQueue()const
+{
+    return maxVQueue;
+}
+
+void TrafficLight::SwitchLight()
+{
+    green = !green;
+}
+
+bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v)
+{
+    size_t i = 0;
+    //cout<<vehicles.size()<<endl;
+    while (i < maxVQueue)
+    {
+    	if( vehicles[i].get() == nullptr)
+    	{
+        	vehicles[i] = v;
+        	//cout<<"encolando vehiculo: "<<i<<endl;
+       		return true;
+    	}
+    	/*else
+    	{
+    		cout<<"puntero lleno"<<endl;
+    	}*/
+
+   		i++;
     }
 
     return false;
 }
 
-shared_ptr<Vehicle> TrafficLight::FirstVehicle()
+bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v,size_t id)
 {
-    if (vehicles.empty())
-        return nullptr;
+	//cout<<"otro encolado"<<endl;
+	//cout<<id<<endl;
+    size_t i=vehicles.size()-(id+1);
+    //cout<<i<<endl;
+    //cout<<vehicles.size()<<endl;
+    while (i < vehicles.size())
+    {// cout<<"ciclo"<<endl;
+    	if( vehicles[i] == nullptr)
+    	{
+        	vehicles[i] = v;
+       		return true;
+    	}
+   		i++;
+    }
 
+    return false;
+}
+
+void TrafficLight::Clean(size_t at)
+{
+	vehicles.at(at-1)=nullptr;
+}
+
+shared_ptr<Vehicle> TrafficLight::FirstVehicle() const
+{
     return vehicles.front();
 }
 
 bool TrafficLight::DeQueue()
 {
-    if (vehicles.empty())
-        return false;
-    if (!light)
-        return false;
-    vehicles.pop();
+    /*
+    Tal vez este m?odo tendr? que devolver una lista de todos los veh?ulos que pueden pasar luz verde.
+    */
 
     return true;
+}
+
+void TrafficLight::Update()
+{
+    if (timer > 0)
+    {
+        timer --;
+    }
+    else
+    {
+        SwitchLight();
+        timer = countdown;
+    }
+/*
+    if (green)
+    {
+        DeQueue(); //?
+    }*/
+}
+
+size_t TrafficLight::GetVehiculoLocation(const shared_ptr<Vehicle>& v) const
+{
+	int i=0;
+	auto thisVehicle = find_if(vehicles.begin(), vehicles.end(),
+				 		[&v,&i](const shared_ptr<Vehicle>& it)
+         				{
+         					i++;
+         					if(it!=nullptr)
+         					return v->GetLicencePlate()==it->GetLicencePlate();
+
+				        });
+
+	if (thisVehicle==vehicles.end())
+		return 0;
+	//else
+	//	cout<<" licencia: "<<(*thisVehicle)->GetLicencePlate()<<endl;
+	//cout<<" lista de autos"<<endl;
+	/*for(auto i:vehicles)
+	{
+        if(i!=nullptr)
+		cout<<" auto: "<<i->GetLicencePlate()<<endl;
+
+	}*/
+
+	return i;
+
 }
