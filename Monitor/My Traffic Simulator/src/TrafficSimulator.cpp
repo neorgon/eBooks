@@ -76,13 +76,13 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
     auto mapSim = simulationIterator->second->getMap();
     auto trafficLightsSim = mapSim->GetMapTrafficLight();
     string msg;
-    char ch;
-    bool loop=false;
+    //char ch;
+    //bool loop=false;
     bool cyclesFlag = false;
     if(cycles!=0)
         cyclesFlag = true;
 
-    while(loop==false)
+    while (cycles)//(loop==false)
     {
         getch();
         WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
@@ -91,18 +91,18 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
         //cout<<"press space to continue"<<endl;
 
         wc.PrintMap(trafficLightsSim, mapSim->getSizeMap());
-        ch=getch();
-        if(ch=='\033')
+        //ch=getch();
+        /*if(ch=='\033')
             loop = true;
         else
-        {
-            if(ch==' ')
-            {
+        {*/
+            /*if(ch==' ')
+            {*/
                 for(auto& i:vehicles)
                 {
                     if (vehicles.size() == 0)
                     {
-                        loop = true;
+                        //loop = true;
                         msg = "all cars arrived, simulation ended";
                         break;
                     }
@@ -116,7 +116,7 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
                     }
                     catch(...)
                     {
-                        cout<<"a car arrvied";
+                        //cout<<"a car arrvied";
                     }
 
                     //cout<<"Simulation: "<<simulationIterator->second->getName();
@@ -125,28 +125,27 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
 
                 for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
                 {
-
                     it->second[0]->Update();
                     it->second[1]->Update();
                 }
                 if (cyclesFlag)
                 {
-                    if(cycles==0)
+                    /*if(cycles==0)
                     {
                         loop = true;
                         msg = "number of cycles reached, simulation ended";
                         break;
-                    }
+                    }*/
                     cycles--;
                 }
                 //cout<<cycles;
                 wc.UpdateMap(trafficLightsSim);
 
-            }
-        }
+            //}
+        //}
 
     }
-    cout<<msg<<endl;
+    //cout<<msg<<endl;
 }
 
 void TrafficSimulator::StartSimulation(string simulationName, int cycles)
