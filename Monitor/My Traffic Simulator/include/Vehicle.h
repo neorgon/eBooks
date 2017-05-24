@@ -8,7 +8,7 @@
 #include <functional>
 
 #include "../include/TrafficLight.h"
-#include "../include/Map.h"
+//#include "../include/Map.h"
 
 using namespace std;
 

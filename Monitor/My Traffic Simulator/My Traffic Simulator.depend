@@ -1,6 +1,6 @@
 # depslib dependency file v1.0
-<<<<<<< Updated upstream
-=======
+258150472 
+
 1495304510 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\main.cpp
 	"../include/TrafficSimulator.h"
 	"../include/WindowsConsole.h"
@@ -72,7 +72,7 @@
 1494304081 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\viewscreen.cpp
 	"ViewScreen.h"
 
-1495545888 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+1495635621 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
 	"../include/TrafficSimulator.h"
 	"../include/WindowsConsole.h"
 
@@ -86,20 +86,20 @@
 	<algorithm>
 	"../include/Direction.h"
 
-1495458746 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
+1495636781 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
 	<string>
 	<deque>
 	<memory>
+	<algorithm>
 	"../include/Vehicle.h"
 
-1495458746 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
+1495636725 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
 	<vector>
 	<memory>
 	<utility>
 	<iostream>
 	<functional>
 	"../include/TrafficLight.h"
-	"../include/Map.h"
 
 1495462408 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
 	"../include/TrafficLight.h"
@@ -108,7 +108,7 @@
 	"../include/TrafficLight.h"
 	"../include/Map.h"
 
-1495546572 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
+1495630114 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
 	"../include/TrafficSimulator.h"
 
 1495458746 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
@@ -180,4 +180,5 @@
 1495151183 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\simulation.cpp
 	"../include/Simulation.h"
 
->>>>>>> Stashed changes
+1495151183 shed changes
+

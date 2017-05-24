@@ -4,6 +4,7 @@
 #include <string>
 #include <deque>
 #include <memory>
+#include <algorithm>
 
 #include "../include/Vehicle.h"
 
