@@ -5,3 +5,10 @@
 	<memory>
 	<functional>
 
+1495722617 source:c:\users\administrator\documents\github\ebooks\practices\practice 47 - trie\main.cpp
+	<iostream>
+	<unordered_map>
+	<memory>
+	<functional>
+	<vector>
+
