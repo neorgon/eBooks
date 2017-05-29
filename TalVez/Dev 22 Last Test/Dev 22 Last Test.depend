@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1496032002 source:c:\users\nestor\documents\github\ebooks\talvez\dev 22 last test\main.cpp
+	<iostream>
+	<sstream>
+	<time.h>
+	<string>
+	<list>
+	<vector>
+	<unordered_map>
+	<memory>
+	<algorithm>
+

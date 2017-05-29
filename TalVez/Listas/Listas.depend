@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1496019884 source:c:\users\nestor\documents\github\ebooks\talvez\listas\main.cpp
+	<iostream>
+	<list>
+	<memory>
+
