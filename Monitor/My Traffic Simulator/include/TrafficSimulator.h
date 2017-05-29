@@ -18,6 +18,7 @@
 #include <functional>
 
 #include "WindowsConsole.h"
+#include "SimulationResult.h"
 #include "Simulation.h"
 #include "Map.h"
 #include "Vehicle.h"
@@ -28,23 +29,24 @@
 using namespace std;
 class Map;
 class TrafficLight;
+class SimulationResult;
 class TrafficSimulator
 {
-
-
+    SimulationResult results;
 	map<string,shared_ptr<Simulation>> simulations;
 
 
 	public:
 	TrafficSimulator();
-	~TrafficSimulator();
+	//~TrafficSimulator();
 	int RandomInteger(int lowest, int highest);
 	void BuildSimulation(shared_ptr<Map>& map,string name,size_t vehicleQuantity,
 	size_t speedMin,size_t speedMax);
-    void StartLoopSim(map<string,shared_ptr<Simulation>>::iterator simulationIterator, int cycles = 0);
+    void StartLoopSim(map<string,shared_ptr<Simulation>>::iterator simulationIterator, bool optionVisualization, int cycles = 0);
     void StartSimulation(string simulationName, int cycles = 0);
     vector<string> Data;
-    vector<int> ConvertCoordinates(int x ,int sizeMap);
+    vector<size_t> GetStartEndPoints(shared_ptr<Map>& mapSimulation,size_t vehicleQuantity,size_t id);
+
 };
 
 #endif // TRAFFICSIMULATOR_H

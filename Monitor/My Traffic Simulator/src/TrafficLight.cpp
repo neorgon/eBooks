@@ -1,10 +1,5 @@
 #include "../include/TrafficLight.h"
 
-size_t TrafficLight::GetTLID() const
-{
-    return ID;
-}
-
 size_t TrafficLight::GetDirection() const
 {
     return direction;
@@ -157,4 +152,14 @@ size_t TrafficLight::GetVehiculoLocation(const shared_ptr<Vehicle>& v) const
 
 	return i;
 
+}
+
+size_t TrafficLight::GetNode()const
+{
+    return node;
+}
+
+size_t TrafficLight::GetTimer() const
+{
+	return timer;
 }

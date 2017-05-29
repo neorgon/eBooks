@@ -4,7 +4,8 @@
 #include <string>
 #include <deque>
 #include <memory>
-#include <algorithm>
+#include <iostream>
+#include <vector>
 
 #include "../include/Vehicle.h"
 
@@ -18,19 +19,20 @@ struct MapCoord
 class Vehicle;
 class TrafficLight
 {
-    size_t ID=1;
+    size_t node;
     size_t direction;
     size_t countdown;
     size_t maxVQueue;
     bool green;
     size_t timer;
     MapCoord coord;
-    deque<shared_ptr<Vehicle>> vehicles;
+    vector<shared_ptr<Vehicle>> vehicles;
 
     public:
-        TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, bool light = true) :
-             direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, green{light}
+        TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, size_t node, bool light = true) :
+             direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, node{node}, green{light}
         {
+
             vehicles.resize(maxVQueue);
             for(auto& i: vehicles)
             {
@@ -38,7 +40,7 @@ class TrafficLight
             }
             timer = countdown;
         };
-        size_t GetTLID() const;
+
         size_t GetDirection() const;
         bool GetLight() const;
         MapCoord GetCoord() const;
@@ -53,6 +55,8 @@ class TrafficLight
         bool DeQueue();
         void Update();
         size_t GetVehiculoLocation(const shared_ptr<Vehicle>& v) const;
+        size_t GetNode()const;
+        size_t GetTimer() const;
 };
 
 #endif // TRAFFICLIGHT_H

@@ -1,6 +1,5 @@
 #include "../include/TrafficLight.h"
 
-
 size_t TrafficLight::GetDirection() const
 {
     return direction;
@@ -46,7 +45,7 @@ void TrafficLight::SwitchLight()
 {
     green = !green;
 }
-/*
+
 bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v)
 {
     size_t i = 0;
@@ -62,7 +61,7 @@ bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v)
     	/*else
     	{
     		cout<<"puntero lleno"<<endl;
-    	}
+    	}*/
 
    		i++;
     }
@@ -75,8 +74,8 @@ bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v,size_t id)
 	//cout<<"otro encolado"<<endl;
 	//cout<<id<<endl;
     size_t i=vehicles.size()-(id+1);
-    cout<<i<<endl;
-    cout<<vehicles.size()<<endl;
+    //cout<<i<<endl;
+    //cout<<vehicles.size()<<endl;
     while (i < vehicles.size())
     {// cout<<"ciclo"<<endl;
     	if( vehicles[i] == nullptr)
@@ -104,7 +103,7 @@ bool TrafficLight::DeQueue()
 {
     /*
     Tal vez este m?odo tendr? que devolver una lista de todos los veh?ulos que pueden pasar luz verde.
-    
+    */
 
     return true;
 }
@@ -124,7 +123,7 @@ void TrafficLight::Update()
     if (green)
     {
         DeQueue(); //?
-    }
+    }*/
 }
 
 size_t TrafficLight::GetVehiculoLocation(const shared_ptr<Vehicle>& v) const
@@ -149,12 +148,11 @@ size_t TrafficLight::GetVehiculoLocation(const shared_ptr<Vehicle>& v) const
         if(i!=nullptr)
 		cout<<" auto: "<<i->GetLicencePlate()<<endl;
 
-	}
+	}*/
 
 	return i;
 
-}
-*/
+    }
     size_t TrafficLight::GetNode()const
     {
         return node;

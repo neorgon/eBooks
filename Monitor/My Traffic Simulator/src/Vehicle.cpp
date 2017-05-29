@@ -1,24 +1,29 @@
 #include "../include/Vehicle.h"
-#include "../include/Map.h"
+//#include "../include/Map.h"
+#include "../include/TrafficLight.h"
 
-Vehicle::Vehicle(size_t licencePlate, double speed, const shared_ptr<TrafficLight>& origin,
+Vehicle::Vehicle(size_t licencePlate, double speed, vector <shared_ptr<TrafficLight>> route/*const shared_ptr<TrafficLight>& origin,
 			const shared_ptr<TrafficLight>& destiny, const shared_ptr<Map>& map/*,
 			size_t startTime*/)
-:licencePlate{licencePlate},speed{speed} /*startTime{startTime},*/
+:licencePlate{licencePlate},speed{speed},route{route} /*startTime{startTime},*/
 {
-	if (origin==nullptr)
-		throw "error";
+	if (route[0]==nullptr)
+		throw ("error");
+	//if (destiny==nullptr)
+	//	throw ("error");
 		//cerr<<"error";
- location=origin;
-	if ( location->EnQueue(make_shared<Vehicle>(*this)))
+	//location=origin;
+	location=route[0];
+	if (!location->EnQueue(make_shared<Vehicle>(*this)))
 		cout<<"error no push"<<endl;
-	//cout<<"AN: "< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
-	//cout<<" Auto indice n: "< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+	//cout<<"AN: "<<location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+	//cout<<" Auto indice n: "<<location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 	//pedir cambio de vector;
 	//vector<shared_ptr<TrafficLight> ruta = map->CreateRoute(origin,destiny);
 	//hardcore
 	//auto mymapa=map->get_mapTLight();
-	route = map->CreateRoute(origin,destiny);
+	//try{route = map->CreateRoute(origin,destiny);}
+	//catch(...){cerr<<"error"<<endl;}
 }
 
 void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
@@ -30,10 +35,10 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 
 		//verificar luz verde con velocidad mayor
 
-		while (at<=speed)
+		auto at= location->GetVehiculoLocation(make_shared<Vehicle>(*this));
+		if (at<=speed)
 		{
-			auto at location->GetVehiculoLocation(make_shared<Vehicle>(*this));
-			if location->GetLight())
+			if (location->GetLight())
 			{
 				indice++;
 				if (route.at(indice)->EnQueue(make_shared<Vehicle>(*this),(speed-at))==1)
@@ -41,7 +46,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 					 location->Clean(at);
 					 location=route.at(indice);
 					 speed-=at;
-						cout<<"ubicacion nueva: "< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+						cout<<"\n\n\nubicacion nueva: "<< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 					}
 				else
 					{
@@ -79,15 +84,15 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 			//boos->RegisterVehicle(this);
 			//cout<<"auno numero: "< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 		cout<<endl;
-		cout<<"nodo inicio id semaforo :"<<location->GetNode()
-		<<" auto n: "<< location->CountVehicles()<<endl;
+		//cout<<"nodo inicio id semaforo :"<<location->GetNode()
+		//<<" auto n: "<< location->CountVehicles()<<endl;
 		for (auto& i: route)
 		{
-			cout<<"nodo: "<<i<<" id semaforo :"<<i->GetNode()
+			cout<<"nodo: "<<i->GetNode()
 			<<" auto n: "<<i->CountVehicles()<<endl;
 		}
 		speed=bufferspeed;
-		if  location==route.back())
+		if  (location==route.back())
 		{
 			state=false;
 		}
@@ -95,6 +100,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 	else
 	{
 		func(make_shared<Vehicle>(*this));
+		// location->Clean(at)
 	}
 }
 

@@ -141,36 +141,41 @@ void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen, s
     switch (dir)
     {
         case 0:
-            for (i = cx + 1; i < cx + (dx - 1); i++)
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx - 1, cy);
+            cout << "0";
+            //for (i = cx + 1; i < cx + (dx - 1); i++)
+            for (i = cx - (dx - 1); i < cx - 1; i++)
             {
                 SetColor(7);
                 GotoXY(i, cy);
                 cout << char(196);
             }
             SetColor(15);
-            GotoXY(i - 3, cy);
+            GotoXY(cx - 3, cy);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(i, cy);
-            cout << "*";
             cx = i;
         break;
         case 90:
-            for (i = cy - 1; i > cy - (dy - 1); i--)
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx, cy);
+            cout << "90";
+            //for (i = cy - 1; i > cy - (dy - 1); i--)
+            for (i = cy - (dy - 1); i < cy; i++)
             {
                 SetColor(7);
                 GotoXY(cx, i);
                 cout << char(179);
             }
             SetColor(15);
-            GotoXY(cx, i + 1);
+            GotoXY(cx, cy + 2);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(cx, i);
-            cout << "*";
             cy = i;
         break;
         case 180:
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx + 1, cy);
+            cout << "180";
             for (i = cx - 1; i > cx - (dx - 1); i--)
             {
                 SetColor(7);
@@ -180,12 +185,12 @@ void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen, s
             SetColor(15);
             GotoXY(i + 3, cy);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(i, cy);
-            cout << "*";
             cx = i;
         break;
         case 270:
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx, cy - 1);
+            cout << "270";
             for (i = cy + 1; i < cy + (dy - 1); i++)
             {
                 SetColor(7);
@@ -195,9 +200,6 @@ void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen, s
             SetColor(15);
             GotoXY(cx, i - 1);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(cx, i);
-            cout << "*";
             cy = i;
         break;
     }
@@ -214,7 +216,7 @@ void WindowsConsole::UpdateMap(const map<int, vector<shared_ptr<TrafficLight>>> 
         {
             case 0:
                 SetColor(15);
-                GotoXY(t.second[0]->GetCoord().x - 3, t.second[0]->GetCoord().y);
+                GotoXY(t.second[0]->GetCoord().x - 2, t.second[0]->GetCoord().y);
                 cout << t.second[0]->CountVehicles();
             break;
             case 90:

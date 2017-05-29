@@ -96,6 +96,7 @@ class xml_document
 
     public:
         xml_document(const string &v) { root.value = v; }
+        xml_document(const xml_document &other) : root{other.root} {}
         shared_ptr<xml_node> create_element(const string &v);
         shared_ptr<xml_node> create_text(const string &v);
         shared_ptr<xml_node> create_comment(const string &v);

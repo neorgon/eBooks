@@ -9,6 +9,7 @@ Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{si
     vector<int> adyacents;
     vector<shared_ptr<TrafficLight>> VectorTrafictlight;
 
+
 	for (int i = 1; i <= sizeMap; ++i)
 	{
 		for (int j = 1; j <= sizeMap; ++j)
@@ -74,7 +75,7 @@ Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{si
 
 			VectorTrafictlight.push_back
 			(
-                make_shared<TrafficLight>(dir1, timeTrafficLight, maxVehicle, id, true)
+                make_shared<TrafficLight>(dir1, timeTrafficLight, maxVehicle,id,  true)
             );
             VectorTrafictlight.push_back
             (
@@ -86,6 +87,7 @@ Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{si
 			VectorTrafictlight.clear();
 		}
 	}
+	CreateAdjacentTrafficLight();
 }
 
 void Map::showMap()
@@ -110,544 +112,242 @@ void Map::show()
 }
 
 
-vector<shared_ptr<TrafficLight>> Map::CreateRoute(const shared_ptr<TrafficLight> &origin, const shared_ptr<TrafficLight> &destination)     
+vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const size_t &destination)     
 {
-	vector<shared_ptr<TrafficLight>> route;
-	auto XYorigin = ConvertCoordinates(origin->GetNode());
-	auto XYdestination = ConvertCoordinates(destination->GetNode());
+	int caseRoute = ReviewRoute(origin, destination);
+	vector<shared_ptr<TrafficLight>> route = GenerateRoute(caseRoute, origin, destination);
+	
+	for(auto i : route)
+	{
+		cout<<i->GetNode() <<":"<< i->GetDirection() <<"  ";
+	}
+	cout<<"\n";
 
-	cout<<origin->GetNode()<<"  "<<destination->GetNode()<<" \n";
+ 	return route;
+}
 
-	int nodoAux;
+int Map::ReviewRoute(const int &origin, const int &destination)
+{
 
-	int bandera;
 
-/////////////////////////////Si el Nodo destino se encuentra a la derecha y abajo///////////////////////////////////
+	auto XYorigin = ConvertCoordinates(origin);
+	auto XYdestination = ConvertCoordinates(destination);
 
+	cout<<origin <<"  "<<destination<<" \n";	
+
+ /////////////////////////////Si el Nodo destino se encuentra a la derecha y abajo///////////////////////////////////
 	if(XYorigin[1]<=XYdestination[1] && XYorigin[0]<=XYdestination[0])// destino esta --> y abajo
 	{
-		cout<<"CASO: Si el Nodo destino se encuentra a la derecha y abajo  \n";
-		if(XYorigin[0]%2!=0) //orientacion --->
+		cout<<"CASO: 1 ";
+		if(XYorigin[0]%2!=0 && XYorigin[1]!=XYdestination[1] ) //orientacion --->
 		{
-	
-			if(XYdestination[1]%2==0  ) // destino puedo ir abajo 
+			cout<<" : 1 \n";
+			if(XYdestination[1]%2==0 ) // destino puedo ir abajo 
 			{  			
-					route.push_back(origin);	
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
+				return 1;
 			}
 			else
 			{
-
-			  if(XYorigin[0]%2==0  || XYorigin[1]!=XYdestination[1] )
-			  {
-				if(XYdestination[0]%2!=0 ) // destino puede ir --->
+				if(XYdestination[0]%2!=0  ) // destino puede ir --->
 				{
-				
-					route.push_back(origin);
-					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-					auto aux = route.at(route.size()-1);
-					nodoAux = aux->GetNode()+1;
-					auto TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0] );
+					return 2;
 				}
 				else
 				{
-
 					if(XYdestination[0]<sizeMap) // dar giro por abajo
 					{
-
-						route.push_back(origin);
-						StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-						StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-						auto aux = route.at(route.size()-1);
-						
-						nodoAux = aux->GetNode()+1;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[0] );
-
-						nodoAux += -sizeMap;
-						TL = mapTrafficLight.find(nodoAux);
-						route.push_back(TL->second[1]);
+						return 3;
 					}
 					else
 					{
 						if(XYdestination[1]<sizeMap) //giro por -->
 						{
-
-							route.push_back(origin);
-							StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-							StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-							auto aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()+1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );
-
-							nodoAux += 1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
-
-							nodoAux += sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-							
-							nodoAux += -1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
+							return 4; 
 						}
 						else
 						{
 							cout<<"No se puede llegar";
 						}
 					}
-				}
-			  }
+			    }
 			}
 		}
 		
 		else
 		{
-
-			if(XYorigin[1]%2==0) // orientacion abajo
+			
+			if(XYorigin[1]%2==0 && XYorigin[0] != XYdestination[0]) // orientacion abajo
 			{
-
-			  if(XYorigin[1]!=XYdestination[1])
-			  {
+				cout<<" : 2 \n";
 				if(XYdestination[0]%2!=0) // destino puedo ir --> 
 				{  
-
-					route.push_back(origin);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					return 5;
 				}
 				else
 				{
 					if(XYdestination[1]%2==0) //destono puedo baja
 					{
 
-						route.push_back(origin);
-						StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-						StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-
-						auto aux = route.at(route.size()-1);
-
-						nodoAux = aux->GetNode()+sizeMap;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1] );
-	
+						return 6;
 					}
 					else
 					{
 						if(XYdestination[0]<sizeMap)  // girar por abajo
 						{
 
-							route.push_back(origin);
-							StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-							StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-							
-							auto aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()-sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1] );
-							
+								return 7;
 						}
 						else
 						{
 							if(XYdestination[1]<sizeMap) // girar por --->
 							{
-								route.push_back(origin);
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-								StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
-
-								auto aux = route.at(route.size()-1);
-
-								nodoAux = aux->GetNode()+sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1] );
-
-								nodoAux += -1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0] );
+								return 8;
 							}
 							else
 							{
 								cout<<"No se puede llegar 1";
 							}
 						}
-
 					}
-				}
-			  }
+			    }
 			}
 			else
-			{
-				if(XYorigin[1]-1>0) // recorrer -1 <-- y bajar
+			{	
+				if(XYorigin[1]>1 && XYorigin[0]%2==0 && XYorigin[0] != XYdestination[0] ) // recorrer -1 <-- y bajar
 				{
-
+					cout<<" : 3 \n";
 					if(XYdestination[0]%2!=0) //destino puede ir --> 
 					{  
-						route.push_back(origin);
-						
-						auto aux = route.at(route.size()-1);
-
-						nodoAux = aux->GetNode()-1;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[0]);
-
-						StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-						StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+						return 9;
 					}
 					else
 					{
 						if(XYdestination[1]%2==0) // destino puede baja
 						{
-							route.push_back(origin);
-							auto aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()-1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
-
-							StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-							StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);	
-
-							aux = route.at(route.size()-1);
-						
-							nodoAux = aux->GetNode()+sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);	
+							return 10;
 						}
-
 						else
 						{
-							if(XYdestination[1]<sizeMap) // girar por abajo
+							if(XYdestination[0]<sizeMap) // girar por abajo
 							{
-
-								route.push_back(origin);
-								auto aux = route.at(route.size()-1);
-
-								nodoAux = aux->GetNode()-1;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-								StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
-
-								aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode()-sizeMap;	
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-									
+								return 11;							
 							}
 							else
 							{
 								if(XYdestination[1]<sizeMap)// girar por ---->
 								{
-									route.push_back(origin);
-									auto aux = route.at(route.size()-1);
-
-									nodoAux = aux->GetNode()-1;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-									StoreRoute(XYorigin[1],XYdestination[1]+2,Direction::goRight,route);
-									aux = route.at(route.size()-1);
-						
-									nodoAux = aux->GetNode()+sizeMap;
-									
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-									
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
+									return 12;
 								}
 								else
 								{
 									cout<<"No se puede llegar 2";
 								}
 							}
-
 						}
 					}
-
 				}
 				else
 				{
-					if(XYdestination[1]%2==0) // subir por 1 arriba y -----> 
-					{
-						route.push_back(origin);
-						auto aux = route.at(route.size()-1);
-
-						nodoAux = aux->GetNode()-sizeMap;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1]);
-
-						StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-						StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-					}
-					else
-					{
-						if(XYdestination[0]%2!=0) //destino puede bajar y -->
+					if(XYorigin[1]!=XYdestination[1] && XYorigin[1]%2!=0)
+					{	
+					  	cout<<" : 4 \n";
+						if(XYdestination[1]%2==0 && XYorigin[0]>1  ) // subir por 1 arriba y -----> 
 						{
-							route.push_back(origin);
-							auto aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()-sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-
-							StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-							StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);		
-
-							aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode()+1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
+							return 13;
 						}
-
 						else
 						{
-							if(XYdestination[0]<sizeMap) ///  girar por abajo
+							if(XYdestination[1]%2==0) //destino puede bajar y -->
 							{
-								route.push_back(origin);
-								auto aux = route.at(route.size()-1);
-
-								nodoAux = aux->GetNode()-sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-
-								StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-								StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);	
-
-								aux = route.at(route.size()-1);
-						
-								nodoAux = aux->GetNode()+1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								nodoAux += -sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
+								return 14;
 							}
-							
 							else
 							{
-								if(XYdestination[1]<sizeMap)// girar por --->
-								{		
-									route.push_back(origin);
-									auto aux = route.at(route.size()-1);
-
-									nodoAux = aux->GetNode()-sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-									StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-
-									aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode()+1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-								
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-									
-									nodoAux += sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-									
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-									
+								if(XYdestination[0]<sizeMap) ///  girar por abajo
+								{
+									return 15;
 								}
 								else
 								{
-									cout<<"No se puede llegar 3";
+									if(XYdestination[1]<sizeMap)// girar por --->
+									{		
+										return 16;
+									}
+									else
+									{
+										cout<<"No se puede llegar 3";
+									}
 								}
-							}
-						}		
-					}
+							}		
+						}
+				    }	
 				}
 			}
 		}
 	}
-///////////////////////////////////Si el Nodo destino se encuentra a la derecha y abajo//////////////////////////////
-
-
-
+///////////////////////////////////Si el Nodo destino se encuentra a la derecha y abajo/////////////////////
 	if(XYorigin[1]>=XYdestination[1] && XYorigin[0]<=XYdestination[0])
 	{
-		cout<<"CASO: Si el Nodo destino se encuentra a la derecha y abajo  \n";
-	  if( XYorigin[0]!=XYdestination[0] )
-	  {
-		if(XYorigin[0]%2==0 && XYorigin[0]-1<1) //orientacion <---
+	  	cout<<"CASO: 2";
+		if(XYorigin[0]%2==0 && XYorigin[1] != XYdestination[1]) //orientacion <---
 		{
-
+			cout<<" : 1 \n";
 			if(XYdestination[1]%2==0) // destino puedo ir abajo  CORRECTO
 			{  			
-					route.push_back(origin);	
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
+				return 17;	
 			}
 			else
 			{
-
-			 if(XYorigin[1]!=XYdestination[1] )
-			 {
 				if(XYdestination[0]%2==0) // destino puede ir <--- CORRECTO
 				{
-					route.push_back(origin);
-
-					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
-
-					auto aux = route.at(route.size()-1);
-
-					nodoAux = aux->GetNode()-1;
-					auto TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0] );
+					return 18;
 				}
 				else
 				{
 					if(XYdestination[0]<sizeMap ) // dar giro por abajo   CORRECTO
 					{
-						route.push_back(origin);
-
-						StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-						StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);	
-
-						auto aux = route.at(route.size()-1);
-
-						nodoAux = aux->GetNode()-1;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[0] );
-
-						nodoAux += -sizeMap;
-						TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1] );
+						return 19;
 					}
 					else
 					{
-						if(XYdestination[1]<sizeMap) //giro por <---  CORRECTO
+						if(XYdestination[1]>1 ) //giro por <---  CORRECTO
 						{
-							route.push_back(origin);
-
-							StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-							StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);	
-
-							auto aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()-1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );
-
-							nodoAux += -1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );
-
-							nodoAux += sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1] );
-							
-							nodoAux += 1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );
+							return 20;
 						}
 						else
 						{
 							cout<<"No se puede llegar";
 						}
 					}
-				}
-			  }	
+				}	
 			}
 		}
-		
 		else
 		{
-
-			if(XYorigin[1]%2==0) // orientacion abajo
+			if(XYorigin[1]%2==0 && XYorigin[0] != XYdestination[0]) // orientacion abajo
 			{
-
+			cout<<" : 2 \n";
 				if(XYdestination[0]%2==0) // destino puedo ir <--- CORRECTO
 				{  
-
-					route.push_back(origin);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);	
-
+					return 21;
 				}
 				else
 				{
 					if(XYdestination[1]%2==0) //destono puedo baja    CORRECTO
 					{
-						route.push_back(origin);
-
-						StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-						StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);	
-
-						auto aux = route.at(route.size()-1);
-
-						nodoAux = aux->GetNode()+sizeMap;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1] );
-	
+						return 22;	
 					}
 					else
 					{
 						if(XYdestination[0]<sizeMap)  // girar por abajo CORRECTO
 						{
-							
-							route.push_back(origin);
-
-							StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-							StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);	
-
-							auto aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()+sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1] );
-
-							nodoAux +=  sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1] );
-							
-							nodoAux +=  -1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );
-							
-							nodoAux += -sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1] );
-														
+							return 23;
 						}
 						else
 						{
 							if(XYdestination[1]>1) // girar por <---  CORRECTO
 							{
-
-								route.push_back(origin);
-
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-								StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);	
-
-								auto aux = route.at(route.size()-1);
-
-								nodoAux = aux->GetNode()+sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1] );
-
-								nodoAux += 1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0] );
+								return 24;
 							}
 							else
 							{
@@ -659,101 +359,30 @@ vector<shared_ptr<TrafficLight>> Map::CreateRoute(const shared_ptr<TrafficLight>
 			}
 			else
 			{
-
-				if(XYorigin[1]+1<=sizeMap) // recorrer +1 --> y bajar
+				if(XYorigin[1]<sizeMap && XYorigin[0]%2!=0 && XYorigin[0]!=XYdestination[0]) // recorrer +1 --> y bajar
 				{
-
+					cout<<" : 3 \n";
 					if(XYdestination[0]%2==0) //destino puede ir <--   CORRECTO
 					{
-
-						route.push_back(origin);
-						auto aux = route.at(route.size()-1);
-						nodoAux = aux->GetNode()+1;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[0] );
-
-						StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-						StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);				
+						return 25;
 					}
 					else
 					{
-
 						if(XYdestination[1]%2==0 && XYorigin[0] != XYdestination[0]) // destino puede baja  CORRECTO
 						{
-							
-							route.push_back(origin);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode()+1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );
-
-							StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-							StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
-
-							aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()+sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1] );
+							return 26;
 						}
-
 						else
 						{
-							if(XYdestination[0]<sizeMap) // girar por abajo  CORRECTO
+							if(XYdestination[0]<sizeMap ) // girar por abajo  CORRECTO
 							{
-cout<<"AQUI\n";
-								route.push_back(origin);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode()+1;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0] );
-
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-								StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-
-								aux = route.at(route.size()-1);
-
-								nodoAux = aux->GetNode()+sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1] );
-
-								nodoAux += sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1] );
-
-								nodoAux += -1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0] );
-
-								nodoAux += -sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1] );
+								return 27;	
 							}
 							else
 							{
 								if(XYdestination[1]>1)// girar por <---- CORRECTO
 								{
-									route.push_back(origin);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode()+1;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0] );
-
-									StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-									StoreRoute(XYorigin[1],XYdestination[1]-2,Direction::goLeft,route);
-
-									aux = route.at(route.size()-1);
-
-									nodoAux = aux->GetNode()+sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1] );
-
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0] );
+									return 28;
 								}
 								else
 								{
@@ -767,461 +396,31 @@ cout<<"AQUI\n";
 				}
 				else
 				{
-					if(XYdestination[1]%2==0) // subir por 1 arriba y <----- CORRECTO
-					{	
-						route.push_back(origin);
-
-						auto aux = route.at(route.size()-1);
-						nodoAux = aux->GetNode() - sizeMap;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1]);
-
-						StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-						StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-					}
-					else
+					if(XYorigin[0]>1 && XYorigin[1]!=XYdestination[1] && XYorigin[1]%2!=0 )
 					{
-
-						if(XYdestination[0]%2==0) //destino puede bajar y <-- CORRECTO
-						{
-							route.push_back(origin);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() - sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-
-							StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-							StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-							
-							aux = route.at(route.size()-1);
-
-							nodoAux = aux->GetNode()-1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0] );	
-						}
-
-						else
-						{
-							if(XYdestination[0]<sizeMap) ///  girar por abajo CORRECTO
-							{
-								route.push_back(origin);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() - sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-
-								StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-								StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);
-								
-								aux = route.at(route.size()-1);
-
-								nodoAux = aux->GetNode()-1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0] );
-
-								nodoAux += -sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1] );
-
-							}
-							
-							else
-							{
-								if(XYdestination[1]<sizeMap)// girar por ---> CORRECTO
-								{
-
-									route.push_back(origin);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() - sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-									StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-									
-								    aux = route.at(route.size()-1);
-
-									nodoAux = aux->GetNode()-1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0] );
-
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0] );
-
-									nodoAux += +sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1] );
-
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0] );
-								}
-								else
-								{
-									cout<<"No se puede llegar 3";
-								}
-							}
-						}		
-					}
-				}
-			}
-		}
-
-	  }
-	}
-
-//////////////////////////////////////////derecha y arriba//////////////////////////////////////////////////////////////////////////////
-
-	if(XYorigin[1]<=XYdestination[1] && XYorigin[0]>=XYdestination[0])
-	{
-		cout<<"CASO: Si el Nodo destino se encuentra a la derecha y arriba \n";
-	    if( XYorigin[0]!=XYdestination[0] )
-		{
-			if(XYorigin[0]%2!=0) //orientacion --->
-			{
-				if(XYdestination[1]%2!=0) // destino puedo ir arriba  OK
-				{  			
-					route.push_back(origin);
-
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);			
-				}
-				else
-				{
-					if(XYorigin[0]%2==0  || XYorigin[1]!=XYdestination[1] )
-					{
-						if(XYdestination[0]%2!=0 ) // destino puede ir --->  OK
-						{
-
-							route.push_back(origin);
-
-							StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-							StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() + 1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
+					cout<<" : 4 \n";
+						if(XYdestination[1]%2==0 ) // subir por 1 arriba y <----- CORRECTO
+						{	
+							return 29;
 						}
 						else
 						{
-							if(XYdestination[0]>1) // dar giro por arriba   OK
+							if(XYdestination[0]%2==0) //destino puede bajar y <-- CORRECTO
 							{
-
-								route.push_back(origin);
-
-								StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() + 1;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								nodoAux += sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back(TL->second[1]);
+								return 30;
 							}
 							else
 							{
-								if(XYdestination[1]<sizeMap) //giro por --> Ok
+								if(XYdestination[0]<sizeMap) ///  girar por abajo CORRECTO
 								{
-									
-									route.push_back(origin);
-
-									StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-									StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);	
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() + 1;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += -sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back(TL->second[1]);
-
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);								
-								}
-								else
-								{
-									cout<<"No se puede llegar";
-								}
-							}
-						}
-				  	}
-				}
-			}
-			
-			else
-			{
-				if(XYorigin[1]%2!=0) // orientacion arriba
-				{
-				  if(XYorigin[1]!=XYdestination[1])
-				  {
-					if(XYdestination[0]%2!=0) // destino puedo ir --> OK
-					{  
-						route.push_back(origin);
-
-						StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
-						StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-					}
-					else
-					{
-						if(XYdestination[1]%2!=0) //destono puedo subir  OK
-						{
-							route.push_back(origin);
-
-							StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
-							StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() - sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-						}
-						else
-						{
-							if(XYdestination[0]>1)  // girar por arriba OK
-							{
-								route.push_back(origin);
-
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
-								StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() + sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-							}
-							else
-							{
-								if(XYdestination[1]<sizeMap) // girar por ---> OK
-								{		
-									route.push_back(origin);
-
-									StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
-									StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() - sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += - 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);									
-								}
-								else
-								{
-									cout<<"No se puede llegar 1";
-								}
-							}
-
-						}
-					}
-				  }
-				}
-				else
-				{
-
-					if(XYorigin[1]-1>0) // recorrer -1 <-- y subir
-					{
-
-						if(XYdestination[0]%2!=0) //destino puede ir -->  OK
-						{  
-
-							route.push_back(origin);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() - 1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
-
-							StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
-							StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);						
-						}
-						else
-						{
-						 
-							if(XYdestination[1]%2!=0) // destino puede subir OK
-							{
-								route.push_back(origin);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() - 1;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
-								StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
-
-								aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() - sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-							}
-
-							else
-							{
-
-								if(XYdestination[0]>1) // girar por arriba OK
-								{
-
-									route.push_back(origin);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() - 1;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
-									StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
-
-									aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() + sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-								}
-								else
-								{
-									if(XYdestination[1]<sizeMap)// girar por ---->  OK
-									{
-
-										route.push_back(origin);
-
-										auto aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() - 1;
-										auto TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
-
-										StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
-										StoreRoute(XYorigin[1],XYdestination[1]+2,Direction::goRight,route);
-
-										aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() - sizeMap;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[1]);
-
-										nodoAux += -1;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
-									}
-									else
-									{
-										cout<<"No se puede llegar 2";
-									}
-								}
-
-							}
-
-						}
-
-					}
-					else
-					{
-						
-						if(XYdestination[1]%2!=0) // bajar por 1 abajo y ----->  OK
-						{
-							
-							route.push_back(origin);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() + sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-
-							StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-							StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
-
-						}
-						else
-						{
-							if(XYdestination[0]%2!=0) //destino puede bajar y --> OK
-							{
-
-								route.push_back(origin);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() + sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-
-								StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
-
-								aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() + 1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);	
-							}
-
-							else
-							{
-								if(XYdestination[0]>1) ///  girar por arriba
-								{
-									route.push_back(origin);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() + sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-									StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);	
-
-									aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() + 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
+									return 31;
 								}
 								
 								else
 								{
-									if(XYdestination[1]<sizeMap)// girar por --->
+									if(XYdestination[1]>1)// girar por ---> CORRECTO
 									{
-
-
-										route.push_back(origin);
-
-										auto aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() + sizeMap;
-										auto TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[1]);
-
-										StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-										StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
-
-										aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() + 1;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
-
-										nodoAux += 1;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
-										
-										nodoAux += -sizeMap;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[1]);
-
-										nodoAux += -1;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
+										return 32;
 									}
 									else
 									{
@@ -1231,166 +430,79 @@ cout<<"AQUI\n";
 							}		
 						}
 					}
+					else
+					{
+						cout<<"de este nodo no se puede ir a ningun lado esta en la ezquina superior derecha \n";
+					}
 				}
-	 		}
-        }	
+			}
+		}
 	}
-////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////derecha y arriba//////////////////////////////////////////////////
 
-	if(XYorigin[1]>=XYdestination[1] && XYorigin[0]>=XYdestination[0])
+	if(XYorigin[1]<=XYdestination[1] && XYorigin[0]>=XYdestination[0])
 	{
-		cout<<"CASO: Si el Nodo destino se encuentra a la derecha y abajo \n";
-		if( XYorigin[0]!=XYdestination[0] || XYorigin[0]%2==0 )
-		{
-			if(XYorigin[0]%2==0) //orientacion <---
+		cout<<"CASO: 3";
+			if(XYorigin[0]%2!=0 && XYorigin[1] != XYdestination[1]) //orientacion --->
 			{
-				
-				if(XYdestination[1]%2!=0) // destino puedo ir arriba OK
+				cout<<" : 1 \n";
+				if(XYdestination[1]%2!=0) // destino puedo ir arriba  OK
 				{  			
-					route.push_back(origin);
-
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft, route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
+					return 33;
 				}
 				else
 				{
-					if(XYorigin[1]!=XYdestination[1] )
+					if(XYdestination[0]%2!=0 ) // destino puede ir --->  OK
 					{
-						if(XYdestination[0]%2==0) // destino puede ir <--- OK
+						return 34;
+					}
+					else
+					{
+						if(XYdestination[0]>1) // dar giro por arriba   OK
 						{
-							route.push_back(origin);
-
-							StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-							StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() - 1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
+							return 35;
 						}
 						else
 						{
-							if(XYdestination[0]>1 ) // dar giro por arriba   OK
+							if(XYdestination[1]<sizeMap) //giro por --> Ok
 							{
-								route.push_back(origin);
-
-								StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() - 1;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								nodoAux += sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
+								return 36;
 							}
 							else
 							{
-								if(XYdestination[1]>1) //giro por <---  OK
-								{
-									route.push_back(origin);
-
-									StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-									StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);	
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() - 1;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += -sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);									
-								}
-								else
-								{
-									cout<<"No se puede llegar";
-								}
+								cout<<"No se puede llegar";
 							}
 						}
-					}	
+					}
 				}
 			}
 			
 			else
 			{
-				if(XYorigin[1]%2!=0) // orientacion arriba
+				if(XYorigin[1]%2!=0 && XYorigin[0] != XYdestination[0]) // orientacion arriba
 				{
-					if(XYdestination[0]%2==0) // destino puedo ir <--- CORRECTO
+					cout<<" : 2 \n";
+					if(XYdestination[0]%2!=0) // destino puedo ir --> OK
 					{  
-						route.push_back(origin);
-
-						StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp, route);
-						StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+						return 37;
 					}
 					else
 					{
-						if(XYdestination[1]%2!=0) //destono puedo subir    OK
+						if(XYdestination[1]%2!=0) //destono puedo subir  OK
 						{
-
-							route.push_back(origin);
-
-							StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
-							StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() - sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);	
+							return 38;
 						}
 						else
 						{
 							if(XYdestination[0]>1)  // girar por arriba OK
 							{
-								route.push_back(origin);
-
-								StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
-								StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() - sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-
-								nodoAux += -sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-
-								nodoAux += -1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								nodoAux += sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
+								return 39;
 							}
 							else
 							{
-								if(XYdestination[1]>1) // girar por <---  OK
-								{
-									route.push_back(origin);
-
-									StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
-									StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() - sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
+								if(XYdestination[1]<sizeMap) // girar por ---> OK
+								{		
+									return 40;
 								}
 								else
 								{
@@ -1402,94 +514,30 @@ cout<<"AQUI\n";
 				}
 				else
 				{
-					if(XYorigin[1]+1<=sizeMap) // recorrer +1 --> y subir
+					if(XYorigin[1] > 1 && XYorigin[0]%2==0 && XYorigin[1]%2==0) // recorrer -1 <-- y subir
 					{
-						if(XYdestination[0]%2==0) //destino puede ir <--   OK
+						cout<<" : 3 \n";
+						if(XYdestination[0]%2!=0 ) //destino puede ir -->  OK
 						{  
-
-							route.push_back(origin);
-
-							auto aux = route.at(route.size()-1);
-							nodoAux = aux->GetNode() + 1;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
-
-							StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp, route);
-							StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
+							return 41;
 						}
 						else
 						{
-							
-							if(XYdestination[1]%2!=0) // destino puede baja  CORRECTO
+							if(XYdestination[1]%2!=0 && XYorigin[0] != XYdestination[0]) // destino puede subir OK
 							{
-								route.push_back(origin);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() + 1;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-
-								StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
-								StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
-
-								aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() - sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
+								return 42;
 							}
 							else
 							{
-								if(XYdestination[0]>1) // girar por arriba  OK
+								if(XYdestination[1]>1 && XYdestination[1]%2==0) // girar por arriba OK
 								{
-									route.push_back(origin);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() + 1;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
-									StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-
-									aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() - sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += -sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
+									return 43;
 								}
 								else
 								{
-									if(XYdestination[1]>1)// girar por <---- OK
+									if(XYdestination[1]<sizeMap)// girar por ---->  OK
 									{
-										route.push_back(origin);
-
-										auto aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() + 1;
-										auto TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
-
-										StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
-										StoreRoute(XYorigin[1],XYdestination[1]-2,Direction::goLeft,route);
-
-										aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() - sizeMap;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[1]);
-
-										nodoAux += 1;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
+										return 44;
 									}
 									else
 									{
@@ -1501,96 +549,181 @@ cout<<"AQUI\n";
 					}
 					else
 					{
-						if(XYorigin[0]+1<=sizeMap) //  bajar por 1 abajo y <----- OK
+						if(XYorigin[1]!=XYdestination[1] && XYorigin[1]%2==0)
 						{
-							////VERIFICAR DESDE AQUI
+							cout<<" : 4 \n";
+							if(XYdestination[1]%2!=0) // bajar por 1 abajo y ----->  OK
+							{
+								return 45;
+							}
+							else
+							{
+								if(XYdestination[0]%2!=0) //destino puede bajar y --> OK
+								{
+									return 46;
+								}
+								else
+								{
+									if(XYdestination[0]>1) ///  girar por arriba
+									{
+										return 47;
+									}							
+									else
+									{
+										if(XYdestination[1]<sizeMap)// girar por --->
+										{
+											return 48;
+										}
+										else
+										{
+											cout<<"No se puede llegar 3";
+										}
+									}
+								}		
+							}
+						}
+					}
+				}
+	 		}
+        	
+	}
+///////////////////////////////////izquierda y arri/////////////////////////////////////////////////////////
+
+	if(XYorigin[1]>=XYdestination[1] && XYorigin[0]>=XYdestination[0])
+	{
+		cout<<"CASO: 4 ";
+			if(XYorigin[0]%2==0 && XYorigin[0]>1  && XYorigin[1] != XYdestination[1] && XYorigin[0] != XYdestination[0]) //orientacion <---
+			{
+			cout<<" : 1 \n";
+				if(XYdestination[1]%2!=0 ) // destino puedo ir arriba OK
+				{  			
+					return 49;
+				}
+				else
+				{					
+						if(XYdestination[0]%2==0) // destino puede ir <--- OK
+						{
+							return 50;
+						}
+						else
+						{
+							if(XYdestination[0]>1 ) // dar giro por arriba   OK
+							{
+								return 51;
+							}
+							else
+							{
+								if(XYdestination[1]>1) //giro por <---  OK
+								{
+									return 52;
+								}
+								else
+								{
+									cout<<"No se puede llegar";
+								}
+							}
+						}
+						
+				}
+			}
+			
+			else
+			{
+				if(XYorigin[1]%2!=0 && XYorigin[0]!=XYdestination[0]) // orientacion arriba
+				{
+				cout<<" : 2 \n";
+					if(XYdestination[0]%2==0) // destino puedo ir <--- CORRECTO
+					{  
+						return 53;
+					}
+					else
+					{
+						if(XYdestination[1]%2!=0) //destono puedo subir    OK
+						{
+							return 54;
+						}
+						else
+						{
+							if(XYdestination[0]>1)  // girar por arriba OK
+							{
+								return 55;
+							}
+							else
+							{
+								if(XYdestination[1]>1) // girar por <---  OK
+								{
+									return 56;
+								}
+								else
+								{
+									cout<<"No se puede llegar 1";
+								}
+							}
+						}
+					}
+				}
+				else
+				{
+					if(XYorigin[1]<sizeMap  && XYorigin[0]%2!=0 && XYorigin[0]!=XYdestination[0]) // recorrer +1 --> y subir
+					{
+					cout<<" : 3 \n";
+						if(XYdestination[0]%2==0) //destino puede ir <--   OK
+						{  
+							return 57;
+						}
+						else
+						{
+							if(XYdestination[1]%2!=0) // destino puede baja  CORRECTO
+							{
+								return 58;
+							}
+							else
+							{
+								if(XYdestination[0]>1) // girar por arriba  OK
+								{
+									return 59;
+								}
+								else
+								{
+									if(XYdestination[1]>1)// girar por <---- OK
+									{
+										return 60;
+									}
+									else
+									{
+										cout<<"No se puede llegar 2";
+									}
+								}
+							}
+						}
+					}
+					else
+					{
+						if(XYorigin[0] < sizeMap && XYorigin[1]!= XYdestination[1] && XYorigin[1]%2==0 && XYorigin[0]%2!=0 ) //  bajar por 1 abajo y <----- OK
+						{
+						cout<<" : 4\n";
 							if(XYdestination[1]%2!=0) // DESTINO TIENE CAMINO ASIA ARRIBA
 							{
-								route.push_back(origin);
-
-								auto aux = route.at(route.size()-1);
-								nodoAux = aux->GetNode() + sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
-
-								StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft, route);
-								StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
-
+								return 61;
 							}
 							else
 							{
 								if(XYdestination[0]%2==0) //destino puede bajar y <-- OK
 								{
-									
-									route.push_back(origin);
-
-									auto aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() + sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-									StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
-
-									aux = route.at(route.size()-1);
-									nodoAux = aux->GetNode() -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);	
+									return 62;
 								}
 								else
 								{
 									if(XYdestination[0]>1) ///  girar por arriba OK
 									{
-										route.push_back(origin);
-
-										auto aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() + sizeMap;
-										auto TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[1]);
-
-										StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-										StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);
-
-										aux = route.at(route.size()-1);
-										nodoAux = aux->GetNode() -1;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[0]);
-
-										nodoAux += sizeMap;
-										TL = mapTrafficLight.find(nodoAux);
-										route.push_back( TL->second[1]);										
+										return 63;
 									}
 									
 									else
 									{
 										if(XYdestination[1]>1)// girar por ---> CORRECTO
 										{
-											route.push_back(origin);
-
-											auto aux = route.at(route.size()-1);
-											nodoAux = aux->GetNode() + sizeMap;
-											auto TL = mapTrafficLight.find(nodoAux);
-											route.push_back( TL->second[1]);
-
-											StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-											StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
-
-											aux = route.at(route.size()-1);
-											nodoAux = aux->GetNode() -1;
-											TL = mapTrafficLight.find(nodoAux);
-											route.push_back( TL->second[0]);
-
-											nodoAux += -1;
-											TL = mapTrafficLight.find(nodoAux);
-											route.push_back( TL->second[0]);
-
-											nodoAux += -sizeMap;
-											TL = mapTrafficLight.find(nodoAux);
-											route.push_back( TL->second[1]);
-
-											nodoAux += 1;
-											TL = mapTrafficLight.find(nodoAux);
-											route.push_back( TL->second[0]);
+											return 64;
 										}
 										else
 										{
@@ -1603,205 +736,985 @@ cout<<"AQUI\n";
 					}
 				}
 			}
-		}
+		
 	}
-
-
+//////////////////////////CASO BORDE IZQUIERDO /////////////////////////////////////////////////////////////
 	
-	auto aux = route.at(route.size()-1);
-
-	if (aux != destination)
+	if(XYorigin[1]==XYdestination[1] && XYorigin[1]==1 && XYorigin[0]%2 ==0)
 	{
-		cout<<"dar una vuelta \n";
-		if(aux->GetDirection() == 0 && destination->GetDirection() == 90 )
+		if(XYdestination[0]%2==0)
 		{
-			nodoAux = aux->GetNode() +1;
-			auto TL = mapTrafficLight.find(nodoAux);
-			route.push_back( TL->second[0]);
-
-			nodoAux += sizeMap;
-			TL = mapTrafficLight.find(nodoAux);
-			route.push_back( TL->second[1]);
-
-			nodoAux += -1;
-			TL = mapTrafficLight.find(nodoAux);
-			route.push_back( TL->second[0]);
-
-			nodoAux += -sizeMap;
-			TL = mapTrafficLight.find(nodoAux);
-			route.push_back( TL->second[1]);
+			return 65;		
 		}
 		else
-		{
-			if(aux->GetDirection() == 0 && destination->GetDirection() == 270 )
+
+			if(XYdestination[0]<sizeMap)
 			{
-				nodoAux = aux->GetNode() +1;
-				auto TL = mapTrafficLight.find(nodoAux);
-				route.push_back( TL->second[0]);
-
-				nodoAux += -sizeMap;
-				TL = mapTrafficLight.find(nodoAux);
-				route.push_back( TL->second[1]);
-
-				nodoAux += -1;
-				TL = mapTrafficLight.find(nodoAux);
-				route.push_back( TL->second[0]);
-
-				nodoAux += sizeMap;
-				TL = mapTrafficLight.find(nodoAux);
-				route.push_back( TL->second[1]);
+				return 66;
 			}
 			else
 			{
-				if(aux->GetDirection() == 180 && destination->GetDirection() == 90 )
-				{
-					nodoAux = aux->GetNode() -1;
-					auto TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0]);
+				cout<<"no se puede LLegar \n";
+			}
 
-					nodoAux += sizeMap;
+	}
+//////////////////////////CASO BORDE DERECHO ///////////////////////////////////////////////////////////////
+	
+	if(XYorigin[1]==XYdestination[1] && XYorigin[1]==sizeMap && XYorigin[0]%2 !=0)
+	{
+		if(XYdestination[0]%2!=0)
+		{
+			return 67;
+		}
+		else
+			if(XYdestination[0]<sizeMap)
+			{
+				return 68;		
+			}
+			else
+			{
+				cout<<"no se puede LLegar \n";
+			}
+	}
+
+	return 0;
+}
+
+
+vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const int &origin, const int &destination)
+{
+
+	auto XYorigin = ConvertCoordinates(origin);
+	auto XYdestination = ConvertCoordinates(destination);
+
+	vector<shared_ptr<TrafficLight>> route;
+	auto TL = mapTrafficLight.find(origin);
+	route.push_back(TL->second[1]);
+	int nodoAux;
+	shared_ptr<TrafficLight> aux;
+	switch(caseRoute)
+	{
+		case 0 :
+				cout<<"no se encontro un camino para este caso; "<< origin <<" : " << destination <<"\n";
+				break;
+		case 1 :
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
+				break;
+		case 2 :
+					
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[1]);
+					route.push_back( TL->second[0] );
+				
+				break;
+		case 3 :
+					
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back(TL->second[1]);
+						
+				break;
+		case 4 :
 
+				
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
 					nodoAux += 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+						
+				break;
+		case 5 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+				break;
+		case 6 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+	
+				break;
+		case 7 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+						
+				break;
+		case 8 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
 
+				break;
+		case 9 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+
+				break;
+		case 10 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);	
+						
+				break;
+		case 11 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-sizeMap;	
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+				break;
+		case 12 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+2,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+				break;
+		case 13 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+				break;
+		case 14 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);		
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);						
+				break;
+		case 15 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-				}
-				else
-				{
-					if(aux->GetDirection() == 180 && destination->GetDirection() == 270 )
-					{
-						nodoAux = aux->GetNode() -1;
-						auto TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[0]);
+						
+				break;
+		case 16 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+										
+				break;
+		case 17 :
+					
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
+			
+				break;
+		case 18 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+				break;
+		case 19:
+				
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					
+				break;
+		case 20 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+						
+				break;																						
+		case 21 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);	
 
-						nodoAux += -sizeMap;
-						TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1]);
-
-						nodoAux += 1;
-						TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[0]);
-
-						nodoAux += sizeMap;
-						TL = mapTrafficLight.find(nodoAux);
-						route.push_back( TL->second[1]);
-					}
-					else
-					{
-						if(aux->GetDirection() == 90 && destination->GetDirection() == 180 )
-						{
-
+				break;																						
+		case 22 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+	
+				break;																						
+		case 23 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux +=  sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux +=  -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+				break;																						
+		case 24 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
 							
-							nodoAux = aux->GetNode() - sizeMap;
-							auto TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-
-							nodoAux += 1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
-
-							nodoAux += sizeMap;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[1]);
-
-							nodoAux += -1;
-							TL = mapTrafficLight.find(nodoAux);
-							route.push_back( TL->second[0]);
-						}
-						else
-						{
-							if(aux->GetDirection() == 90 && destination->GetDirection() == 0 )
-							{
+				break;																						
+		case 25 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);				
+		
+				break;																						
+		case 26 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					
+				break;																						
+		case 27 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+				break;																						
+		case 28 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[1],XYdestination[1]-2,Direction::goLeft,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()+sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
 								
-								nodoAux = aux->GetNode() - sizeMap;
-								auto TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
+				break;																						
+		case 29 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					
+				break;																						
+		case 30 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );	
+						
+				break;																						
+		case 31 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+				break;																						
+		case 32 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+				    aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode()-1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
+					nodoAux += +sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1] );
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0] );
 
-								nodoAux += -1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
+				break;																						
+		case 33 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);			
+		
+				break;																						
+		case 34 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+						
+				break;																						
+		case 35 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back(TL->second[1]);
+							
+				break;																						
+		case 36 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back(TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);								
+						
+				break;																						
+		case 37 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+				
+				break;																						
+		case 38 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					
+				break;																						
+		case 39 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+						
+				break;																						
+		case 40 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);									
+				
+				break;																						
+		case 41 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);						
+			
+				break;																						
+		case 42 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);			
+				break;	
+		case 43 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+				break;																						
+		case 44 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+2,Direction::goRight,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
 
-								nodoAux += sizeMap;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[1]);
+				break;																						
+		case 45 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
 
-								nodoAux += 1;
-								TL = mapTrafficLight.find(nodoAux);
-								route.push_back( TL->second[0]);
-							}
-							else
-							{
-								if(aux->GetDirection() == 270 && destination->GetDirection() == 180 )
-								{
-									
-									nodoAux = aux->GetNode() +sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
+				break;																						
+		case 46 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);	
+				
+				break;																						
+		case 47 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+		
+				break;	
+		case 48 :
+				
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() + 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+			
+				break;																																									
+		case 49 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft, route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
+			
+				break;	
+		case 50 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					
+				break;																						
+		case 51 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					
+				break;																						
+		case 52 :
+				
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);	
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += 1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);									
+							
+				break;																						
+		case 53 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp, route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+				
+				break;																						
+		case 54 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);						
+				break;	
+		case 55 :
+				
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					aux = route.at(route.size()-1);
+					nodoAux = aux->GetNode() - sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					nodoAux += -1;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[0]);
+					nodoAux += sizeMap;
+					TL = mapTrafficLight.find(nodoAux);
+					route.push_back( TL->second[1]);
+					
+				break;																						
+		case 56 :
+			
+				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
+				StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() - sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+						
+				break;																						
+		case 57 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp, route);
+				StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
+				
+				break;																						
+		case 58 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
+				StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() - sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+					
+				break;																						
+		case 59 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
+				StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() - sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += -sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += -1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				nodoAux += sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+								
+				break;	
+		case 60 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
+				StoreRoute(XYorigin[1],XYdestination[1]-2,Direction::goLeft,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() - sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+							
+				break;																						
+		case 61 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft, route);
+				StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
 
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += -sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-								}
-								else
-								{
-									nodoAux = aux->GetNode() +sizeMap;
-									auto TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += -1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-
-									nodoAux += -sizeMap;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[1]);
-
-									nodoAux += 1;
-									TL = mapTrafficLight.find(nodoAux);
-									route.push_back( TL->second[0]);
-								}
-
-							}
-						}
-
-					}
-				}
-
-			}
-		}
+				break;																						
+		case 62 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
+				StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() -1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);	
+						
+				break;																						
+		case 63 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
+				StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() -1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				nodoAux += sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);										
+								
+				break;																						
+		case 64 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
+				StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() -1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				nodoAux += -1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				nodoAux += -sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += 1;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+								
+				break;	
+		case 65 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() - sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += 1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode()  -1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				break;
+		case 66 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() - sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += 1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode()  -1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				nodoAux += -sizeMap ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				break;
+		case 67 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += -1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode()  +1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				break;
+		case 68 :
+			
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode() + sizeMap;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				nodoAux += -1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);
+				aux = route.at(route.size()-1);
+				nodoAux = aux->GetNode()  +1 ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[0]);
+				nodoAux += +sizeMap ;
+				TL = mapTrafficLight.find(nodoAux);
+				route.push_back( TL->second[1]);
+				break;
 
 	}
-
-
-
-
-aux = route.at(route.size()-1);
-	if (aux == destination)
-	{
-		cout<<"si llegue por el semforo que tenia que llegar\n";
-	}
-
-	for(auto i : route)
-	{
-		cout<<i->GetNode() <<":"<< i->GetDirection() <<"  ";
-	}
-	cout<<"\n";
-
- 	return route;
+	return route;
 }
+
 
 
 void Map::StoreRoute(const size_t &ini , const size_t &fin , Direction orientation, vector<shared_ptr<TrafficLight>> &route)
@@ -1867,4 +1780,60 @@ int Map::getSizeMap() const
 map<int, vector<shared_ptr<TrafficLight>>> Map::GetMapTrafficLight() const
 {
 	return mapTrafficLight;
+}
+
+void Map::CreateAdjacentTrafficLight()
+{
+	vector<shared_ptr<TrafficLight>> vectorTrafictlight;
+	for (auto it = mapRoutes.begin(); it != mapRoutes.end(); ++it)
+	{
+		auto adjacentNode=it->second;
+		auto node=mapTrafficLight.find(it->first);
+		auto trafficLightNode=node->second;
+		vector<shared_ptr<TrafficLight>> auxTrafficLight;
+
+		if(adjacentNode[0] != 0)
+		{
+			auto adjacentH=mapTrafficLight.find(adjacentNode[0]);
+			auxTrafficLight=adjacentH->second;
+			vectorTrafictlight.push_back(auxTrafficLight[0]);
+		}
+
+		if(adjacentNode[1] != 0)
+		{
+			auto adjacentV=mapTrafficLight.find(adjacentNode[1]);
+			auto auxTrafficLightV=adjacentV->second;
+			vectorTrafictlight.push_back(auxTrafficLightV[1]);
+		}
+
+		adjacentTrafficLight.insert(pair<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>>
+			(trafficLightNode[0],vectorTrafictlight));
+		adjacentTrafficLight.insert(pair<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>>
+			(trafficLightNode[1],vectorTrafictlight));
+		vectorTrafictlight.clear();
+	}
+		/*adjacentTrafficLight[trafficLightNode[0]]=vectorTrafictlight;
+		adjacentTrafficLight[trafficLightNode[1]]=vectorTrafictlight;
+		vectorTrafictlight.clear();
+		auxTrafficLight.clear();
+		
+	}*/
+
+	cout<<"\nNODO  TL  TL\n-------------------\n";
+	for(auto it = adjacentTrafficLight.begin(); it != adjacentTrafficLight.end(); ++it)
+	{
+		auto ad=it->second;
+		if(ad.size()==2)
+		{
+		cout
+            << "  " << it->first->GetNode() <<"--"<<it->first->GetDirection()<< " ** " << it->second[0]->GetNode() << "--"
+            << it->second[0]->GetDirection() << "***  " << it->second[1]->GetNode() << "--" << it->second[1]->GetDirection() <<"\n";
+		}
+		else
+		{
+			cout
+            << "  " << it->first->GetNode() << "--"<<it->first->GetDirection()<<" ** " << it->second[0]->GetNode() << "--"
+            << it->second[0]->GetDirection() << "\n";
+		}
+	}
 }
