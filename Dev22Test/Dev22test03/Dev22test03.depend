@@ -1,0 +1,8 @@
+# depslib dependency file v1.0
+1495812491 source:c:\users\administrator\documents\github\ebooks\dev22test\dev22test03\main.cpp
+	<iostream>
+	<string>
+	<time.h>
+	<list>
+	<memory>
+
