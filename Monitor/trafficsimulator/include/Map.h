@@ -24,15 +24,17 @@ class Map
     public:
         Map(int sizeMap, size_t timeTrafficLight, size_t maxVehicle);
         vector<shared_ptr<TrafficLight>> CreateRoute(const size_t &origin, const size_t &destination);
-        void StoreRoute(const size_t &ini , const size_t &fin , Direction orientation, vector<shared_ptr<TrafficLight>> &route);
         int ReviewRoute(const int &origin, const int &destination);
-        vector<size_t> ConvertCoordinates(const int &x) ;
         vector<shared_ptr<TrafficLight>> GenerateRoute(const int &caseRoute,const int &origin, const int &destination);
+        void StoreRoute(const size_t &ini , const size_t &fin , Direction orientation, vector<shared_ptr<TrafficLight>> &route);
         map<int, vector<shared_ptr<TrafficLight>>> GetMapTrafficLight() const;
-        int getSizeMap() const;
-        void show();
-        void showMap();
         void CreateAdjacentTrafficLight();
+        map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> GetAdjacentTrafficLight();
+        vector<size_t> ConvertCoordinates(const int &x) ;
+        int GetMapSize() const;
+        void showMap();
+        void show();
+        
 };
 
 #endif // MAP_H

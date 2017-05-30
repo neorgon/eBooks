@@ -13,6 +13,7 @@ class SimulationResult
 
     public:
     SimulationResult();
+    void AddTrafficCylce(int node, int vehiclesQuantity, int state, int timerState);
     ~SimulationResult();
 
 };

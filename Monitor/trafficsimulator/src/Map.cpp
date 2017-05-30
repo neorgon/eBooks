@@ -2,6 +2,7 @@
 #include "../include/Map.h"
 #include <math.h>
 
+
 Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{sizeBlock + 1}
 {
 	int id=0;
@@ -87,30 +88,7 @@ Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{si
 			VectorTrafictlight.clear();
 		}
 	}
-	CreateAdjacentTrafficLight();
 }
-
-void Map::showMap()
-{
-	//map<int,vector<int>>::iterator it = mapTrafficLight.begin();
-		cout<<"\n ID  AdH  AdV\n-------------------\n";
-	for (auto it = mapRoutes.begin(); it != mapRoutes.end(); ++it)
-    	cout <<"  "<< it->first << " : " << it->second[0] << " : "<< it->second[1] << '\n';
-}
-
-
-void Map::show()
-{
-
-	cout<<"\nNODO  TL  TL\n-------------------\n";
-	for(auto it = mapTrafficLight.begin(); it != mapTrafficLight.end(); ++it)
-	{
-		cout
-            << "  " << it->first << "  " << it->second[0]->GetNode() << "  "
-            << it->second[0]->GetDirection() << "  " << it->second[1]->GetNode() << " " << it->second[1]->GetDirection() <<"\n";
-	}
-}
-
 
 vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const size_t &destination)     
 {
@@ -125,6 +103,7 @@ vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const si
 
  	return route;
 }
+
 
 int Map::ReviewRoute(const int &origin, const int &destination)
 {
@@ -1760,23 +1739,6 @@ void Map::StoreRoute(const size_t &ini , const size_t &fin , Direction orientati
 	}
 }
       
-vector<size_t> Map::ConvertCoordinates(const int &x)
-{
-	vector<size_t> coordinates;
-	coordinates={0,0};
-
-	coordinates[0]=(int)ceil((double)x/sizeMap);
-	coordinates[1]= sizeMap-((sizeMap*coordinates[0])-x);
-
-	return coordinates;
-
-}
-
-int Map::getSizeMap() const
-{
-	return sizeMap;
-}
-
 map<int, vector<shared_ptr<TrafficLight>>> Map::GetMapTrafficLight() const
 {
 	return mapTrafficLight;
@@ -1835,5 +1797,48 @@ void Map::CreateAdjacentTrafficLight()
             << "  " << it->first->GetNode() << "--"<<it->first->GetDirection()<<" ** " << it->second[0]->GetNode() << "--"
             << it->second[0]->GetDirection() << "\n";
 		}
+	}
+}
+
+map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> Map::GetAdjacentTrafficLight()
+{
+	return adjacentTrafficLight;
+}
+
+vector<size_t> Map::ConvertCoordinates(const int &x)
+{
+	vector<size_t> coordinates;
+	coordinates={0,0};
+
+	coordinates[0]=(int)ceil((double)x/sizeMap);
+	coordinates[1]= sizeMap-((sizeMap*coordinates[0])-x);
+
+	return coordinates;
+
+}
+
+int Map::GetMapSize() const
+{
+	return sizeMap;
+}
+
+void Map::showMap()
+{
+	//map<int,vector<int>>::iterator it = mapTrafficLight.begin();
+		cout<<"\n ID  AdH  AdV\n-------------------\n";
+	for (auto it = mapRoutes.begin(); it != mapRoutes.end(); ++it)
+    	cout <<"  "<< it->first << " : " << it->second[0] << " : "<< it->second[1] << '\n';
+}
+
+
+void Map::show()
+{
+
+	cout<<"\nNODO  TL  TL\n-------------------\n";
+	for(auto it = mapTrafficLight.begin(); it != mapTrafficLight.end(); ++it)
+	{
+		cout
+            << "  " << it->first << "  " << it->second[0]->GetNode() << "  "
+            << it->second[0]->GetDirection() << "  " << it->second[1]->GetNode() << " " << it->second[1]->GetDirection() <<"\n";
 	}
 }

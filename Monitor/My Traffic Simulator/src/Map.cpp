@@ -2,6 +2,7 @@
 #include "../include/Map.h"
 #include <math.h>
 
+
 Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{sizeBlock + 1}
 {
 	int id=0;
@@ -87,7 +88,6 @@ Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{si
 			VectorTrafictlight.clear();
 		}
 	}
-	CreateAdjacentTrafficLight();
 }
 
 vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const size_t &destination)     
@@ -103,6 +103,7 @@ vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const si
 
  	return route;
 }
+
 
 int Map::ReviewRoute(const int &origin, const int &destination)
 {

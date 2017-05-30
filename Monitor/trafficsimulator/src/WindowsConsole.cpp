@@ -141,64 +141,94 @@ void WindowsConsole::DrawDirection(int &cx, int &cy, size_t dir, bool tlGreen, s
     switch (dir)
     {
         case 0:
-            for (i = cx + 1; i < cx + (dx - 1); i++)
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx - 1, cy);
+            cout << "*";
+            for (i = cx - (dx - 1); i < cx; i++)
             {
                 SetColor(7);
                 GotoXY(i, cy);
                 cout << char(196);
             }
             SetColor(15);
-            GotoXY(i - 3, cy);
+            GotoXY(cx - 3, cy);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(i, cy);
-            cout << "*";
-            cx = i;
+            cx--;
         break;
         case 90:
-            for (i = cy - 1; i > cy - (dy - 1); i--)
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx, cy + 1);
+            cout << "*";
+            for (i = cy + 1; i < cy + dy; i++)
             {
                 SetColor(7);
                 GotoXY(cx, i);
                 cout << char(179);
             }
             SetColor(15);
-            GotoXY(cx, i + 1);
+            GotoXY(cx, cy + 2);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(cx, i);
-            cout << "*";
-            cy = i;
+            cy++;
         break;
         case 180:
-            for (i = cx - 1; i > cx - (dx - 1); i--)
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx + 1, cy);
+            cout << "*";
+            for (i = cx + 1; i < cx + dx; i++)
             {
                 SetColor(7);
                 GotoXY(i, cy);
                 cout << char(196);
             }
             SetColor(15);
-            GotoXY(i + 3, cy);
+            GotoXY(cx + 3, cy);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(i, cy);
-            cout << "*";
-            cx = i;
+            cx++;
         break;
         case 270:
-            for (i = cy + 1; i < cy + (dy - 1); i++)
+            tlGreen ?  SetColor(10): SetColor(12);
+            GotoXY(cx, cy - 1);
+            cout << "*";
+            for (i = cy - (dy - 1); i < cy; i++)
             {
                 SetColor(7);
                 GotoXY(cx, i);
                 cout << char(179);
             }
             SetColor(15);
-            GotoXY(cx, i - 1);
+            GotoXY(cx, cy - 2);
             cout << vehicles;
-            tlGreen ?  SetColor(10): SetColor(12);
-            GotoXY(cx, i);
-            cout << "*";
-            cy = i;
+            cy--;
+        break;
+    }
+}
+
+void WindowsConsole::ToUpdate(bool light, int x, int y, int direction, int vehicles)
+{
+    light ? SetColor(10) : SetColor(12);
+    GotoXY(x, y);
+    cout << "*";
+    switch (direction)
+    {
+        case 0:
+            SetColor(15);
+            GotoXY(x - 2, y);
+            cout << vehicles;
+        break;
+        case 90:
+            SetColor(15);
+            GotoXY(x, y + 1);
+            cout << vehicles;
+        break;
+        case 180:
+            SetColor(15);
+            GotoXY(x + 2, y);
+            cout << vehicles;
+        break;
+        case 270:
+            SetColor(15);
+            GotoXY(x, y - 1);
+            cout << vehicles;
         break;
     }
 }
@@ -207,57 +237,21 @@ void WindowsConsole::UpdateMap(const map<int, vector<shared_ptr<TrafficLight>>> 
 {
     for (auto &t : tls)
     {
-        t.second[0]->GetLight() ? SetColor(10) : SetColor(12);
-        GotoXY(t.second[0]->GetCoord().x, t.second[0]->GetCoord().y);
-        cout << "*";
-        switch (t.second[0]->GetDirection())
-        {
-            case 0:
-                SetColor(15);
-                GotoXY(t.second[0]->GetCoord().x - 3, t.second[0]->GetCoord().y);
-                cout << t.second[0]->CountVehicles();
-            break;
-            case 90:
-                SetColor(15);
-                GotoXY(t.second[0]->GetCoord().x, t.second[0]->GetCoord().y + 1);
-                cout << t.second[0]->CountVehicles();
-            break;
-            case 180:
-                SetColor(15);
-                GotoXY(t.second[0]->GetCoord().x + 3, t.second[0]->GetCoord().y);
-                cout << t.second[0]->CountVehicles();
-            break;
-            case 270:
-                SetColor(15);
-                GotoXY(t.second[0]->GetCoord().x, t.second[0]->GetCoord().y - 1);
-                cout << t.second[0]->CountVehicles();
-            break;
-        }
-        t.second[1]->GetLight() ? SetColor(10) : SetColor(12);
-        GotoXY(t.second[1]->GetCoord().x, t.second[1]->GetCoord().y);
-        cout << "*";
-        switch (t.second[1]->GetDirection())
-        {
-            case 0:
-                SetColor(15);
-                GotoXY(t.second[1]->GetCoord().x - 3, t.second[1]->GetCoord().y);
-                cout << t.second[1]->CountVehicles();
-            break;
-            case 90:
-                SetColor(15);
-                GotoXY(t.second[1]->GetCoord().x, t.second[1]->GetCoord().y + 1);
-                cout << t.second[1]->CountVehicles();
-            break;
-            case 180:
-                SetColor(15);
-                GotoXY(t.second[1]->GetCoord().x + 3, t.second[1]->GetCoord().y);
-                cout << t.second[1]->CountVehicles();
-            break;
-            case 270:
-                SetColor(15);
-                GotoXY(t.second[1]->GetCoord().x, t.second[1]->GetCoord().y - 1);
-                cout << t.second[1]->CountVehicles();
-            break;
-        }
+        ToUpdate
+        (
+            t.second[0]->GetLight(),
+            t.second[0]->GetCoord().x,
+            t.second[0]->GetCoord().y,
+            t.second[0]->GetDirection(),
+            t.second[0]->CountVehicles()
+        );
+        ToUpdate
+        (
+            t.second[1]->GetLight(),
+            t.second[1]->GetCoord().x,
+            t.second[1]->GetCoord().y,
+            t.second[1]->GetDirection(),
+            t.second[1]->CountVehicles()
+        );
     }
 }

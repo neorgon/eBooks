@@ -19,6 +19,7 @@ class WindowsConsole
     const char* windowTitle;
     int dx, dy;
 
+    void ToUpdate(bool light, int x, int y, int direction, int vehicles);
     public:
         WindowsConsole(size_t h, size_t w, const char* t, int dx, int dy) :
             vsHeight{h}, vsWidth{w}, windowTitle {t}, dx {dx}, dy {dy}

@@ -32,7 +32,7 @@ class TrafficLight
         TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, size_t node, bool light = true) :
              direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, node{node}, green{light}
         {
-            
+
             vehicles.resize(maxVQueue);
             for(auto& i: vehicles)
             {
@@ -40,7 +40,7 @@ class TrafficLight
             }
             timer = countdown;
         };
-        
+
         size_t GetDirection() const;
         bool GetLight() const;
         MapCoord GetCoord() const;
@@ -56,6 +56,7 @@ class TrafficLight
         void Update();
         size_t GetVehiculoLocation(const shared_ptr<Vehicle>& v) const;
         size_t GetNode()const;
+        size_t GetTimer() const;
 };
 
 #endif // TRAFFICLIGHT_H

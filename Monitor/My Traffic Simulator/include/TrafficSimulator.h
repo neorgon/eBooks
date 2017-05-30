@@ -38,7 +38,7 @@ class TrafficSimulator
 
 	public:
 	TrafficSimulator();
-	//~TrafficSimulator();
+	~TrafficSimulator();
 	int RandomInteger(int lowest, int highest);
 	void BuildSimulation(shared_ptr<Map>& map,string name,size_t vehicleQuantity,
 	size_t speedMin,size_t speedMax);

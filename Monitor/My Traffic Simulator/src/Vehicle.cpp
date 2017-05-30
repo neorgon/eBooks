@@ -32,7 +32,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 	{
 		double bufferspeed = speed;
 		arrivalTime++;
-
+		
 		//verificar luz verde con velocidad mayor
 
 		auto at= location->GetVehiculoLocation(make_shared<Vehicle>(*this));
@@ -46,7 +46,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 					 location->Clean(at);
 					 location=route.at(indice);
 					 speed-=at;
-						cout<<"\n\n\nubicacion nueva: "<< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
+						cout<<"ubicacion nueva: "<< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 					}
 				else
 					{
@@ -61,7 +61,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 				speed=at-1;
 				if(location->EnQueue(make_shared<Vehicle>(*this), location->GetMaxVQueue()-at+speed))
 			 		location->Clean(at);
-
+			 
 			}
 
 		}
@@ -70,12 +70,12 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 		{
 		 	if(location->EnQueue(make_shared<Vehicle>(*this), location->GetMaxVQueue()-at+speed))
 		 		location->Clean(at);
-
+		 
 			//cout< location->GetVehiculoLocation(make_shared<Vehicle>(*this))<<endl;
 		}
 
 		//	if location->FirstVehicle().get()->GetLicencePlate()==this->GetLicencePlate()
-		//		&& location->GetLight())
+		//		&& location->GetLight()) 
 		//		if (route.at(indice++)->EnQueue(make_shared<Vehicle>(*this)),5)
 		//		{
 		//		 location=route.at(indice++);
@@ -88,7 +88,7 @@ void Vehicle::Move(function<void(shared_ptr<Vehicle>)> func)
 		//<<" auto n: "<< location->CountVehicles()<<endl;
 		for (auto& i: route)
 		{
-			cout<<"nodo: "<<i->GetNode()
+			cout<<"nodo: "<<i->GetNode() 
 			<<" auto n: "<<i->CountVehicles()<<endl;
 		}
 		speed=bufferspeed;

@@ -7,9 +7,9 @@ TrafficSimulator::TrafficSimulator()
     srand((unsigned)time(0));
 }
 
-/*TrafficSimulator::~TrafficSimulator()
+TrafficSimulator::~TrafficSimulator()
 {
-}*/
+}
 
 int TrafficSimulator::RandomInteger(int lowest, int highest)
 {
@@ -23,10 +23,24 @@ int TrafficSimulator::RandomInteger(int lowest, int highest)
 void TrafficSimulator::BuildSimulation(shared_ptr<Map>& mapSimulation,string name,size_t vehicleQuantity,size_t speedMin,size_t speedMax)
 {
     vector<shared_ptr<Vehicle>> vehicles;
+    int mapSize=mapSimulation->GetMapSize();
 
     for ( size_t i = 1; i <= vehicleQuantity ; i++)
     {
-        vector<size_t> points = GetStartEndPoints ( mapSimulation, vehicleQuantity ,i);
+        vector<size_t> points ;
+        if(mapSize%2 == 0)
+        {
+            points= GetStartEndPoints ( mapSimulation, vehicleQuantity ,i); 
+        }
+        else
+        {
+            do
+            {
+                points = GetStartEndPoints ( mapSimulation, vehicleQuantity ,i);
+            }
+            while( points[0] == mapSize || points[1] == mapSize*(mapSize-1) + 1  );
+        }
+
         cout<<points[0]<<"---"<<i<<"----"<<points[1]<<"RUTA\n";
         vector<shared_ptr<TrafficLight>> routes=mapSimulation->CreateRoute(points[0],points[1]);
         for(auto& j: routes)
@@ -89,7 +103,7 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
                 {
                     vehicles[i]->Move([&](shared_ptr<Vehicle> me){
                         Data.push_back("auto :"+to_string( me->GetLicencePlate())+"Time : "+to_string( me->GetArrivalTime()));
-                        cout<<"\nllego auto :"<< me->GetLicencePlate()<<endl;
+                        cout<<"llego auto :"<< me->GetLicencePlate()<<endl;
                         shared_ptr<TrafficLight> semaforo = me->GetLocation();
                         size_t posSemaforo=semaforo->GetVehiculoLocation(me);
                         semaforo->Clean(posSemaforo);
