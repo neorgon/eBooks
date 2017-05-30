@@ -165,7 +165,7 @@ bool OptionParser::AnalyzeSyntax()
     {
     	for (auto j: tokens)
     	{
-    		if(i.GetName()==j.first||i.GetAbbr()==j.first)
+    		if(i.GetName() == j.first || i.GetAbbr() == j.first)
     			trueOptions.pop_back();
     	}
     }
@@ -196,7 +196,6 @@ bool OptionParser::AnalyzeSemantic()
     vector<string> values;
     size_t e = 0;
 
-    //for (auto &t : tokens)
     for (itTokens = tokens.begin(); itTokens < tokens.end(); itTokens++, e++)
     {
         itOptionDefinition = find_if(definitions.begin(),

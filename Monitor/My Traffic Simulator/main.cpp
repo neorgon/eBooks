@@ -12,8 +12,8 @@ int main()
 	size_t Vehicles=10;
 	TrafficSimulator* a = new TrafficSimulator();
 	shared_ptr<Map> mapa=make_shared<Map>(5, timeTrafficLight, Vehicles);
-	a->BuildSimulation(mapa,"primeraSImulacion", vehicleQuantity, speedMin, speedMax);
-    a->StartSimulation("primeraSImulacion",50);
+	a->BuildSimulation(mapa, "primeraSImulacion", vehicleQuantity, speedMin, speedMax);
+    a->StartSimulation("primeraSImulacion", 50);
 
     return 0;
 }

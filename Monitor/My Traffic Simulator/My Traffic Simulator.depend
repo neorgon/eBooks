@@ -76,7 +76,7 @@
 1494304081 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\viewscreen.cpp
 	"ViewScreen.h"
 
-1496090064 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
 	"../include/TrafficSimulator.h"
 	"../include/WindowsConsole.h"
 
@@ -109,15 +109,15 @@
 1496089397 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
 	"../include/TrafficLight.h"
 
-1496089397 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
+1496153181 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
 	"../include/TrafficLight.h"
 	"../include/Map.h"
 	<math.h>
 
-1496093633 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
+1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
 	"../include/TrafficSimulator.h"
 
-1496089800 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
+1496148155 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
 	<vector>
 	<memory>
 	<string>
@@ -140,14 +140,14 @@
 	"Vehicle.h"
 	"TrafficLight.h"
 
-1496093803 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
+1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
 	"../include/Vehicle.h"
 	"../include/TrafficLight.h"
 
-1496093694 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
+1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
 	"../include/WindowsConsole.h"
 
-1495547202 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
+1496148155 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
 	<iostream>
 	<windows.h>
 	<stdio.h>
