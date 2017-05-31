@@ -1,5 +1,13 @@
 #include "../include/TrafficLight.h"
 
+TrafficLight::TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, size_t node, bool light = true) 
+: direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, node{node}, green{light}
+{
+    vehicles.resize(maxVQueue);
+    timerGreen = countdown+recalcCountdown;
+    timerRed = countdown-recalcCountdown;
+};
+
 size_t TrafficLight::GetDirection() const
 {
     return direction;
@@ -49,35 +57,23 @@ void TrafficLight::SwitchLight()
 bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v)
 {
     size_t i = 0;
-    //cout<<vehicles.size()<<endl;
     while (i < maxVQueue)
     {
     	if( vehicles[i].get() == nullptr)
     	{
         	vehicles[i] = v;
-        	//cout<<"encolando vehiculo: "<<i<<endl;
        		return true;
     	}
-    	/*else
-    	{
-    		cout<<"puntero lleno"<<endl;
-    	}*/
-
-   		i++;
+    	i++;
     }
-
     return false;
 }
 
 bool TrafficLight::EnQueue(const shared_ptr<Vehicle>& v,size_t id)
 {
-	//cout<<"otro encolado"<<endl;
-	//cout<<id<<endl;
-    size_t i=vehicles.size()-(id+1);
-    //cout<<i<<endl;
-    //cout<<vehicles.size()<<endl;
+	size_t i=vehicles.size()-(id+1);
     while (i < vehicles.size())
-    {// cout<<"ciclo"<<endl;
+    {
     	if( vehicles[i] == nullptr)
     	{
         	vehicles[i] = v;
@@ -99,31 +95,40 @@ shared_ptr<Vehicle> TrafficLight::FirstVehicle() const
     return vehicles.front();
 }
 
-bool TrafficLight::DeQueue()
-{
-    /*
-    Tal vez este m?odo tendr? que devolver una lista de todos los veh?ulos que pueden pasar luz verde.
-    */
-
-    return true;
-}
-
 void TrafficLight::Update()
 {
-    if (timer > 0)
+    if (green)
     {
-        timer --;
+        if (timerGreen > 0)
+        {
+            timerGreen --;
+        }
+        else
+        {
+            SwitchLight();
+            timerGreen = countdown+recalcCountdown;
+        }
     }
     else
     {
-        SwitchLight();
-        timer = countdown;
+        if (timerRed > 0)
+        {
+            timerRed --;
+        }
+        else
+        {
+            SwitchLight();
+            timerRed = countdown-recalcCountdown;
+        }   
     }
-/*
-    if (green)
-    {
-        DeQueue(); //?
-    }*/
+}
+
+void TrafficLight::Modify(int quantity)
+{
+    if ((quantity+recalcCountdown)<=countdown || (quantity+recalcCountdown)>=(countdown*-1))
+      recalcCountdown+=quantity;
+    
+        
 }
 
 size_t TrafficLight::GetVehiculoLocation(const shared_ptr<Vehicle>& v) const
@@ -139,19 +144,11 @@ size_t TrafficLight::GetVehiculoLocation(const shared_ptr<Vehicle>& v) const
 				        });
 
 	if (thisVehicle==vehicles.end())
+    {
+        cout<<"auto no encontrado"<<endl;
 		return 0;
-	//else
-	//	cout<<" licencia: "<<(*thisVehicle)->GetLicencePlate()<<endl;
-	//cout<<" lista de autos"<<endl;
-	/*for(auto i:vehicles)
-	{
-        if(i!=nullptr)
-		cout<<" auto: "<<i->GetLicencePlate()<<endl;
-
-	}*/
-
+    }
 	return i;
-
 }
 
 size_t TrafficLight::GetNode()const
@@ -161,5 +158,8 @@ size_t TrafficLight::GetNode()const
 
 size_t TrafficLight::GetTimer() const
 {
-	return timer;
+    if (green)
+        return timerGreen;
+    else
+        return timerRed;
 }

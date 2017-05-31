@@ -6,6 +6,7 @@
 #include <memory>
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 #include "../include/Vehicle.h"
 
@@ -19,28 +20,24 @@ struct MapCoord
 class Vehicle;
 class TrafficLight
 {
+    #ifdef GTest
+    public:
+    #else
+    private:
+    #endif
     size_t node;
     size_t direction;
     size_t countdown;
+    int recalcCountdown=0;
     size_t maxVQueue;
     bool green;
-    size_t timer;
+    size_t timerGreen;
+    size_t timerRed;
     MapCoord coord;
     vector<shared_ptr<Vehicle>> vehicles;
 
     public:
-        TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, size_t node, bool light = true) :
-             direction{direction}, countdown{countdown}, maxVQueue{maxVQueue}, node{node}, green{light}
-        {
-
-            vehicles.resize(maxVQueue);
-            for(auto& i: vehicles)
-            {
-                i = nullptr;
-            }
-            timer = countdown;
-        };
-
+        TrafficLight(size_t direction, size_t countdown, size_t maxVQueue, size_t node, bool light );
         size_t GetDirection() const;
         bool GetLight() const;
         MapCoord GetCoord() const;
@@ -52,8 +49,8 @@ class TrafficLight
         bool EnQueue(const shared_ptr<Vehicle>& v,size_t id);
         void Clean(size_t at);
         shared_ptr<Vehicle> FirstVehicle() const;
-        bool DeQueue();
         void Update();
+        void Modify(int quantity);
         size_t GetVehiculoLocation(const shared_ptr<Vehicle>& v) const;
         size_t GetNode()const;
         size_t GetTimer() const;

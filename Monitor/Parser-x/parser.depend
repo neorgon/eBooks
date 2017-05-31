@@ -1,0 +1,88 @@
+# depslib dependency file v1.0
+1491902575 source:c:\users\nestor\documents\github\ebooks\monitor\parser\main.cpp
+	<Parser.h>
+
+1491901158 c:\users\nestor\documents\github\ebooks\monitor\parser\include\parser.h
+	<vector>
+	<stdio.h>
+	<iostream>
+	<string>
+	<exception>
+	<algorithm>
+	<map>
+	<Options.h>
+	<Rules.h>
+	<Exceptions.h>
+
+1491899441 c:\users\nestor\documents\github\ebooks\monitor\parser\include\options.h
+	<string>
+	<vector>
+	"../PType.h"
+
+1491267981 c:\users\nestor\documents\github\ebooks\monitor\parser\ptype.h
+
+1491610225 c:\users\nestor\documents\github\ebooks\monitor\parser\include\rules.h
+	<string>
+	"../PType.h"
+
+1491438319 c:\users\nestor\documents\github\ebooks\monitor\parser\include\exceptions.h
+	<exception>
+	<cstdio>
+
+1491438319 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\exceptions.cpp
+	"Exceptions.h"
+
+1491902603 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\options.cpp
+	"Options.h"
+	<iostream>
+
+1491901158 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\parser.cpp
+	"Parser.h"
+	<stdexcept>
+
+1491448578 source:c:\users\nestor\documents\github\ebooks\monitor\parser\src\rules.cpp
+	"Rules.h"
+
+1491899277 source:c:\users\administrator\documents\github\ebooks\monitor\parser\main.cpp
+	<Parser.h>
+
+1491900770 c:\users\administrator\documents\github\ebooks\monitor\parser\include\parser.h
+	<vector>
+	<stdio.h>
+	<iostream>
+	<string>
+	<exception>
+	<algorithm>
+	<map>
+	<Options.h>
+	<Rules.h>
+	<Exceptions.h>
+
+1491871076 c:\users\administrator\documents\github\ebooks\monitor\parser\include\options.h
+	<string>
+	<vector>
+	"../PType.h"
+
+1491869585 c:\users\administrator\documents\github\ebooks\monitor\parser\ptype.h
+
+1491869585 c:\users\administrator\documents\github\ebooks\monitor\parser\include\rules.h
+	<string>
+	"../PType.h"
+
+1491869585 c:\users\administrator\documents\github\ebooks\monitor\parser\include\exceptions.h
+	<exception>
+	<cstdio>
+
+1491869585 source:c:\users\administrator\documents\github\ebooks\monitor\parser\src\exceptions.cpp
+	"Exceptions.h"
+
+1491882576 source:c:\users\administrator\documents\github\ebooks\monitor\parser\src\options.cpp
+	"Options.h"
+
+1491899192 source:c:\users\administrator\documents\github\ebooks\monitor\parser\src\parser.cpp
+	"Parser.h"
+	<stdexcept>
+
+1491869585 source:c:\users\administrator\documents\github\ebooks\monitor\parser\src\rules.cpp
+	"Rules.h"
+

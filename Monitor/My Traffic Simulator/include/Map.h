@@ -14,8 +14,15 @@
 using namespace std;
 
 class TrafficLight;
+#define GTest
+
 class Map
 {
+    #ifdef GTest
+    public:
+    #else
+    private:
+    #endif
     int sizeMap;
     map<int, vector<int>> mapRoutes;
     map<int, vector<shared_ptr<TrafficLight>>> mapTrafficLight;
@@ -28,12 +35,12 @@ class Map
         vector<shared_ptr<TrafficLight>> GenerateRoute(const int &caseRoute,const int &origin, const int &destination);
         void StoreRoute(const size_t &ini , const size_t &fin , Direction orientation, vector<shared_ptr<TrafficLight>> &route);
         map<int, vector<shared_ptr<TrafficLight>>> GetMapTrafficLight() const;
-        void CreateAdjacentTrafficLight();
         map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> GetAdjacentTrafficLight();
         vector<size_t> ConvertCoordinates(const int &x) ;
         int GetMapSize() const;
         void showMap();
         void show();
+        void ModifyCornerTrafficLight(int corner,int time);
         
 };
 

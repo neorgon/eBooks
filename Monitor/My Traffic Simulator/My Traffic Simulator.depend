@@ -76,11 +76,13 @@
 1494304081 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\viewscreen.cpp
 	"ViewScreen.h"
 
-1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+1496262575 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\main.cpp
+	"../parser/include/IOptionType.h"
+	"../parser/include/OptionParser.h"
 	"../include/TrafficSimulator.h"
 	"../include/WindowsConsole.h"
 
-1496089397 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\map.h
+1496262211 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\map.h
 	<iostream>
 	<vector>
 	<memory>
@@ -90,34 +92,35 @@
 	<algorithm>
 	"../include/Direction.h"
 
-1496089397 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
+1496262211 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficlight.h
 	<string>
 	<deque>
 	<memory>
 	<iostream>
 	<vector>
+	<algorithm>
 	"../include/Vehicle.h"
 
-1496070384 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
+1496262211 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\vehicle.h
 	<vector>
 	<memory>
 	<utility>
 	<iostream>
 	<functional>
-	"../include/Map.h"
 
-1496089397 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
+1496262211 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
 	"../include/TrafficLight.h"
 
-1496153181 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
+1496262211 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
 	"../include/TrafficLight.h"
 	"../include/Map.h"
 	<math.h>
 
-1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
+1496263402 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
 	"../include/TrafficSimulator.h"
+	<exception>
 
-1496148155 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
+1496264375 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
 	<vector>
 	<memory>
 	<string>
@@ -140,14 +143,14 @@
 	"Vehicle.h"
 	"TrafficLight.h"
 
-1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
+1496262211 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
 	"../include/Vehicle.h"
 	"../include/TrafficLight.h"
 
-1496148155 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
+1496262211 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
 	"../include/WindowsConsole.h"
 
-1496148155 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
+1496262211 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\windowsconsole.h
 	<iostream>
 	<windows.h>
 	<stdio.h>
@@ -166,15 +169,15 @@
 1496113730 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\windowsconsole.cpp
 	"../include/WindowsConsole.h"
 
-1495458746 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\simulation.h
+1496239973 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\simulation.h
 	"Vehicle.h"
 	"Map.h"
 	<vector>
 	<memory>
 
-1495458746 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\direction.h
+1496239973 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\direction.h
 
-1495458746 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\simulation.cpp
+1496239973 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\simulation.cpp
 	"../include/Simulation.h"
 
 1496115187 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\simulation.h
@@ -190,11 +193,11 @@
 
 1495151183 shed changes
 
-1496089397 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\simulationresult.h
+1496262211 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\include\simulationresult.h
 	<map>
 	<vector>
 
-1496089397 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\simulationresult.cpp
+1496262211 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\src\simulationresult.cpp
 	"../include/SimulationResult.h"
 
 1496115187 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\simulationresult.h
@@ -283,5 +286,88 @@
 	"../include/Real.h"
 
 1492816412 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\text.cpp
+	"../include/Text.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\ioptiontype.h
+	<string>
+	"OptionType.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\optiontype.h
+
+1493302634 c:\users\administrator\documents\github\ebooks\monitor\parser\include\optionparser.h
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\definitionexception.cpp
+	"DefinitionException.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\definitionexception.h
+	<exception>
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\semanticexception.cpp
+	"SemanticException.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\semanticexception.h
+	<exception>
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\syntaxexception.cpp
+	"SyntaxException.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\syntaxexception.h
+	<exception>
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\src\boolean.cpp
+	<iostream>
+	"../include/Boolean.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\boolean.h
+	"IOptionType.h"
+	"../exceptions/SemanticException.h"
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\src\integer.cpp
+	<iostream>
+	"../include/Integer.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\integer.h
+	"IOptionType.h"
+	"../exceptions/SemanticException.h"
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\src\optiondefinition.cpp
+	"../include/OptionDefinition.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\optiondefinition.h
+	<string>
+	"OptionType.h"
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\src\optionparser.cpp
+	"../include/OptionParser.h"
+	<sstream>
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\optionparser.h
+	<iostream>
+	<string>
+	<vector>
+	<utility>
+	<algorithm>
+	<map>
+	"OptionDefinition.h"
+	"IOptionType.h"
+	"Boolean.h"
+	"Integer.h"
+	"Real.h"
+	"Text.h"
+	"../exceptions/SyntaxException.h"
+	"../exceptions/DefinitionException.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\real.h
+	"IOptionType.h"
+	"../exceptions/SemanticException.h"
+
+1496233988 c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\include\text.h
+	"IOptionType.h"
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\src\real.cpp
+	<iostream>
+	"../include/Real.h"
+
+1496233988 source:c:\users\administrator\documents\github\ebooks\monitor\my traffic simulator\parser\src\text.cpp
 	"../include/Text.h"
 

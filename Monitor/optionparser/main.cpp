@@ -8,10 +8,12 @@
 #include <map>
 
 using namespace std;
-
+size_t countvehicles;
 void printOptions(string optionname, vector<IOptionType*> Op)
 {
     for(auto i:Op)
+    {
+        if (i->GetName() == "verbose") cout << "CATCH: " << static_cast<Boolean*>(i)->GetValue() << "\n";
         switch(i->GetType())
         {
             case OptionType::Boolean:
@@ -35,14 +37,15 @@ void printOptions(string optionname, vector<IOptionType*> Op)
                 break;
             }
         }
+    }
 }
 
 
-int main(/*int argc, char* args[]*/)
+int main(int argc, char* args[])
 {
     try
     {
-        int argc = 14;
+        /*int argc = 14;
         //const char* args[] = { "Scanner", "--calorias", "250", "-g", "-10.0"};
         const char* args[] =
         {
@@ -54,9 +57,9 @@ int main(/*int argc, char* args[]*/)
             "--time_traffic_light", "2",
             "--cycles", "50",
             "--verbose"
-        };
+        };*/
 
-        OptionParser op(argc, args);
+        OptionParser op(argc, (const char **)args);
         op.AddText("name", 'n'); //, true
         op.AddInteger("blocks", 'b');
         op.AddInteger("vehicles_by_blocs", 'y');

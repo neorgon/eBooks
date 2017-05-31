@@ -1,4 +1,5 @@
 #include "../include/TrafficSimulator.h"
+#include <exception>
 
 using my_point = pair<size_t,shared_ptr<TrafficLight>>;
 
@@ -25,12 +26,12 @@ void TrafficSimulator::BuildSimulation(shared_ptr<Map>& mapSimulation,string nam
     vector<shared_ptr<Vehicle>> vehicles;
     int mapSize=mapSimulation->GetMapSize();
 
-    for ( size_t i = 1; i <= vehicleQuantity ; i++)
+    for ( size_t i = 1,loops=0; i <= vehicleQuantity ; i++, loops++)
     {
         vector<size_t> points ;
         if(mapSize%2 == 0)
         {
-            points= GetStartEndPoints ( mapSimulation, vehicleQuantity ,i); 
+            points= GetStartEndPoints ( mapSimulation, vehicleQuantity ,i);
         }
         else
         {
@@ -50,99 +51,116 @@ void TrafficSimulator::BuildSimulation(shared_ptr<Map>& mapSimulation,string nam
                 cerr<<"error ruta"<<endl;
             }
         }
-        vehicles.push_back(make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),routes));
+        try
+        {
+            vehicles.push_back(make_shared<Vehicle>(i,(double)RandomInteger(speedMin,speedMax),routes));
+        }
+        catch (const char* e)
+        {
+            i--;
+        }
+        if (loops>(vehicleQuantity*3))
+            throw ("Number of vehicles exceeded");
     }
-
     simulations[name]=make_shared<Simulation>(mapSimulation,name,vehicles);
-
 }
 
-void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator simulationIterator, bool optionVisualization, int cycles)
+void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator simulationIterator, int cycles)
 {
-    cout<<simulationIterator->second->getName();
-
+    SimulationResult results;
 
     auto vehicles = simulationIterator->second->getVehicles();
     auto mapSim = simulationIterator->second->getMap();
     auto trafficLightsSim = mapSim->GetMapTrafficLight();
     string msg;
-    char ch;
     bool loop=false;
     bool cyclesFlag = false;
     if(cycles!=0)
         cyclesFlag = true;
 
     WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
+    wc.ClearScreen();
+    if(optionVisualization)
+        wc.PrintMap(trafficLightsSim, mapSim->GetMapSize());
 
     while(loop==false)
     {
-        //getch();
+        if (vehicles.size() == 0)
+        {
+            loop = true;
+            msg = "all cars arrived, simulation ended";
+            break;
+        }
 
-
-        wc.ClearScreen();
-        //cout<<"press escape to end simulation"<<endl;
-        //cout<<"press space to continue"<<endl;
-
-        if(optionVisualization)
-			wc.PrintMap(trafficLightsSim, mapSim->GetMapSize());
-        //ch=getch();
-        //if(ch=='\033')
-        //    loop = true;
-        //else
-        //{
-            //if(ch==' ')
-            //{
-
-                if (vehicles.size() == 0)
-                    {
-                        loop = true;
-                        msg = "all cars arrived, simulation ended";
-                        break;
-                    }
-                for(auto i=0U;i<vehicles.size();i++)
+        for(auto i=0U;i<vehicles.size();i++)
+        {
+            vehicles[i]->Move(
+                [&](shared_ptr<Vehicle> me)
                 {
-                    vehicles[i]->Move([&](shared_ptr<Vehicle> me){
-                        Data.push_back("auto :"+to_string( me->GetLicencePlate())+"Time : "+to_string( me->GetArrivalTime()));
-                        cout<<"llego auto :"<< me->GetLicencePlate()<<endl;
-                        shared_ptr<TrafficLight> semaforo = me->GetLocation();
-                        size_t posSemaforo=semaforo->GetVehiculoLocation(me);
-                        semaforo->Clean(posSemaforo);
-                        vehicles.erase(vehicles.begin()+i);
-                        i--;
+                    shared_ptr<TrafficLight> semaforo = me->GetLocation();
+                    size_t posSemaforo=semaforo->GetVehiculoLocation(me);
+                    vehicles.erase(vehicles.begin()+i);
+                    semaforo->Clean(posSemaforo);
+                    i--;
                     return;
-                    });
-                }
+                });
+        }
 
-                for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
+        for(auto it=trafficLightsSim.begin(); it!=trafficLightsSim.end(); ++it)
+        {
+			map<
+                shared_ptr<TrafficLight>,
+                vector<shared_ptr<TrafficLight>>
+            > adjacentTrafficLight = mapSim->GetAdjacentTrafficLight();
+			auto firstAdjacentTrafficLightIterator = find_if(
+                adjacentTrafficLight.begin(),
+                adjacentTrafficLight.end(),
+                [&](pair<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> me)
                 {
-
-                    it->second[0]->Update();
-                    it->second[1]->Update();
-                    results.AddTrafficCylce((int)(it->second[0]->GetNode()), (int)(it->second[0]->CountVehicles()), (int)(it->second[0]->GetLight()), (int)(it->second[0]->GetTimer()));
-                    results.AddTrafficCylce((int)(it->second[1]->GetNode()), (int)(it->second[1]->CountVehicles()), (int)(it->second[1]->GetLight()), (int)(it->second[1]->GetTimer()));
-                }
-                if (cyclesFlag)
+                    return (me.first.get() == it->second[0].get());
+                });
+            auto secondAdjacentTrafficLightIterator = find_if(
+                adjacentTrafficLight.begin(),
+                adjacentTrafficLight.end(),
+                [&](pair<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> me)
                 {
-                    if(cycles==0)
-                    {
-                        loop = true;
-                        msg = "number of cycles reached, simulation ended";
-                        break;
-                    }
-                    cycles--;
-                }
+                    return (me.first.get()==it->second[1].get());
+                });
+            vector<shared_ptr<TrafficLight>> firstPairAdyacentTF = firstAdjacentTrafficLightIterator->second;
+            vector<shared_ptr<TrafficLight>> secondPairAdyacentTF = secondAdjacentTrafficLightIterator->second;
+            int adyacentTFCountVehicles1 = FindAdjacentEqualDirectionTrafficLight(firstPairAdyacentTF,it->second[0]);
+            int adyacentTFCountVehicles2 = FindAdjacentEqualDirectionTrafficLight(secondPairAdyacentTF,it->second[1]);
 
-                if(optionVisualization)
-                {
-                    cout<<cycles;
-                    wc.UpdateMap(trafficLightsSim);
-                    Sleep(1500);
-                }
+            vector<int> aux = {
+                (int)(it->second[0]->CountVehicles()),
+                adyacentTFCountVehicles1,
+                (int)(it->second[1]->CountVehicles()),
+                adyacentTFCountVehicles2,
+            };
+            results.AddValuesForANN(aux);
 
-            //}
-        //}
+            it->second[0]->Update();
+            it->second[1]->Update();
+        }
 
+        if (cyclesFlag)
+        {
+			if(cycles==0)
+            {
+				loop = true;
+                msg = "number of cycles reached, simulation ended";
+                break;
+            }
+            cycles--;
+         }
+
+         if(optionVisualization)
+         {
+            wc.UpdateMap(trafficLightsSim);
+            Sleep(1500);
+         }
     }
+    resultsMap.insert(make_pair(simulationIterator->second->getName(), make_shared<SimulationResult>(results)));
     cout<<msg<<endl;
 }
 
@@ -152,36 +170,12 @@ void TrafficSimulator::StartSimulation(string simulationName, int cycles)
     map<string,shared_ptr<Simulation>>::iterator it;
     it = simulations.find(simulationName);
     if (it == simulations.end())
+    {
         cout<<"not a valid simulation, please give the right simulation for this traffic simulator";
+    }
     else
     {
-
-		cout<<"\tChoose your option\n";
-		cout<<"1 Visualize simulation\n";
-		cout<<"2 Run simulation without visualization\n";
-		cout<<"3 Exit"<<endl;
-		cin >> option;
-
-		while (option != '1' && option != '2' && option != '3')
-		{
-			cout << "Invalid option" <<endl;
-			cout<<"1 Visualize simulation\n";
-			cout<<"2 Run simulation without visualization\n";
-			cout<<"3 Exit"<<endl;
-			cin >> option;
-		}
-		switch(option)
-		{
-			case '1':
-				StartLoopSim(it, true, cycles);
-				break;
-			case '2':
-				StartLoopSim(it, false, cycles);
-				break;
-			case '3':
-				cout<<"Successful exit\n";
-				break;
-		}
+        StartLoopSim(it, cycles);
 	}
 }
 
@@ -222,14 +216,31 @@ vector<size_t> TrafficSimulator::GetStartEndPoints(shared_ptr<Map>& mapSimulatio
 
 }
 
-/*vector<int> TrafficSimulator::ConvertCoordinates(int x,int sizeMap)
+int TrafficSimulator::FindAdjacentEqualDirectionTrafficLight(vector<shared_ptr<TrafficLight>>& trafficLightVector, shared_ptr<TrafficLight>& trafficLight)
 {
-    vector<int> aux;
+    if(trafficLightVector.size()==2)
+    {
+        if(trafficLightVector[0]->GetDirection()==trafficLight->GetDirection())
+        {
+            return trafficLightVector[0]->GetDirection();
+        }
+        else
+        {
+            if(trafficLightVector[1]->GetDirection()==trafficLight->GetDirection())
+            {
+                return trafficLightVector[1]->CountVehicles();
+            }
 
-    aux={0,0};
+        }
+    }
+    else
+    {
+        if(trafficLightVector.size()==1)
+        {
+            if(trafficLightVector[0]->GetDirection()==trafficLight->GetDirection())
+                return trafficLightVector[0]->GetDirection();
+        }
+    }
 
-    aux[0]=(int)ceil((double)x/sizeMap);
-    aux[1]= sizeMap-((sizeMap*aux[0])-x);
 
-    return aux;
-}*/
+}

@@ -11,9 +11,13 @@ class SimulationResult
     map<int,vector<int>> resultTrafficLight;
     map<int,int> resutlVehicle;
 
+
     public:
+    vector<vector<int>> valuesANN;
     SimulationResult();
     void AddTrafficCylce(int node, int vehiclesQuantity, int state, int timerState);
+    void AddValuesForANN(vector<int> values);
+    void SerializeJSon(int node, int vehiclesQuantity, int state, int timerState);
     ~SimulationResult();
 
 };

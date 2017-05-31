@@ -90,11 +90,11 @@ Map::Map(int sizeBlock, size_t timeTrafficLight, size_t maxVehicle) : sizeMap{si
 	}
 }
 
-vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const size_t &destination)
+vector<shared_ptr<TrafficLight>> Map::CreateRoute(const size_t &origin, const size_t &destination)     
 {
 	int caseRoute = ReviewRoute(origin, destination);
 	vector<shared_ptr<TrafficLight>> route = GenerateRoute(caseRoute, origin, destination);
-
+	
 	for(auto i : route)
 	{
 		cout<<i->GetNode() <<":"<< i->GetDirection() <<"  ";
@@ -112,92 +112,114 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 	auto XYorigin = ConvertCoordinates(origin);
 	auto XYdestination = ConvertCoordinates(destination);
 
- 	if(XYorigin[1]<=XYdestination[1] && XYorigin[0]<=XYdestination[0])
+	cout<<origin <<"  "<<destination<<" \n";	
+
+ /////////////////////////////Si el Nodo destino se encuentra a la derecha y abajo///////////////////////////////////
+	if(XYorigin[1]<=XYdestination[1] && XYorigin[0]<=XYdestination[0])// destino esta --> y abajo
 	{
-		if(XYorigin[0]%2!=0 && XYorigin[1]!=XYdestination[1] )
+		cout<<"CASO: 1 ";
+		if(XYorigin[0]%2!=0 && XYorigin[1]!=XYdestination[1] ) //orientacion --->
 		{
-			if(XYdestination[1]%2==0 )
-			{
+			cout<<" : 1 \n";
+			if(XYdestination[1]%2==0 ) // destino puedo ir abajo 
+			{  			
 				return 1;
 			}
 			else
 			{
-				if(XYdestination[0]%2!=0  )
+				if(XYdestination[0]%2!=0  ) // destino puede ir --->
 				{
 					return 2;
 				}
 				else
 				{
-					if(XYdestination[0]<sizeMap)
+					if(XYdestination[0]<sizeMap) // dar giro por abajo
 					{
 						return 3;
 					}
 					else
 					{
-						if(XYdestination[1]<sizeMap)
+						if(XYdestination[1]<sizeMap) //giro por -->
 						{
-							return 4;
+							return 4; 
+						}
+						else
+						{
+							cout<<"No se puede llegar";
 						}
 					}
 			    }
 			}
 		}
-
+		
 		else
 		{
-			if(XYorigin[1]%2==0 && XYorigin[0] != XYdestination[0])
+			
+			if(XYorigin[1]%2==0 && XYorigin[0] != XYdestination[0]) // orientacion abajo
 			{
-				if(XYdestination[0]%2!=0)
-				{
+				cout<<" : 2 \n";
+				if(XYdestination[0]%2!=0) // destino puedo ir --> 
+				{  
 					return 5;
 				}
 				else
 				{
-					if(XYdestination[1]%2==0)
+					if(XYdestination[1]%2==0) //destono puedo baja
 					{
+
 						return 6;
 					}
 					else
 					{
-						if(XYdestination[0]<sizeMap)
+						if(XYdestination[0]<sizeMap)  // girar por abajo
 						{
-                            return 7;
+
+								return 7;
 						}
 						else
 						{
-							if(XYdestination[1]<sizeMap)
+							if(XYdestination[1]<sizeMap) // girar por --->
 							{
 								return 8;
+							}
+							else
+							{
+								cout<<"No se puede llegar 1";
 							}
 						}
 					}
 			    }
 			}
 			else
-			{
+			{	
 				if(XYorigin[1]>1 && XYorigin[0]%2==0 && XYorigin[0] != XYdestination[0] ) // recorrer -1 <-- y bajar
 				{
-					if(XYdestination[0]%2!=0)
-					{
+					cout<<" : 3 \n";
+					if(XYdestination[0]%2!=0) //destino puede ir --> 
+					{  
 						return 9;
 					}
 					else
 					{
-						if(XYdestination[1]%2==0)
+						if(XYdestination[1]%2==0) // destino puede baja
 						{
 							return 10;
 						}
 						else
 						{
-							if(XYdestination[0]<sizeMap)
+							if(XYdestination[0]<sizeMap) // girar por abajo
 							{
-								return 11;
+								return 11;							
 							}
 							else
 							{
-								if(XYdestination[1]<sizeMap)
+								if(XYdestination[1]<sizeMap)// girar por ---->
 								{
 									return 12;
+								}
+								else
+								{
+									cout<<"No se puede llegar 2";
 								}
 							}
 						}
@@ -206,101 +228,109 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 				else
 				{
 					if(XYorigin[1]!=XYdestination[1] && XYorigin[1]%2!=0)
-					{
-						if(XYdestination[1]%2==0 && XYorigin[0]>1  )
+					{	
+					  	cout<<" : 4 \n";
+						if(XYdestination[1]%2==0 && XYorigin[0]>1  ) // subir por 1 arriba y -----> 
 						{
 							return 13;
 						}
 						else
 						{
-							if(XYdestination[1]%2==0)
+							if(XYdestination[1]%2==0) //destino puede bajar y -->
 							{
 								return 14;
 							}
 							else
 							{
-								if(XYdestination[0]<sizeMap)
+								if(XYdestination[0]<sizeMap) ///  girar por abajo
 								{
 									return 15;
 								}
 								else
 								{
-									if(XYdestination[1]<sizeMap)
-									{
+									if(XYdestination[1]<sizeMap)// girar por --->
+									{		
 										return 16;
 									}
+									else
+									{
+										cout<<"No se puede llegar 3";
+									}
 								}
-							}
+							}		
 						}
-				    }
+				    }	
 				}
 			}
 		}
 	}
-
+///////////////////////////////////Si el Nodo destino se encuentra a la derecha y abajo/////////////////////
 	if(XYorigin[1]>=XYdestination[1] && XYorigin[0]<=XYdestination[0])
 	{
-		if(XYorigin[0]%2==0 && XYorigin[1] != XYdestination[1])
+	  	cout<<"CASO: 2";
+		if(XYorigin[0]%2==0 && XYorigin[1] != XYdestination[1]) //orientacion <---
 		{
-			if(XYdestination[1]%2==0)
-			{
-				return 17;
+			cout<<" : 1 \n";
+			if(XYdestination[1]%2==0) // destino puedo ir abajo  CORRECTO
+			{  			
+				return 17;	
 			}
 			else
 			{
-				if(XYdestination[0]%2==0)
+				if(XYdestination[0]%2==0) // destino puede ir <--- CORRECTO
 				{
 					return 18;
 				}
 				else
 				{
-					if(XYdestination[0]<sizeMap )
+					if(XYdestination[0]<sizeMap ) // dar giro por abajo   CORRECTO
 					{
 						return 19;
 					}
 					else
 					{
-						if(XYdestination[1]>1 )
+						if(XYdestination[1]>1 ) //giro por <---  CORRECTO
 						{
 							return 20;
 						}
 						else
 						{
-							throw;
+							cout<<"No se puede llegar";
 						}
 					}
-				}
+				}	
 			}
 		}
 		else
 		{
-			if(XYorigin[1]%2==0 && XYorigin[0] != XYdestination[0])
+			if(XYorigin[1]%2==0 && XYorigin[0] != XYdestination[0]) // orientacion abajo
 			{
-				if(XYdestination[0]%2==0)
-				{
+			cout<<" : 2 \n";
+				if(XYdestination[0]%2==0) // destino puedo ir <--- CORRECTO
+				{  
 					return 21;
 				}
 				else
 				{
-					if(XYdestination[1]%2==0)
+					if(XYdestination[1]%2==0) //destono puedo baja    CORRECTO
 					{
-						return 22;
+						return 22;	
 					}
 					else
 					{
-						if(XYdestination[0]<sizeMap)
+						if(XYdestination[0]<sizeMap)  // girar por abajo CORRECTO
 						{
 							return 23;
 						}
 						else
 						{
-							if(XYdestination[1]>1)
+							if(XYdestination[1]>1) // girar por <---  CORRECTO
 							{
 								return 24;
 							}
 							else
 							{
-								throw;
+								cout<<"No se puede llegar 1";
 							}
 						}
 					}
@@ -308,33 +338,34 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 			}
 			else
 			{
-				if(XYorigin[1]<sizeMap && XYorigin[0]%2!=0 && XYorigin[0]!=XYdestination[0])
+				if(XYorigin[1]<sizeMap && XYorigin[0]%2!=0 && XYorigin[0]!=XYdestination[0]) // recorrer +1 --> y bajar
 				{
-					if(XYdestination[0]%2==0)
+					cout<<" : 3 \n";
+					if(XYdestination[0]%2==0) //destino puede ir <--   CORRECTO
 					{
 						return 25;
 					}
 					else
 					{
-						if(XYdestination[1]%2==0 && XYorigin[0] != XYdestination[0])
+						if(XYdestination[1]%2==0 && XYorigin[0] != XYdestination[0]) // destino puede baja  CORRECTO
 						{
 							return 26;
 						}
 						else
 						{
-							if(XYdestination[0]<sizeMap )
+							if(XYdestination[0]<sizeMap ) // girar por abajo  CORRECTO
 							{
-								return 27;
+								return 27;	
 							}
 							else
 							{
-								if(XYdestination[1]>1)
+								if(XYdestination[1]>1)// girar por <---- CORRECTO
 								{
 									return 28;
 								}
 								else
 								{
-									throw 2;
+									cout<<"No se puede llegar 2";
 								}
 							}
 
@@ -348,7 +379,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 					{
 					cout<<" : 4 \n";
 						if(XYdestination[1]%2==0 ) // subir por 1 arriba y <----- CORRECTO
-						{
+						{	
 							return 29;
 						}
 						else
@@ -363,7 +394,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 								{
 									return 31;
 								}
-
+								
 								else
 								{
 									if(XYdestination[1]>1)// girar por ---> CORRECTO
@@ -375,7 +406,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 										cout<<"No se puede llegar 3";
 									}
 								}
-							}
+							}		
 						}
 					}
 					else
@@ -395,7 +426,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 			{
 				cout<<" : 1 \n";
 				if(XYdestination[1]%2!=0) // destino puedo ir arriba  OK
-				{
+				{  			
 					return 33;
 				}
 				else
@@ -424,14 +455,14 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 					}
 				}
 			}
-
+			
 			else
 			{
 				if(XYorigin[1]%2!=0 && XYorigin[0] != XYdestination[0]) // orientacion arriba
 				{
 					cout<<" : 2 \n";
 					if(XYdestination[0]%2!=0) // destino puedo ir --> OK
-					{
+					{  
 						return 37;
 					}
 					else
@@ -449,7 +480,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 							else
 							{
 								if(XYdestination[1]<sizeMap) // girar por ---> OK
-								{
+								{		
 									return 40;
 								}
 								else
@@ -466,7 +497,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 					{
 						cout<<" : 3 \n";
 						if(XYdestination[0]%2!=0 ) //destino puede ir -->  OK
-						{
+						{  
 							return 41;
 						}
 						else
@@ -515,7 +546,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 									if(XYdestination[0]>1) ///  girar por arriba
 									{
 										return 47;
-									}
+									}							
 									else
 									{
 										if(XYdestination[1]<sizeMap)// girar por --->
@@ -527,13 +558,13 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 											cout<<"No se puede llegar 3";
 										}
 									}
-								}
+								}		
 							}
 						}
 					}
 				}
 	 		}
-
+        	
 	}
 ///////////////////////////////////izquierda y arri/////////////////////////////////////////////////////////
 
@@ -544,11 +575,11 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 			{
 			cout<<" : 1 \n";
 				if(XYdestination[1]%2!=0 ) // destino puedo ir arriba OK
-				{
+				{  			
 					return 49;
 				}
 				else
-				{
+				{					
 						if(XYdestination[0]%2==0) // destino puede ir <--- OK
 						{
 							return 50;
@@ -571,17 +602,17 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 								}
 							}
 						}
-
+						
 				}
 			}
-
+			
 			else
 			{
 				if(XYorigin[1]%2!=0 && XYorigin[0]!=XYdestination[0]) // orientacion arriba
 				{
 				cout<<" : 2 \n";
 					if(XYdestination[0]%2==0) // destino puedo ir <--- CORRECTO
-					{
+					{  
 						return 53;
 					}
 					else
@@ -616,7 +647,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 					{
 					cout<<" : 3 \n";
 						if(XYdestination[0]%2==0) //destino puede ir <--   OK
-						{
+						{  
 							return 57;
 						}
 						else
@@ -666,7 +697,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 									{
 										return 63;
 									}
-
+									
 									else
 									{
 										if(XYdestination[1]>1)// girar por ---> CORRECTO
@@ -678,21 +709,21 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 											cout<<"No se puede llegar 3";
 										}
 									}
-								}
+								}		
 							}
 						}
 					}
 				}
 			}
-
+		
 	}
 //////////////////////////CASO BORDE IZQUIERDO /////////////////////////////////////////////////////////////
-
+	
 	if(XYorigin[1]==XYdestination[1] && XYorigin[1]==1 && XYorigin[0]%2 ==0)
 	{
 		if(XYdestination[0]%2==0)
 		{
-			return 65;
+			return 65;		
 		}
 		else
 
@@ -707,7 +738,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 
 	}
 //////////////////////////CASO BORDE DERECHO ///////////////////////////////////////////////////////////////
-
+	
 	if(XYorigin[1]==XYdestination[1] && XYorigin[1]==sizeMap && XYorigin[0]%2 !=0)
 	{
 		if(XYdestination[0]%2!=0)
@@ -717,7 +748,7 @@ int Map::ReviewRoute(const int &origin, const int &destination)
 		else
 			if(XYdestination[0]<sizeMap)
 			{
-				return 68;
+				return 68;		
 			}
 			else
 			{
@@ -747,20 +778,20 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				break;
 		case 1 :
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
 				break;
 		case 2 :
-
+					
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
-
+				
 				break;
 		case 3 :
-
+					
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
 					aux = route.at(route.size()-1);
@@ -770,11 +801,11 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back(TL->second[1]);
-
+						
 				break;
 		case 4 :
 
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
 					aux = route.at(route.size()-1);
@@ -790,35 +821,35 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
-
+						
 				break;
 		case 5 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
 				break;
 		case 6 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-
+	
 				break;
 		case 7 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-
+						
 				break;
 		case 8 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
 					aux = route.at(route.size()-1);
@@ -831,7 +862,7 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 
 				break;
 		case 9 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -841,21 +872,21 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 
 				break;
 		case 10 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[1]);
-
+					route.push_back( TL->second[1]);	
+						
 				break;
 		case 11 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -863,12 +894,12 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
 					aux = route.at(route.size()-1);
-					nodoAux = aux->GetNode()-sizeMap;
+					nodoAux = aux->GetNode()-sizeMap;	
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 				break;
 		case 12 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -884,7 +915,7 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					route.push_back( TL->second[0]);
 				break;
 		case 13 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -893,26 +924,26 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
 				break;
 		case 14 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);		
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0]);
+					route.push_back( TL->second[0]);						
 				break;
 		case 15 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+2,Direction::goDown,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -920,10 +951,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-
+						
 				break;
 		case 16 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -943,27 +974,27 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
-
+										
 				break;
 		case 17 :
-
+					
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
+			
 				break;
 		case 18 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
 				break;
 		case 19:
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -971,12 +1002,12 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-
+					
 				break;
 		case 20 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
-					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -990,28 +1021,28 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
-
-				break;
+						
+				break;																						
 		case 21 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);	
 
-				break;
+				break;																						
 		case 22 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
+					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-
-				break;
+	
+				break;																						
 		case 23 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1025,11 +1056,11 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-				break;
+				break;																						
 		case 24 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1037,20 +1068,20 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
-
-				break;
+							
+				break;																						
 		case 25 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goDown,route);
-					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
-
-				break;
+					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);				
+		
+				break;																						
 		case 26 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1061,10 +1092,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux = aux->GetNode()+sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-
-				break;
+					
+				break;																						
 		case 27 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1084,9 +1115,9 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-				break;
+				break;																						
 		case 28 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()+1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1100,20 +1131,20 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
-
-				break;
+								
+				break;																						
 		case 29 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goDown,route);
-
-				break;
+					
+				break;																						
 		case 30 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1123,11 +1154,11 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode()-1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0] );
-
-				break;
+					route.push_back( TL->second[0] );	
+						
+				break;																						
 		case 31 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1141,9 +1172,9 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1] );
-				break;
+				break;																						
 		case 32 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1164,27 +1195,27 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0] );
 
-				break;
+				break;																						
 		case 33 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
-
-				break;
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);			
+		
+				break;																						
 		case 34 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
-
-				break;
+						
+				break;																						
 		case 35 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1192,12 +1223,12 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back(TL->second[1]);
-
-				break;
+							
+				break;																						
 		case 36 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1210,37 +1241,37 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					route.push_back(TL->second[1]);
 					nodoAux += -1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0]);
-
-				break;
+					route.push_back( TL->second[0]);								
+						
+				break;																						
 		case 37 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-
-				break;
+				
+				break;																						
 		case 38 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-
-				break;
+					
+				break;																						
 		case 39 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-
-				break;
+						
+				break;																						
 		case 40 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
 					aux = route.at(route.size()-1);
@@ -1249,21 +1280,21 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					route.push_back( TL->second[1]);
 					nodoAux += - 1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0]);
-
-				break;
+					route.push_back( TL->second[0]);									
+				
+				break;																						
 		case 41 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
-					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);
-
-				break;
+					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goRight,route);						
+			
+				break;																						
 		case 42 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1273,10 +1304,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[1]);
-				break;
+					route.push_back( TL->second[1]);			
+				break;	
 		case 43 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1287,9 +1318,9 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux = aux->GetNode() + sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-				break;
+				break;																						
 		case 44 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1304,39 +1335,39 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
 
-				break;
+				break;																						
 		case 45 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
 
-				break;
+				break;																						
 		case 46 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + 1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0]);
-
-				break;
+					route.push_back( TL->second[0]);	
+				
+				break;																						
 		case 47 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-2,Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1344,16 +1375,16 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-
-				break;
+		
+				break;	
 		case 48 :
-
+				
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
 					StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goRight,route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() + 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1367,28 +1398,28 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += -1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
-
-				break;
+			
+				break;																																									
 		case 49 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft, route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
-
-				break;
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
+			
+				break;	
 		case 50 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[0]);
-
-				break;
+					
+				break;																						
 		case 51 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1396,12 +1427,12 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-
-				break;
+					
+				break;																						
 		case 52 :
-
+				
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft, route);
-					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);
+					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp,route);	
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - 1;
 					TL = mapTrafficLight.find(nodoAux);
@@ -1414,26 +1445,26 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					route.push_back( TL->second[1]);
 					nodoAux += 1;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[0]);
-
-				break;
+					route.push_back( TL->second[0]);									
+							
+				break;																						
 		case 53 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp, route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
-
-				break;
+				
+				break;																						
 		case 54 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
 					StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft,route);
 					aux = route.at(route.size()-1);
 					nodoAux = aux->GetNode() - sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
-					route.push_back( TL->second[1]);
-				break;
+					route.push_back( TL->second[1]);						
+				break;	
 		case 55 :
-
+				
 					StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
 					StoreRoute(XYorigin[1],XYdestination[1]+1,Direction::goLeft,route);
 					aux = route.at(route.size()-1);
@@ -1449,10 +1480,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 					nodoAux += sizeMap;
 					TL = mapTrafficLight.find(nodoAux);
 					route.push_back( TL->second[1]);
-
-				break;
+					
+				break;																						
 		case 56 :
-
+			
 				StoreRoute(XYorigin[0],XYdestination[0]+1,Direction::goUp, route);
 				StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
 				aux = route.at(route.size()-1);
@@ -1462,20 +1493,20 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				nodoAux += 1;
 				TL = mapTrafficLight.find(nodoAux);
 				route.push_back( TL->second[0]);
-
-				break;
+						
+				break;																						
 		case 57 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + 1;
 				TL = mapTrafficLight.find(nodoAux);
 				route.push_back( TL->second[0]);
 				StoreRoute(XYorigin[0],XYdestination[0],Direction::goUp, route);
 				StoreRoute(XYorigin[1],XYdestination[1]-1,Direction::goLeft,route);
-
-				break;
+				
+				break;																						
 		case 58 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + 1;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1486,10 +1517,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				nodoAux = aux->GetNode() - sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
 				route.push_back( TL->second[1]);
-
-				break;
+					
+				break;																						
 		case 59 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + 1;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1509,10 +1540,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				nodoAux += sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
 				route.push_back( TL->second[1]);
-
-				break;
+								
+				break;	
 		case 60 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + 1;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1526,10 +1557,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				nodoAux += 1;
 				TL = mapTrafficLight.find(nodoAux);
 				route.push_back( TL->second[0]);
-
-				break;
+							
+				break;																						
 		case 61 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1537,9 +1568,9 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				StoreRoute(XYorigin[1],XYdestination[1],Direction::goLeft, route);
 				StoreRoute(XYorigin[0],XYdestination[0]-1,Direction::goUp,route);
 
-				break;
+				break;																						
 		case 62 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1549,11 +1580,11 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() -1;
 				TL = mapTrafficLight.find(nodoAux);
-				route.push_back( TL->second[0]);
-
-				break;
+				route.push_back( TL->second[0]);	
+						
+				break;																						
 		case 63 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1566,11 +1597,11 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				route.push_back( TL->second[0]);
 				nodoAux += sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
-				route.push_back( TL->second[1]);
-
-				break;
+				route.push_back( TL->second[1]);										
+								
+				break;																						
 		case 64 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1590,10 +1621,10 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				nodoAux += 1;
 				TL = mapTrafficLight.find(nodoAux);
 				route.push_back( TL->second[0]);
-
-				break;
+								
+				break;	
 		case 65 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() - sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1608,7 +1639,7 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				route.push_back( TL->second[0]);
 				break;
 		case 66 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() - sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1626,7 +1657,7 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				route.push_back( TL->second[1]);
 				break;
 		case 67 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1641,7 +1672,7 @@ vector<shared_ptr<TrafficLight>> Map::GenerateRoute(const int &caseRoute,const i
 				route.push_back( TL->second[0]);
 				break;
 		case 68 :
-
+			
 				aux = route.at(route.size()-1);
 				nodoAux = aux->GetNode() + sizeMap;
 				TL = mapTrafficLight.find(nodoAux);
@@ -1691,14 +1722,14 @@ void Map::StoreRoute(const size_t &ini , const size_t &fin , Direction orientati
 				uxTL=0;
 				initial= ini;
 				final= fin;
-				incremento = 1;
+				incremento = 1;	
 			break;
 		case Direction::goLeft:
 				uxTL=0;
 				initial= fin;
 				final= ini;
 				incremento = -1;
-			break;
+			break;	
 	}
 	for(auto i = initial ; i<final; ++i )
 	{
@@ -1707,15 +1738,16 @@ void Map::StoreRoute(const size_t &ini , const size_t &fin , Direction orientati
 		route.push_back(findNodo->second[uxTL]);
 	}
 }
-
+      
 map<int, vector<shared_ptr<TrafficLight>>> Map::GetMapTrafficLight() const
 {
 	return mapTrafficLight;
 }
 
-void Map::CreateAdjacentTrafficLight()
+map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> Map::GetAdjacentTrafficLight()
 {
 	vector<shared_ptr<TrafficLight>> vectorTrafictlight;
+	map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> adjacentTrafficLight;
 	for (auto it = mapRoutes.begin(); it != mapRoutes.end(); ++it)
 	{
 		auto adjacentNode=it->second;
@@ -1747,10 +1779,10 @@ void Map::CreateAdjacentTrafficLight()
 		adjacentTrafficLight[trafficLightNode[1]]=vectorTrafictlight;
 		vectorTrafictlight.clear();
 		auxTrafficLight.clear();
-
+		
 	}*/
 
-	cout<<"\nNODO  TL  TL\n-------------------\n";
+	/*cout<<"\nNODO  TL  TL\n-------------------\n";
 	for(auto it = adjacentTrafficLight.begin(); it != adjacentTrafficLight.end(); ++it)
 	{
 		auto ad=it->second;
@@ -1766,11 +1798,7 @@ void Map::CreateAdjacentTrafficLight()
             << "  " << it->first->GetNode() << "--"<<it->first->GetDirection()<<" ** " << it->second[0]->GetNode() << "--"
             << it->second[0]->GetDirection() << "\n";
 		}
-	}
-}
-
-map<shared_ptr<TrafficLight>,vector<shared_ptr<TrafficLight>>> Map::GetAdjacentTrafficLight()
-{
+	}*/
 	return adjacentTrafficLight;
 }
 
@@ -1810,4 +1838,14 @@ void Map::show()
             << "  " << it->first << "  " << it->second[0]->GetNode() << "  "
             << it->second[0]->GetDirection() << "  " << it->second[1]->GetNode() << " " << it->second[1]->GetDirection() <<"\n";
 	}
+}
+void Map::ModifyCornerTrafficLight(int corner,int time)
+{
+	auto trafficLights = mapTrafficLight.find(corner);
+	
+	//if(trafficLights != mapTrafficLight.end())
+	//{
+		trafficLights->second[0]->Modify(time);//verde
+		trafficLights->second[1]->Modify(time*-1);
+	//}
 }
