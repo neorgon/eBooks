@@ -30,7 +30,7 @@ class OptionParser
     map<string, vector<IOptionType*>> options;
 
     void AddDefinition(const char* name, char abbr, OptionType type, bool optional);
-    string isOption(string token);
+    string isOption(const string &token);
     string isValue(const string &token);
     bool AnalyzeSyntax();
     bool AnalyzeSemantic();

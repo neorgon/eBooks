@@ -47,7 +47,7 @@ int main(/*int argc, char* args[]*/)
         const char* args[] =
         {
             "Main",
-            "--name", "Test TS",
+            "--name", "\"Test TS\"",
             "--blocks" , "3",
             "--vehicles_by_blocs", "5",
             "--vehicles", "15",

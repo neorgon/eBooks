@@ -31,15 +31,15 @@
 	<functional>
 	"../include/Map.h"
 
-1496102230 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
+1496181483 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\map.cpp
 	"../include/TrafficLight.h"
 	"../include/Map.h"
 	<math.h>
 
-1496102230 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
+1496115187 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficlight.cpp
 	"../include/TrafficLight.h"
 
-1496103116 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
+1496115187 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\trafficsimulator.cpp
 	"../include/TrafficSimulator.h"
 
 1496115187 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\trafficsimulator.h
@@ -65,7 +65,7 @@
 	"Vehicle.h"
 	"TrafficLight.h"
 
-1496103180 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
+1496115187 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\vehicle.cpp
 	"../include/Vehicle.h"
 	"../include/TrafficLight.h"
 
@@ -185,7 +185,7 @@
 
 1496115187 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\include\direction.h
 
-1495151183 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\simulation.cpp
+1496115187 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\simulation.cpp
 	"../include/Simulation.h"
 
 1495151183 shed changes
@@ -201,6 +201,87 @@
 	<map>
 	<vector>
 
-1496102230 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\simulationresult.cpp
+1496115187 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\src\simulationresult.cpp
 	"../include/SimulationResult.h"
+
+1492816412 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\definitionexception.cpp
+	"DefinitionException.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\definitionexception.h
+	<exception>
+
+1492470904 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\semanticexception.cpp
+	"SemanticException.h"
+
+1492470904 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\semanticexception.h
+	<exception>
+
+1492470904 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\syntaxexception.cpp
+	"SyntaxException.h"
+
+1492470904 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\exceptions\syntaxexception.h
+	<exception>
+
+1492816412 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\boolean.cpp
+	<iostream>
+	"../include/Boolean.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\boolean.h
+	"IOptionType.h"
+	"../exceptions/SemanticException.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\ioptiontype.h
+	<string>
+	"OptionType.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\optiontype.h
+
+1493174873 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\integer.cpp
+	<iostream>
+	"../include/Integer.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\integer.h
+	"IOptionType.h"
+	"../exceptions/SemanticException.h"
+
+1492816412 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\optiondefinition.cpp
+	"../include/OptionDefinition.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\optiondefinition.h
+	<string>
+	"OptionType.h"
+
+1496191489 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\optionparser.cpp
+	"../include/OptionParser.h"
+	<sstream>
+
+1496189954 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\optionparser.h
+	<iostream>
+	<string>
+	<vector>
+	<utility>
+	<algorithm>
+	<map>
+	"OptionDefinition.h"
+	"IOptionType.h"
+	"Boolean.h"
+	"Integer.h"
+	"Real.h"
+	"Text.h"
+	"../exceptions/SyntaxException.h"
+	"../exceptions/DefinitionException.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\real.h
+	"IOptionType.h"
+	"../exceptions/SemanticException.h"
+
+1492816412 c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\include\text.h
+	"IOptionType.h"
+
+1493174601 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\real.cpp
+	<iostream>
+	"../include/Real.h"
+
+1492816412 source:c:\users\nestor\documents\github\ebooks\monitor\my traffic simulator\parser\src\text.cpp
+	"../include/Text.h"
 

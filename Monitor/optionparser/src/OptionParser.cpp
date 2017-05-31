@@ -67,7 +67,7 @@ OptionParser::~OptionParser()
     }
 }
 
-string OptionParser::isOption(string token)
+string OptionParser::isOption(const string &token)
 {
     if(token[0] == '-' && token[1] == '-')
     {
@@ -91,6 +91,7 @@ string OptionParser::isValue(const string &token)
         addList = false;
         return token.substr(0, token.length() - 1);
     }
+
     return token;
 }
 
@@ -206,34 +207,45 @@ bool OptionParser::AnalyzeSemantic()
         OptionType type = itOptionDefinition->GetType();
         options.insert(pair<string, vector<IOptionType*>> (name, vector<IOptionType*>()));
         values = explode(tokens[e].second, ' ');
-        for (auto v : values)
-            switch(type)
-            {
-                case OptionType::Boolean:
+        if (type == OptionType::Text)
+        {
+            string txt;
+            for (auto v : values)
+                txt += v + " ";
+            IOptionType* newOption = new Text(name, abbr[0], type, txt.substr(0, txt.length() - 1));
+            options[name].push_back(newOption);
+        }
+        else
+        {
+            for (auto v : values)
+                switch(type)
                 {
-                    IOptionType* newOption = new Boolean(name, abbr[0], type, v);
-                    options[name].push_back(newOption);
-                    break;
+                    case OptionType::Boolean:
+                    {
+                        IOptionType* newOption = new Boolean(name, abbr[0], type, v);
+                        options[name].push_back(newOption);
+                        break;
+                    }
+                    case OptionType::Integer:
+                    {
+                        IOptionType* newOption = new Integer(name, abbr[0], type, v);
+                        options[name].push_back(newOption);
+                        break;
+                    }
+                    case OptionType::Real:
+                    {
+                        IOptionType* newOption = new Real(name, abbr[0], type, v);
+                        options[name].push_back(newOption);
+                        break;
+                    }
+                    case OptionType::Text:
+                    {
+                        /*IOptionType* newOption = new Text(name, abbr[0], type, v);
+                        options[name].push_back(newOption);*/
+                        break;
+                    }
                 }
-                case OptionType::Integer:
-                {
-                    IOptionType* newOption = new Integer(name, abbr[0], type, v);
-                    options[name].push_back(newOption);
-                    break;
-                }
-                case OptionType::Real:
-                {
-                    IOptionType* newOption = new Real(name, abbr[0], type, v);
-                    options[name].push_back(newOption);
-                    break;
-                }
-                case OptionType::Text:
-                {
-                    IOptionType* newOption = new Text(name, abbr[0], type, v);
-                    options[name].push_back(newOption);
-                    break;
-                }
-            }
+        }
     }
 
     return true;
