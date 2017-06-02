@@ -78,7 +78,7 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
     if(cycles!=0)
         cyclesFlag = true;
 
-    WindowsConsole wc(600, 800, "Traffic Simulator", 7, 4);
+    WindowsConsole wc(500, 960, "Traffic Simulator", 7, 4);
     wc.ClearScreen();
     if(optionVisualization)
         wc.PrintMap(trafficLightsSim, mapSim->GetMapSize());
@@ -157,9 +157,11 @@ void TrafficSimulator::StartLoopSim(map<string,shared_ptr<Simulation>>::iterator
          if(optionVisualization)
          {
             wc.UpdateMap(trafficLightsSim);
+            wc.GotoXY(1, 35);
             Sleep(1500);
          }
     }
+    wc.GotoXY(1, 35);
     resultsMap.insert(make_pair(simulationIterator->second->getName(), make_shared<SimulationResult>(results)));
     cout<<msg<<endl;
 }

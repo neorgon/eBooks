@@ -32,6 +32,10 @@ class WindowsConsole
         void ClearScreen() const;
         void GotoXY(short int x, short int y);
         void GetXY(short int &x, short int &y);
+        int GetHeight()
+        {
+            return vsHeight;
+        }
         void SetColor(int color);
         void PrintCity() const;
         void PrintMap(const map<int, vector<shared_ptr<TrafficLight>>> &tls, size_t mapSize);
